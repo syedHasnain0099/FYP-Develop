@@ -9,7 +9,7 @@ import ForgotPasswordForm from './components/ForgotPassword/ForgotPasswordForm'
 import ResetPageForm from './components/ForgotPassword/ResetPageForm'
 import SignUp from './components/SignUp/SignUp'
 import Login from './components/Login/Login'
-import product_listing from './components/Product_Listing/product_listing'
+import Product_Listing from './components/Product_Listing/Product_Listing'
 function Routes() {
   return (
     <BrowserRouter>
@@ -40,7 +40,7 @@ function Routes() {
             <Login></Login>
           </Route>
           <Route path='/'>
-            <product_listing></product_listing>
+            <Product_Listing></Product_Listing>
           </Route>
         </Switch>
       </div>

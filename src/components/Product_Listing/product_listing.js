@@ -4,7 +4,7 @@ import Home from '../Home/Home'
 import Footer from '../Footer/Footer'
 import './Product_Listing.css'
 // import './Product_Listing.scss'
-function product_listing() {
+function Product_Listing() {
   return (
     <div className='container'>
       <Header></Header>
@@ -14,4 +14,4 @@ function product_listing() {
   )
 }
 
-export default product_listing
+export default Product_Listing

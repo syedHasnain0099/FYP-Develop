@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom'
 import validateInfo from './validateInfo'
 import './Login.css'
 import axios from 'axios'
-import userServiceClass from '../../services/UserService'
 
 // import { useStateValue } from '../StateProvider/StateProvider'
 function Login(callback) {
@@ -24,7 +23,7 @@ function Login(callback) {
     redirectToReferrer: false,
   })
   const [errors, setErrors] = useState({})
-  const [serverError, setServerError] = useState('');
+
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const API =
@@ -71,57 +70,31 @@ function Login(callback) {
   }
 
   const signin = (user) => {
-
-    return userServiceClass
-				.loginUser(values.ID.replaceAll(' ', ''), values.Password)
-				.then((data) => {
-					// navigate(RouteAdminDashboard);
-          setValues({
+    axios
+      .post(API, {
+        identifier: user.email,
+        password: user.password,
+      })
+      .then((response) => {
+        // Handle success.
+        console.log('Well done!')
+        console.log('User profile', response.data)
+        console.log('User token', response.data.jwt)
+        setValues({
           ...values,
           redirectToReferrer: true,
         })
-				})
-				.catch((err) => {
-          setValues({
+      })
+      .catch((error) => {
+        // Handle error.
+        // console.log('An error occurred:', error.response.data.error.message)
+        //console.log(data.error)
+        setValues({
           ...values,
-          error: err.response.data.error.message,
+          error: error.response.data.error.message,
           loading: false,
         })
-					if (!err.response) {
-						setServerError('Error occured please try later');
-					} else {
-						setServerError('');
-						// setFieldError('Password', err.response.data.error.message);
-					}
-				})
-				// .finally(() => setSubmitting(false));;
-
-
-    //  axios
-    //   .post(API, {
-    //     identifier: user.email,
-    //     password: user.password,
-    //   })
-    //   .then((response) => {
-    //     // Handle success.
-    //     console.log('Well done!')
-    //     console.log('User profile', response.data)
-    //     console.log('User token', response.data.jwt)
-    //     setValues({
-    //       ...values,
-    //       redirectToReferrer: true,
-    //     })
-    //   })
-    //   .catch((error) => {
-    //     // Handle error.
-    //     // console.log('An error occurred:', error.response.data.error.message)
-    //     //console.log(data.error)
-    //     setValues({
-    //       ...values,
-    //       error: error.response.data.error.message,
-    //       loading: false,
-    //     })
-    //   })
+      })
   }
 
   return (
