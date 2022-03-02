@@ -35,8 +35,14 @@ function ResetPage(callback) {
         {
           code: currentURL, // code contained in the reset link of step 3.
           password: values.password,
-          passwordConfirmation: values.password2,
+          passwordConfirmation: values.password2
         }
+        // ,
+        // {
+        //   headers:{
+        //     authorization:`Bearer ${localStorage.getItem('token')}`
+        //   }
+        // }
       )
       .then((response) => {
         console.log("Your user's password has been reset.")
