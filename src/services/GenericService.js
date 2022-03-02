@@ -29,14 +29,9 @@ class GenericService {
     new Promise((resolve, reject) => {
       console.log("url in generic: ",url);
       console.log("data in generic: ",JSON.stringify(data));
-      // axios
-      //   .post(url, JSON.stringify(data))
-      delete axios.defaults.headers.common["authorization"];
+      // delete axios.defaults.headers.common["authorization"];
       axios
-        .post('http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/auth/local', {
-          identifier: "maryaminam00@gmail.com",
-          password: "maryamInam26",
-        })
+        .post(url, JSON.stringify(data))
         .then((res) => {
           resolve(res.data);
           console.log('Well done!')
