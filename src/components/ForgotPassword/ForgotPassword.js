@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import './ForgotPassword.css'
 import validateInfo from './validateInfo'
 import axios from 'axios'
+import userService from '../../services/UserService'
 
 function ForgotPassword(callback) {
   const [enteredEmail, setEnteredEmail] = useState('')
@@ -18,33 +19,27 @@ function ForgotPassword(callback) {
     }
     setErrors(validateInfo(values))
     setIsSubmitting(true)
-
-    //   //send email confirmation
-    //   axios
-    // .post(`http://localhost:1337/api/auth/send-email-confirmation`, {
-    //   email: values.email, // user's email
-    // })
-    // .then(response => {
-    //   console.log('Your user received an email');
-    // })
-    // .catch(error => {
-    //   console.error('An error occurred:', error.response);
-    // });
-
-    //process password reset request
-    axios
-      .post(
-        'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/auth/forgot-password',
-        {
-          email: values.email, // user's email
-        }
-      )
-      .then((response) => {
-        console.log('Your user received an email')
-      })
-      .catch((error) => {
-        console.log('An error occurred:', error.response)
-      })
+    userService
+				.forgetPassword(values.email)
+				.then((data) => {
+					console.log('Your user received an email')
+				})
+				.catch((err) => {
+          console.log('An error occurred:', err.response)
+				})
+    // axios
+      // .post(
+      //   'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/auth/forgot-password',
+      //   {
+      //     email: values.email, // user's email
+      //   }
+      // )
+      // .then((response) => {
+      //   console.log('Your user received an email')
+      // })
+      // .catch((error) => {
+      //   console.log('An error occurred:', error.response)
+      // })
   }
   useEffect(() => {
     if (Object.keys(errors) === 0 && isSubmitting) {

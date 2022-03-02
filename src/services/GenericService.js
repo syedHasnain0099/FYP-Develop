@@ -30,8 +30,8 @@ class GenericService {
       console.log("url in generic: ",url);
       console.log("data in generic: ",JSON.stringify(data));
       if (axios.defaults.headers.common.Authorization) {
-        console.log("inside if")
-        delete axios.defaults.headers.common.Authorization;}
+        delete axios.defaults.headers.common.Authorization;
+      }
       axios
         .post(url, JSON.stringify(data))
         .then((res) => {

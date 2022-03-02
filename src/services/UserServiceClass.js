@@ -14,7 +14,7 @@ class UserService extends GenericService {
       console.log("this:", this)
       console.log("id: ",ID);
 
-      this.post('http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/auth/local', {
+      this.post(`${axios.defaults.baseURL}auth/local`, {
         identifier: ID,
         password: Password
       })
@@ -32,7 +32,7 @@ class UserService extends GenericService {
   forgetPassword = (email) =>
     new Promise((resolve, reject) => {
       this.tokenUpdate();
-      this.post('auth/forgot-password', {
+      this.post(`${axios.defaults.baseURL}auth/forgot-password`, {
         email
       })
         .then((data) => {
@@ -43,10 +43,10 @@ class UserService extends GenericService {
         });
     });
 
-  resetPassword = (password, code) =>
+  resetPassword = (code, password) =>
     new Promise((resolve, reject) => {
       this.tokenUpdate();
-      this.post('auth/reset-password', {
+      this.post(`${axios.defaults.baseURL}auth/reset-password`, {
         code,
         password,
         passwordConfirmation: password
@@ -58,7 +58,7 @@ class UserService extends GenericService {
           reject(err);
         });
     });
-  register = (name, email, password) => this.post('users/register', { password, email, name });
+  register = (username, email, password) => this.post(`${axios.defaults.baseURL}users/register`, { password, email, username });
 
   logout = async () => {
     await localStorage.removeItem('token');
@@ -125,14 +125,11 @@ class UserService extends GenericService {
         });
     });
 
-  addUser = (username, name, email, password, dob, gender) =>
-    this.post(`auth/local/register`, {
+  addUser = (username, email, password) =>
+    this.post(`${axios.defaults.baseURL}auth/local/register`, {
       username,
-      name,
       email,
-      password,
-      dob,
-      gender
+      password
     });
 
 

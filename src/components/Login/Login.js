@@ -31,8 +31,6 @@ function Login(callback) {
   const [serverError, setServerError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const API =
-    'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/auth/local'
   const emailChangeHandler = (event) => {
     setValues({ ...values, error: false, email: event.target.value })
   }
