@@ -4,22 +4,16 @@ import validateInfo from './validateInfo'
 import './Login.css'
 import axios from 'axios'
 import userService from '../../services/UserService'
-
-axios.defaults.baseURL = 'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/';
+import { useStateValue } from '../StateProvider/StateProvider'
+axios.defaults.baseURL =
+  'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/'
 // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
-
-// import { useStateValue } from '../StateProvider/StateProvider'
 function Login(callback) {
-  // const [{}, dispatch] = useStateValue()
-  // const addUser = (event) => {
-  //   dispatch({
-  //     type: 'ADD_USER',
-  //     user: event.target.value,
-  //   })
-  //   console.log(event.target.value)
-  // }
-
+  const [{}, dispatch] = useStateValue()
+  const [errors, setErrors] = useState({})
+  const [serverError, setServerError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -27,9 +21,13 @@ function Login(callback) {
     loading: false,
     redirectToReferrer: false,
   })
-  const [errors, setErrors] = useState({})
-  const [serverError, setServerError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const addUser = () => {
+    const emailCopy = email.split('@')
+    dispatch({
+      type: 'ADD_USER',
+      user: emailCopy[0],
+    })
+  }
 
   const emailChangeHandler = (event) => {
     setValues({ ...values, error: false, email: event.target.value })
@@ -49,18 +47,6 @@ function Login(callback) {
       return <Redirect to='/'></Redirect>
     }
   }
-  // const tokenUpdate = () => {
-  //   const token = localStorage.getItem('token');
-  //   if (token)
-  //     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-  //   else
-  //     delete axios.defaults.headers.common.Authorization;
-  // };
-  // useEffect(() => {
-  //   if (Object.keys(errors).length === 0 && isSubmitting) {
-  //     callback()
-  //   }
-  // }, [errors])
   const showError = () => (
     <div
       className='alert alert-danger'
@@ -80,58 +66,30 @@ function Login(callback) {
   }
 
   const signin = (user) => {
-
     userService
-				.loginUser(user.email, user.password)
-				.then((data) => {
-					// navigate(RouteAdminDashboard);
-          console.log(data);
-          setValues({
+      .loginUser(user.email, user.password)
+      .then((data) => {
+        // navigate(RouteAdminDashboard);
+        console.log(data)
+        addUser()
+        setValues({
           ...values,
           redirectToReferrer: true,
         })
-				})
-				.catch((err) => {
-          setValues({
+      })
+      .catch((err) => {
+        setValues({
           ...values,
           error: err.response.data.error.message,
           loading: false,
         })
-					if (!err.response) {
-						setServerError('Error occured please try later');
-					} else {
-						setServerError('');
-						// setFieldError('Password', err.response.data.error.message);
-					}
-				})
-
-    // axios
-    //   .post(API, {
-    //     identifier: user.email,
-    //     password: user.password,
-    //   })
-    //   .then((response) => {
-    //     // Handle success.
-    //     console.log('Well done!')
-    //     console.log('User profile', response.data)
-    //     console.log('User token', response.data.jwt)
-    //     localStorage.setItem('token', response.data.jwt);
-    //     // tokenUpdate();
-    //     setValues({
-    //       ...values,
-    //       redirectToReferrer: true,
-    //     })
-    //   })
-    //   .catch((error) => {
-    //     // Handle error.
-    //     console.log('An error occurred:', error.response.data.error.message)
-    //     //console.log(data.error)
-    //     setValues({
-    //       ...values,
-    //       error: error.response.data.error.message,
-    //       loading: false,
-    //     })
-    //   })
+        if (!err.response) {
+          setServerError('Error occured please try later')
+        } else {
+          setServerError('')
+          // setFieldError('Password', err.response.data.error.message);
+        }
+      })
   }
 
   return (
