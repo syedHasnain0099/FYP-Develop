@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './Header.css'
 import SearchIcon from '@mui/icons-material/Search'
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, Redirect, withRouter } from 'react-router-dom'
 import { useStateValue } from '../StateProvider/StateProvider'
+import userService from '../../services/UserService'
 // const isActive = (history, path) => {
 //   if (history.location.pathname === path) {
 //     return { color: '#ff9900' }
@@ -14,25 +15,36 @@ import { useStateValue } from '../StateProvider/StateProvider'
 // function Header({ history })
 // style={isActive(history, '/login')}
 function Header() {
-  const [{ basket, user }] = useStateValue()
-  console.log(basket)
+  const [{ basket, user }, dispatch] = useStateValue()
+
+  const login = () => {
+    if (user) {
+      userService
+        .logout()
+        .then((response) => {
+          console.log('Signed out', response)
+          dispatch({
+            type: 'ADD_USER',
+            user: null,
+          })
+        })
+        .catch((err) => {
+          console.log('cant log out')
+        })
+    }
+  }
   return (
     <nav>
       <Link to='/'>
         <div className='logo'>RenToday.</div>
       </Link>
-
-      {/* <div className='header__search'>
-        <input type='text' className='header__searchInput' />
-        <SearchIcon className='header__searchIcon' />
-      </div> */}
       <ul>
         <li>
           <Link to='/'>Home</Link>
         </li>
         <li>
-          <Link to='/login'>
-            <div className='header__option'>
+          <Link to={!user && '/login'}>
+            <div onClick={login} className='header__option'>
               <span className='header__optionLineOne'>
                 Hello {user ? user : 'Stranger'}
               </span>

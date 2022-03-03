@@ -3,7 +3,8 @@ import { useStateValue } from '../StateProvider/StateProvider'
 import product_card from '../data/product_data'
 function Home() {
   const [{ basket }, dispatch] = useStateValue()
-  const addToGetQuote = () => {
+  const addToGetQuote = (event) => {
+    console.log(event.target.value)
     dispatch({
       type: 'ADD_TO_GETQUOTE',
       item: {

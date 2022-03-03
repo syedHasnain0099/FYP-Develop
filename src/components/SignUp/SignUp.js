@@ -16,8 +16,8 @@ const SignUp = (callback) => {
   })
   const { username, email, password, password2, error, success } = values
   const [errors, setErrors] = useState({})
-  const [serverError, setServerError] = useState('');
-  
+  const [serverError, setServerError] = useState('')
+
   const usernameChangeHandler = (event) => {
     setValues({ ...values, error: false, username: event.target.value })
   }
@@ -63,11 +63,11 @@ const SignUp = (callback) => {
   // }, [errors])
   const signup = (user) => {
     userService
-				.addUser(user.username, user.email, user.password)
-				.then((data) => {
-					// navigate(RouteAdminDashboard);
-          console.log(data);
-          setValues({
+      .addUser(user.username, user.email, user.password)
+      .then((data) => {
+        // navigate(RouteAdminDashboard);
+        console.log(data)
+        setValues({
           ...values,
           username: '',
           email: '',
@@ -76,52 +76,20 @@ const SignUp = (callback) => {
           error: false,
           success: true,
         })
-				})
-				.catch((err) => {
-          setValues({
+      })
+      .catch((err) => {
+        setValues({
           ...values,
           error: error.response.data.error.message,
           success: false,
         })
-					if (!err.response) {
-						setServerError('Error occured please try later');
-					} else {
-						setServerError('');
-						// setFieldError('Password', err.response.data.error.message);
-					}
-				})
-    // return axios
-    //   .post(API, {
-    //     username: user.username,
-    //     email: user.email,
-    //     password: user.password,
-    //     password2: user.password2,
-    //   })
-    //   .then((response) => {
-    //     // Handle success.
-    //     console.log('Well done!')
-    //     console.log('User profile', response.data.user)
-    //     console.log('User token', response.data.jwt)
-    //     // swal("Good Job!",JSON.stringify(response.user),"success");
-    //     setValues({
-    //       ...values,
-    //       username: '',
-    //       email: '',
-    //       password: '',
-    //       password2: '',
-    //       error: false,
-    //       success: true,
-    //     })
-    //   })
-    //   .catch((error) => {
-    //     // Handle error.
-    //     console.log('An error occurred:', error)
-    //     setValues({
-    //       ...values,
-    //       error: error.response.data.error.message,
-    //       success: false,
-    //     })
-    //   })
+        if (!err.response) {
+          setServerError('Error occured please try later')
+        } else {
+          setServerError('')
+          // setFieldError('Password', err.response.data.error.message);
+        }
+      })
   }
 
   return (
