@@ -3,18 +3,18 @@ import qs from 'qs'
 import GenericService from './GenericService'
 import axios from 'axios'
 
+const herokuLink='https://strapi-project-deployement.herokuapp.com/';
 class UserService extends GenericService {
   // eslint-disable-next-line no-useless-constructor
   // constructor() {
   //   super();
   // }
-
   loginUser = (ID, Password) =>
     new Promise((resolve, reject) => {
       console.log('this:', this)
       console.log('id: ', ID)
 
-      this.post(`${axios.defaults.baseURL}auth/local`, {
+      this.post(`${herokuLink}auth/local`, {
         identifier: ID,
         password: Password,
       })
@@ -31,7 +31,7 @@ class UserService extends GenericService {
   forgetPassword = (email) =>
     new Promise((resolve, reject) => {
       this.tokenUpdate()
-      this.post(`${axios.defaults.baseURL}auth/forgot-password`, {
+      this.post(`${herokuLink}auth/forgot-password`, {
         email,
       })
         .then((data) => {
@@ -45,7 +45,7 @@ class UserService extends GenericService {
   resetPassword = (code, password) =>
     new Promise((resolve, reject) => {
       this.tokenUpdate()
-      this.post(`${axios.defaults.baseURL}auth/reset-password`, {
+      this.post(`${herokuLink}auth/reset-password`, {
         code,
         password,
         passwordConfirmation: password,
@@ -58,7 +58,7 @@ class UserService extends GenericService {
         })
     })
   register = (username, email, password) =>
-    this.post(`${axios.defaults.baseURL}users/register`, {
+    this.post(`${herokuLink}users/register`, {
       password,
       email,
       username,
@@ -130,7 +130,7 @@ class UserService extends GenericService {
     })
 
   addUser = (username, email, password) =>
-    this.post(`${axios.defaults.baseURL}auth/local/register`, {
+    this.post(`${herokuLink}auth/local/register`, {
       username,
       email,
       password,
