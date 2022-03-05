@@ -3,7 +3,7 @@ import qs from 'qs'
 import GenericService from './GenericService'
 import axios from 'axios'
 
-const herokuLink='https://strapi-project-deployement.herokuapp.com/';
+const herokuLink='https://strapi-project-deployement.herokuapp.com/api/';
 class UserService extends GenericService {
   // eslint-disable-next-line no-useless-constructor
   // constructor() {
@@ -24,7 +24,8 @@ class UserService extends GenericService {
           resolve(data.user)
         })
         .catch((err) => {
-          reject(err)
+          console.log(err);
+          reject(err);
         })
     })
 

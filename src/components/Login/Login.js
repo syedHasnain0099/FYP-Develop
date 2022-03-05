@@ -71,24 +71,25 @@ function Login(callback) {
       .then((data) => {
         // navigate(RouteAdminDashboard);
         console.log(data)
-        addUser()
+        // addUser()
         setValues({
           ...values,
           redirectToReferrer: true,
         })
       })
       .catch((err) => {
+        let err_msg= err.response.data.error.message;
+        if (!err.response) {
+          err_msg='Error occured please try later';
+        } 
+        else if(err_msg == "Invalid identifier or password") {
+          err_msg = err_msg.replace("identifier", "email");
+        }
         setValues({
           ...values,
-          error: err.response.data.error.message,
+          error: err_msg,
           loading: false,
         })
-        if (!err.response) {
-          setServerError('Error occured please try later')
-        } else {
-          setServerError('')
-          // setFieldError('Password', err.response.data.error.message);
-        }
       })
   }
 

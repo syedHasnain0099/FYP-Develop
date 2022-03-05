@@ -30,11 +30,18 @@ const SignUp = (callback) => {
   const password2ChangeHandler = (event) => {
     setValues({ ...values, error: false, password2: event.target.value })
   }
-
-  const submitHandler = (event) => {
+  const clearErrorFields =()=>{
+    setErrors('');
+  }
+  async function submitHandler(event) {
+    clearErrorFields();
     event.preventDefault()
+    console.log("values: ",values);
     setErrors(validateInfo(values))
+    var errors=validateInfo(values);
+    console.log("errors: ",Object.keys(errors));
     if (Object.keys(errors).length === 0) {
+      console.log("field errors are not present");
       signup({ username, email, password, password2 })
     }
 
@@ -61,12 +68,13 @@ const SignUp = (callback) => {
   //     callback()
   //   }
   // }, [errors])
+
   const signup = (user) => {
     userService
       .addUser(user.username, user.email, user.password)
       .then((data) => {
         // navigate(RouteAdminDashboard);
-        console.log(data)
+        console.log("congratulations you are registered ",data)
         setValues({
           ...values,
           username: '',
@@ -78,18 +86,23 @@ const SignUp = (callback) => {
         })
       })
       .catch((err) => {
-        setValues({
-          ...values,
-          error: error.response.data.error.message,
-          success: false,
-        })
-        if (!err.response) {
-          setServerError('Error occured please try later')
-        } else {
-          setServerError('')
-          // setFieldError('Password', err.response.data.error.message);
-        }
+          let err_msg =err.response.data.error.message;
+          if (!err.response) {
+            err_msg='Error occured please try later';
+          } 
+          else if(err_msg == "Email is already taken") {
+            err_msg = err_msg+"\nPlease enter a new one!";
+          }
+          setValues({
+            ...values,
+            error: err_msg,
+            loading: false,
+          })
+        
+        
       })
+          // setServerError('')
+          // setFieldError('Password', err.response.data.error.message);
   }
 
   return (
