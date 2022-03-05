@@ -18,7 +18,7 @@ function Header() {
   const [{ basket, user }, dispatch] = useStateValue()
 
   const login = () => {
-    if (user) {
+    // if (user) {
       userService
         .logout()
         .then((response) => {
@@ -31,7 +31,7 @@ function Header() {
         .catch((err) => {
           console.log('cant log out')
         })
-    }
+    // }
   }
   return (
     <nav>

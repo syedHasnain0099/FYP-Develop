@@ -11,8 +11,6 @@ class UserService extends GenericService {
   // }
   loginUser = (ID, Password) =>
     new Promise((resolve, reject) => {
-      console.log('this:', this)
-      console.log('id: ', ID)
 
       this.post(`${herokuLink}auth/local`, {
         identifier: ID,
@@ -20,7 +18,8 @@ class UserService extends GenericService {
       })
         .then((data) => {
           localStorage.setItem('token', JSON.stringify(data.jwt))
-          this.tokenUpdate()
+          // console.log("data.use: ",data.user)
+          // this.tokenUpdate()
           resolve(data.user)
         })
         .catch((err) => {
@@ -67,6 +66,7 @@ class UserService extends GenericService {
 
   logout = async () => {
     await localStorage.removeItem('token')
+    console.log("removed")
     //this.tokenUpdate();
   }
 
