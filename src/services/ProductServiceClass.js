@@ -6,6 +6,7 @@ class ProductService extends GenericService{
     super();
     this.populate = ['reviews','estimated_price','image','users_permissions_user','category_list'];
   }
+  
     getAllAds = () => {
         new Promise((resolve, reject) => {
             const query = qs.stringify({
@@ -30,58 +31,56 @@ class ProductService extends GenericService{
         const {id,attributes} = ad;
         const {name,description,estimated_price,reviews,image,users_permissions_user,category_list} = attributes;
         const{price,duration} = estimated_price;
-        
-        console.log("name: ",name);
-        console.log("estimated price: ",price);
-        let ad_reviews = [];
+        var products = {
+            id:'',
+            name:'',
+            description:'',
+            price:'',
+            duration:'',
+            reviews:{},
+            url:'',
+            user:''
+        };
+        products.id=id;
+        products.name=name;
+        products.description=description;
+        products.price=price;
+        products.duration=duration;
+
         if (reviews) {
             const {data} = reviews;
              for (let index = 0; index < data.length; index++) {
                 const singleReview = data[index];
-                ad_reviews.push(this.extractReviews(singleReview));
+                products.reviews=this.extractReviews(singleReview);
             }
-            console.log("ad_reviews",ad_reviews)
+            console.log("ad_reviews",products.reviews)
         }
 
-        let imageUrl='';
         if (image) {
             const {data} = image;
              for (let index = 0; index < data.length; index++) {
                 const singleImage = data[index];
-                imageUrl = this.extractImage(singleImage);
+                products.url = this.extractImage(singleImage);
             }
-            console.log("imageUrl: ",imageUrl)
         }
-// let user;
-        // const user = {}
+
+        
         if (users_permissions_user) {
             const {data} = users_permissions_user;
             const {attributes} = data;
-            const {username,image} = attributes;
-            console.log("username: ",username)
-            // const {id,attributes} = data;
-            // console.log("user id: ",username);
+            const {username,profile_picture} = attributes;
+            products.user=username;
+            
             //  for (let index = 0; index < data.length; index++) {
             //     const singleImage = data[index];
             //     imageUrl = this.extractImage(singleImage);
             // }
             // console.log("imageUrl: ",imageUrl)
         }
-
-        const products = {
-            id,
-            name,
-            description,
-            price,
-            duration,
-            ad_reviews,
-            imageUrl,
-            // user,
-            // categoryType
+        for(let att in products){
+            console.log(`${att}: ${products[att]}`);
         }
-        // for(let att in products){
-        //     console.log(`${att}: ${att.value}`);
-        // }
+        return products
     }
     extractReviews = (data) => {
         const {id,attributes} = data;
@@ -93,7 +92,7 @@ class ProductService extends GenericService{
         const {url} = attributes;
         return url;
     }
-    extractUser = (data) => {
+    extractUserDP = (data) => {
         const {id,attributes} = data;
         const {content,rating} = attributes;
         return {content,rating}
