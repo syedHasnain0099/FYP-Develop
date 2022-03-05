@@ -6,8 +6,8 @@ class ProductService extends GenericService{
     super();
     this.populate = ['reviews','estimated_price','image','users_permissions_user','category_list'];
   }
-  
     getAllAds = () => {
+        const allProducts=[];
         new Promise((resolve, reject) => {
             const query = qs.stringify({
                 populate: this.populate
@@ -17,9 +17,10 @@ class ProductService extends GenericService{
             .then((response) => {
                 const {data}=response;
                 for(let ad of data){
-                    this.extractProducts(ad);
+                    allProducts.push(this.extractProducts(ad));
                 }
-            resolve(data)
+                console.log(allProducts)
+                resolve(allProducts)
             })
             .catch((err) => {
             console.log(err);
@@ -27,40 +28,93 @@ class ProductService extends GenericService{
             })
     })
     }
+    getProductsByCategory(categoryListName){
+        console.log("name: ",categoryListName);
+        const filteredProducts=[];
+        new Promise((resolve, reject) => {
+            const query = qs.stringify({
+                populate: this.populate,
+                filters: {
+                    category_list: {
+                        name: categoryListName
+                    }
+                }
+            });
+            this.get(`${axios.defaults.baseURL}products?${query}`)
+            .then((response) => {
+                // console.log("response: ",response)
+                const {data}=response;
+                // console.log("data: ",data)
+                for(let ad of data){
+                    filteredProducts.push(this.extractProducts(ad));
+                }
+                console.log("products of specific category: ",filteredProducts)
+                resolve(filteredProducts)
+            })
+            .catch((err) => {
+            console.log(err);
+            console.log("huh")
+            reject(err);
+            })
+    })
+    }
+
+    find = (productName) => {
+        const filteredProducts=[];
+        new Promise((resolve, reject) => {
+            const query = qs.stringify({
+                populate: this.populate,
+                filters: {
+                name: productName
+                }
+            });
+            this.get(`${axios.defaults.baseURL}products?${query}`)
+            .then((response) => {
+                const {data}=response;
+                for(let ad of data){
+                    filteredProducts.push(this.extractProducts(ad));
+                }
+                console.log("products with specific name: ",filteredProducts)
+                resolve(filteredProducts)
+            })
+            .catch((err) => reject(err));
+        });
+    }
+
+
     extractProducts = (ad) => {
         const {id,attributes} = ad;
         const {name,description,estimated_price,reviews,image,users_permissions_user,category_list} = attributes;
         const{price,duration} = estimated_price;
-        var products = {
+        var product = {
             id:'',
             name:'',
             description:'',
             price:'',
             duration:'',
-            reviews:{},
-            url:'',
-            user:''
+            reviews:[],
+            image_urls:[],
+            supplier:''
         };
-        products.id=id;
-        products.name=name;
-        products.description=description;
-        products.price=price;
-        products.duration=duration;
+        product.id=id;
+        product.name=name;
+        product.description=description;
+        product.price=price;
+        product.duration=duration;
 
         if (reviews) {
             const {data} = reviews;
              for (let index = 0; index < data.length; index++) {
                 const singleReview = data[index];
-                products.reviews=this.extractReviews(singleReview);
-            }
-            console.log("ad_reviews",products.reviews)
+                product.reviews.push(this.extractReviews(singleReview));
+             }
         }
 
         if (image) {
             const {data} = image;
              for (let index = 0; index < data.length; index++) {
                 const singleImage = data[index];
-                products.url = this.extractImage(singleImage);
+                product.image_urls.push(this.extractImage(singleImage));
             }
         }
 
@@ -69,18 +123,18 @@ class ProductService extends GenericService{
             const {data} = users_permissions_user;
             const {attributes} = data;
             const {username,profile_picture} = attributes;
-            products.user=username;
+            product.supplier=username;
             
             //  for (let index = 0; index < data.length; index++) {
             //     const singleImage = data[index];
-            //     imageUrl = this.extractImage(singleImage);
+            //     image_urls = this.extractImage(singleImage);
             // }
-            // console.log("imageUrl: ",imageUrl)
+            // console.log("image_urls: ",imageimage_ur)
         }
-        for(let att in products){
-            console.log(`${att}: ${products[att]}`);
-        }
-        return products
+        // for(let att in product){
+        //     console.log(`${att}: ${product[att]}`);
+        // }
+        return product
     }
     extractReviews = (data) => {
         const {id,attributes} = data;
