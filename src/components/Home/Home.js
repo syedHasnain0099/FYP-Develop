@@ -35,12 +35,7 @@ function Home() {
       </div>
     </div>
   ))
-  return (
-    <div className='main_content'>
-      <h3>RenToday</h3>
-      {listItems}
-    </div>
-  )
+  return <div className='main_content'>{listItems}</div>
 }
 
 export default Home
