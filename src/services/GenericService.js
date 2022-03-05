@@ -4,6 +4,11 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/';
 // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8' || 'application/json;';
+const authHeader = {
+  headers:{
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  }
+}
 class GenericService {
   tokenUpdate = () => {
     const token = localStorage.getItem('token');
@@ -25,20 +30,26 @@ class GenericService {
         });
     });
 
-  post = (url, data) =>
+    post = (url, data) =>
     new Promise((resolve, reject) => {
-      console.log("url in generic: ",url);
-      console.log("data in generic: ",JSON.stringify(data));
-      if (axios.defaults.headers.common.Authorization) {
-        delete axios.defaults.headers.common.Authorization;
-      }
       axios
         .post(url, JSON.stringify(data))
         .then((res) => {
           resolve(res.data);
-          console.log('Well done!')
-          console.log('User profile', res.data)
-        // console.log('User token', response.data.jwt)
+        })
+        .catch((err) => {
+          console.log("here i am");
+          console.warn(err);
+          reject(err);
+        });
+    });
+    
+  authPost = (url, data) =>
+    new Promise((resolve, reject) => {
+      axios
+        .post(url, JSON.stringify(data),authHeader)
+        .then((res) => {
+          resolve(res.data);
         })
         .catch((err) => {
           console.log("here i am");

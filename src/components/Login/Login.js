@@ -68,10 +68,11 @@ function Login(callback) {
   const signin = (user) => {
     userService
       .loginUser(user.email, user.password)
-      .then((data) => {
+      .then((verified_user) => {
         // navigate(RouteAdminDashboard);
-        console.log(data)
+        // console.log(data)
         // addUser()
+        console.log("user data: ",verified_user);
         setValues({
           ...values,
           redirectToReferrer: true,
