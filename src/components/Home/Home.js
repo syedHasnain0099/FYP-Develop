@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useStateValue } from '../StateProvider/StateProvider'
 import product_card from '../data/product_data'
 import productService from '../../services/ProductService'
+import categoryService from '../../services/CategoryService'
 function Home() {
   const [{ basket }, dispatch] = useStateValue()
   const addToGetQuote = (event) => {
@@ -18,6 +19,10 @@ function Home() {
     })
   }
   productService.getAllAds()
+  categoryService.getCategories()
+  categoryService.getCategoryList('Home Appliances')
+  productService.getProductsByCategory('Air Purifiers');
+  productService.find('iphone 8 plus')
   console.log(product_card)
   const listItems = product_card.map((item) => (
     <div className='card' key={item.id}>

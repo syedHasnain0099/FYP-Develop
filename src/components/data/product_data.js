@@ -77,7 +77,7 @@ const product_card = [
       'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/products?populate=category_list'
     )
     .then((response) => {
-      console.log("Your user's password has been reset.", response.data)
+      // console.log("Your user's password has been reset.", response.data)
     })
     .catch((error) => {
       console.log('An error occurred:', error.response)
