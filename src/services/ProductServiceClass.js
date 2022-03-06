@@ -8,10 +8,9 @@ class ProductService extends GenericService{
   }
     getAllAds = () => {
         const allProducts=[];
-        new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const query = qs.stringify({
                 populate: this.populate
-                // fields: 'name,description,estimated_price'
             });
             this.get(`${axios.defaults.baseURL}products?${query}`)
             .then((response) => {
@@ -19,19 +18,14 @@ class ProductService extends GenericService{
                 for(let ad of data){
                     allProducts.push(this.extractProducts(ad));
                 }
-                console.log(allProducts)
                 resolve(allProducts)
             })
-            .catch((err) => {
-            console.log(err);
-            reject(err);
-            })
+            .catch((err) => reject(err))
     })
     }
     getProductsByCategory(categoryListName){
-        console.log("name: ",categoryListName);
         const filteredProducts=[];
-        new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const query = qs.stringify({
                 populate: this.populate,
                 filters: {
@@ -42,26 +36,19 @@ class ProductService extends GenericService{
             });
             this.get(`${axios.defaults.baseURL}products?${query}`)
             .then((response) => {
-                // console.log("response: ",response)
                 const {data}=response;
-                // console.log("data: ",data)
                 for(let ad of data){
                     filteredProducts.push(this.extractProducts(ad));
                 }
-                console.log("products of specific category: ",filteredProducts)
                 resolve(filteredProducts)
             })
-            .catch((err) => {
-            console.log(err);
-            console.log("huh")
-            reject(err);
-            })
+            .catch((err) => reject(err))
     })
     }
 
     find = (productName) => {
         const filteredProducts=[];
-        new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const query = qs.stringify({
                 populate: this.populate,
                 filters: {
@@ -74,7 +61,6 @@ class ProductService extends GenericService{
                 for(let ad of data){
                     filteredProducts.push(this.extractProducts(ad));
                 }
-                console.log("products with specific name: ",filteredProducts)
                 resolve(filteredProducts)
             })
             .catch((err) => reject(err));
@@ -94,7 +80,7 @@ class ProductService extends GenericService{
             duration:'',
             reviews:[],
             image_urls:[],
-            supplier:''
+            supplier:{}
         };
         product.id=id;
         product.name=name;
@@ -121,9 +107,7 @@ class ProductService extends GenericService{
         
         if (users_permissions_user) {
             const {data} = users_permissions_user;
-            const {attributes} = data;
-            const {username} = attributes;
-            product.supplier=username;
+            product.supplier = this.extractSupplier(data);
         }
         // for(let att in product){
         //     console.log(`${att}: ${product[att]}`);
@@ -134,6 +118,11 @@ class ProductService extends GenericService{
         const {id,attributes} = data;
         const {content,rating} = attributes;
         return {content,rating}
+    }
+    extractSupplier = (data) => {
+        const {id,attributes} = data;
+        const {username} = attributes;
+        return {id,username}
     }
     extractImage = (data) => {
         const {attributes} = data;

@@ -21,11 +21,45 @@ function Home() {
 
   //testing service class methods
   productService.getAllAds()
-  categoryService.getCategories()
-  categoryService.getCategoryList('Home Appliances')
-  productService.getProductsByCategory('Air Purifiers');
-  productService.find('iphone 8 plus')
+    .then((response) => {
+        console.log(response);
+      })
+    .catch((err) => {
+      console.log(err)
+    })
 
+  categoryService.getCategories()
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+  categoryService.getCategoryList('Home Appliances')
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+  productService.getProductsByCategory('Air Purifiers')
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+
+    let name = 'iphone 8 plus'
+  productService.find(name)
+    .then((res) => {
+      console.log(res)
+      return res;
+    })
+    .catch((err) => console.log(err))
+     
   console.log(product_card)
   const listItems = product_card.map((item) => (
     <div className='card' key={item.id}>
