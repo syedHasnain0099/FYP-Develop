@@ -18,11 +18,14 @@ function Home() {
       },
     })
   }
+
+  //testing service class methods
   productService.getAllAds()
   categoryService.getCategories()
   categoryService.getCategoryList('Home Appliances')
   productService.getProductsByCategory('Air Purifiers');
   productService.find('iphone 8 plus')
+
   console.log(product_card)
   const listItems = product_card.map((item) => (
     <div className='card' key={item.id}>

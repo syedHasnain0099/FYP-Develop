@@ -84,7 +84,7 @@ class ProductService extends GenericService{
 
     extractProducts = (ad) => {
         const {id,attributes} = ad;
-        const {name,description,estimated_price,reviews,image,users_permissions_user,category_list} = attributes;
+        const {name,description,estimated_price,reviews,image,users_permissions_user} = attributes;
         const{price,duration} = estimated_price;
         var product = {
             id:'',
@@ -122,14 +122,8 @@ class ProductService extends GenericService{
         if (users_permissions_user) {
             const {data} = users_permissions_user;
             const {attributes} = data;
-            const {username,profile_picture} = attributes;
+            const {username} = attributes;
             product.supplier=username;
-            
-            //  for (let index = 0; index < data.length; index++) {
-            //     const singleImage = data[index];
-            //     image_urls = this.extractImage(singleImage);
-            // }
-            // console.log("image_urls: ",imageimage_ur)
         }
         // for(let att in product){
         //     console.log(`${att}: ${product[att]}`);
@@ -145,11 +139,6 @@ class ProductService extends GenericService{
         const {attributes} = data;
         const {url} = attributes;
         return url;
-    }
-    extractUserDP = (data) => {
-        const {id,attributes} = data;
-        const {content,rating} = attributes;
-        return {content,rating}
     }
     extractCategoryType = (data) => {
         const {id,attributes} = data;
