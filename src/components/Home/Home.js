@@ -1,48 +1,27 @@
-import React, { useState } from 'react'
-import { useStateValue } from '../StateProvider/StateProvider'
-import product_card from '../data/product_data'
-import productService from '../../services/ProductService'
-import categoryService from '../../services/CategoryService'
+import Products from '../Products/Products'
+import './Home.css'
 function Home() {
-  const [{ basket }, dispatch] = useStateValue()
-  const addToGetQuote = (event) => {
-    console.log(event.target.value)
-    dispatch({
-      type: 'ADD_TO_GETQUOTE',
-      item: {
-        id: product_card.id,
-        title: product_card.title,
-        image: product_card.image,
-        price: product_card.price,
-        rating: product_card.rating,
-      },
-    })
-  }
-  productService.getAllAds()
-  categoryService.getCategories()
-  categoryService.getCategoryList('Home Appliances')
-  productService.getProductsByCategory('Air Purifiers');
-  productService.find('iphone 8 plus')
-  console.log(product_card)
-  const listItems = product_card.map((item) => (
-    <div className='card' key={item.id}>
-      <div className='card_img'>
-        <img src={item.thumb} />
-      </div>
-      <div className='card_header'>
-        <h2>{item.product_name}</h2>
-        <p>{item.description}</p>
-        <p className='price'>
-          {item.price}
-          <span>{item.currency}</span>
-        </p>
-        <div className='btn' onClick={addToGetQuote}>
-          Add to cart
+  return (
+    <div className='hero'>
+      <div className='card bg-dark text-white border-0'>
+        <img
+          className='card-img'
+          src='./images/bg.jpg'
+          alt='background image'
+          height='900px'
+        />
+        <div className='card-img-overlay d-flex flex-column justify-content-center'>
+          <div className='container'>
+            <h5 className='card-title display-3 fw-bolder mb-0'>
+              Rent From Competing Suppliers
+            </h5>
+            <p className='card-text lead fs-2'>Check Out All The Products</p>
+          </div>
         </div>
       </div>
+      <Products />
     </div>
-  ))
-  return <div className='main_content'>{listItems}</div>
+  )
 }
 
 export default Home

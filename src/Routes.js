@@ -1,6 +1,6 @@
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Router } from 'react-router-dom'
 import Header from './components/Header/Header'
-
+import Home from './components/Home/Home'
 import React from 'react'
 import GetQuoteForm from './components/GetQuote/GetQuoteForm'
 import Checkout from './components/Cart/Checkout'
@@ -8,38 +8,54 @@ import ForgotPasswordForm from './components/ForgotPassword/ForgotPasswordForm'
 import ResetPageForm from './components/ForgotPassword/ResetPageForm'
 import SignUp from './components/SignUp/SignUp'
 import Login from './components/Login/Login'
-import Product_Listing from './components/Product_Listing/Product_Listing'
+import Products from './components/Products/Products'
+import PrivateRoute from './auth/PrivateRoute'
+import DashBoard from './components/DashBoard/DashBoard'
+import AdminRoute from './auth/AdminRoute'
+import AdminDashBoard from './components/AdminDashBoard/AdminDashBoard'
+import AddCategory from './admin/AddCategory'
+import AddProduct from './components/AddProduct/AddProduct'
 function Routes() {
   return (
     <BrowserRouter>
       <div className='app'>
+        <Header />
         <Switch>
+          <PrivateRoute path='/user/dashboard'>
+            <DashBoard />
+          </PrivateRoute>
+          <AdminRoute path='/admin/dashboard'>
+            <AdminDashBoard />
+          </AdminRoute>
+          <AdminRoute path='/create/category'>
+            <AddCategory />
+          </AdminRoute>
+          <PrivateRoute path='/create/product'>
+            <AddProduct />
+          </PrivateRoute>
           <Route path='/ForgotPasswordForm'>
-            <Header></Header>
             <ForgotPasswordForm></ForgotPasswordForm>
           </Route>
           <Route path='/ResetPageForm/:id'>
-            <Header></Header>
             <ResetPageForm></ResetPageForm>
           </Route>
           <Route path='/checkout'>
-            <Header />
             <Checkout />
           </Route>
           <Route path='/getQuote'>
-            <Header></Header>
             <GetQuoteForm></GetQuoteForm>
           </Route>
           <Route path='/SignUp'>
-            <Header></Header>
             <SignUp></SignUp>
           </Route>
           <Route path='/login'>
-            <Header></Header>
             <Login></Login>
           </Route>
           <Route path='/'>
-            <Product_Listing></Product_Listing>
+            <Home></Home>
+          </Route>
+          <Route path='/products'>
+            <Products />
           </Route>
         </Switch>
       </div>

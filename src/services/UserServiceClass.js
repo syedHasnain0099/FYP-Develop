@@ -3,7 +3,7 @@ import qs from 'qs'
 import GenericService from './GenericService'
 import axios from 'axios'
 
-const herokuLink='https://strapi-project-deployement.herokuapp.com/api/';
+const herokuLink = 'https://strapi-project-deployement.herokuapp.com/api/'
 class UserService extends GenericService {
   // eslint-disable-next-line no-useless-constructor
   // constructor() {
@@ -11,20 +11,20 @@ class UserService extends GenericService {
   // }
   loginUser = (ID, Password) =>
     new Promise((resolve, reject) => {
-
       this.post(`${herokuLink}auth/local`, {
         identifier: ID,
         password: Password,
       })
         .then((data) => {
           localStorage.setItem('token', JSON.stringify(data.jwt))
-          // console.log("data.use: ",data.user)
-          // this.tokenUpdate()
+          localStorage.setItem('user', JSON.stringify(data.user))
+          console.log(JSON.stringify(data.user))
+          this.tokenUpdate()
           resolve(data.user)
         })
         .catch((err) => {
-          console.log(err);
-          reject(err);
+          console.log(err)
+          reject(err)
         })
     })
 
@@ -66,7 +66,7 @@ class UserService extends GenericService {
 
   logout = async () => {
     await localStorage.removeItem('token')
-    console.log("removed")
+    console.log('removed')
     //this.tokenUpdate();
   }
 
@@ -85,7 +85,7 @@ class UserService extends GenericService {
       return true
     })
 
-  getLoggedInUser = () =>
+  getLoggedInUser = () => {
     new Promise((resolve, reject) => {
       const user = localStorage.getItem('user')
       if (user) resolve(JSON.parse(user))
@@ -95,7 +95,7 @@ class UserService extends GenericService {
         reject(new Error('Not Logged In'))
       }
     })
-
+  }
   getUser = (ID) =>
     new Promise((resolve, reject) => {
       this.get(`users/${ID}`, {})

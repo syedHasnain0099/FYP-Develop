@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import validateInfo from './validateInfo'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import './SignUp.css'
-import axios from 'axios'
 import userService from '../../services/UserService'
 
-const SignUp = (callback) => {
+const SignUp = () => {
   const [values, setValues] = useState({
     username: '',
     email: '',
@@ -16,7 +15,6 @@ const SignUp = (callback) => {
   })
   const { username, email, password, password2, error, success } = values
   const [errors, setErrors] = useState({})
-  const [serverError, setServerError] = useState('')
 
   const usernameChangeHandler = (event) => {
     setValues({ ...values, error: false, username: event.target.value })
@@ -30,51 +28,41 @@ const SignUp = (callback) => {
   const password2ChangeHandler = (event) => {
     setValues({ ...values, error: false, password2: event.target.value })
   }
-  const clearErrorFields =()=>{
-    setErrors('');
+  const clearErrorFields = () => {
+    setErrors('')
   }
   async function submitHandler(event) {
-    clearErrorFields();
+    clearErrorFields()
     event.preventDefault()
-    console.log("values: ",values);
+    console.log('values: ', values)
     setErrors(validateInfo(values))
-    var errors=validateInfo(values);
-    console.log("errors: ",Object.keys(errors));
+    var errors = validateInfo(values)
+    console.log('errors: ', Object.keys(errors))
     if (Object.keys(errors).length === 0) {
-      console.log("field errors are not present");
+      console.log('field errors are not present')
       signup({ username, email, password, password2 })
     }
 
     console.log(values)
   }
   const showError = () => (
-    <div
-      className='alert alert-danger'
-      style={{ display: error ? '' : 'none' }}
-    >
+    <div className='signup-form-error' style={{ display: error ? '' : 'none' }}>
       {error}
     </div>
   )
   const showSuccess = () => (
     <div
-      className='alert alert-info'
+      className='signup-form-success'
       style={{ display: success ? '' : 'none' }}
     >
-      New account is created. please <Link to='/login'>Signin</Link>
+      New account is created. please Signin
     </div>
   )
-  // useEffect(() => {
-  //   if (Object.keys(errors).length === 0) {
-  //     callback()
-  //   }
-  // }, [errors])
-
   const signup = (user) => {
     userService
       .addUser(user.username, user.email, user.password)
       .then((data) => {
-        // navigate(RouteAdminDashboard);
-        console.log("congratulations you are registered ",data)
+        console.log('congratulations you are registered ', data)
         setValues({
           ...values,
           username: '',
@@ -86,29 +74,22 @@ const SignUp = (callback) => {
         })
       })
       .catch((err) => {
-          let err_msg =err.response.data.error.message;
-          if (!err.response) {
-            err_msg='Error occured please try later';
-          } 
-          else if(err_msg == "Email is already taken") {
-            err_msg = err_msg+"\nPlease enter a new one!";
-          }
-          setValues({
-            ...values,
-            error: err_msg,
-            loading: false,
-          })
-        
-        
+        let err_msg = err.response.data.error.message
+        if (!err.response) {
+          err_msg = 'Error occured please try later'
+        } else if (err_msg == 'Email is already taken') {
+          err_msg = err_msg + '\nPlease enter a new one!'
+        }
+        setValues({
+          ...values,
+          error: err_msg,
+          loading: false,
+        })
       })
-          // setServerError('')
-          // setFieldError('Password', err.response.data.error.message);
   }
 
   return (
     <div className='signup-form-container'>
-      {showError()}
-      {showSuccess()}
       <form className='signup-form' onSubmit={submitHandler}>
         <h1>
           Get Started with us today! Create your account by filling out the
@@ -179,9 +160,11 @@ const SignUp = (callback) => {
         </button>
 
         <span className='signup-form-input-login'>
-          Already have an account? login <a href='#'>here</a>
+          Already have an account? login <NavLink to='/login'>here</NavLink>
         </span>
       </form>
+      {showError()}
+      {showSuccess()}
     </div>
   )
 }

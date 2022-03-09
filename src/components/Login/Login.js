@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, NavLink, Redirect } from 'react-router-dom'
 import validateInfo from './validateInfo'
 import './Login.css'
 import axios from 'axios'
@@ -18,7 +18,6 @@ function Login(callback) {
     email: '',
     password: '',
     error: '',
-    loading: false,
     redirectToReferrer: false,
   })
   const addUser = () => {
@@ -42,58 +41,41 @@ function Login(callback) {
     setIsSubmitting(true)
     signin({ email, password })
   }
+  //update from video private route for admin 3:02
   const redirectUser = () => {
     if (redirectToReferrer) {
       return <Redirect to='/'></Redirect>
     }
   }
   const showError = () => (
-    <div
-      className='alert alert-danger'
-      style={{ display: error ? '' : 'none' }}
-    >
+    <div className='login-form-error' style={{ display: error ? '' : 'none' }}>
       {error}
     </div>
   )
-  const showLoading = () => {
-    return (
-      loading && (
-        <div className='alert alert-info'>
-          <h2>Loading....</h2>
-        </div>
-      )
-    )
-  }
 
   const signin = (user) => {
     userService
       .loginUser(user.email, user.password)
       .then((verified_user) => {
-        // navigate(RouteAdminDashboard);
-        // console.log(data)
-        // addUser()
-        console.log("user data: ",verified_user);
+        console.log('user data: ', verified_user)
         setValues({
           ...values,
           redirectToReferrer: true,
         })
       })
       .catch((err) => {
-        let err_msg= err.response.data.error.message;
+        let err_msg = err.response.data.error.message
         if (!err.response) {
-          err_msg='Error occured please try later';
-        } 
-        else if(err_msg == "Invalid identifier or password") {
-          err_msg = err_msg.replace("identifier", "email");
+          err_msg = 'Error occured please try later'
+        } else if (err_msg == 'Invalid identifier or password') {
+          err_msg = err_msg.replace('identifier', 'email')
         }
         setValues({
           ...values,
           error: err_msg,
-          loading: false,
         })
       })
   }
-
   return (
     <div className='login-form-container'>
       <form className='login-form' onSubmit={submitHandler}>
@@ -126,20 +108,14 @@ function Login(callback) {
         <button type='submit' className='login-form-input-btn'>
           Login
         </button>
-
-        <Link to='/SignUp' className='login-header__link'>
-          <span className='login-form-input-login'>
-            New to Rentoday? Sign-up <a href='#'>here</a>
-          </span>
-        </Link>
-        <Link to='/ForgotPasswordForm' className='login-header__link'>
-          <span className='login-form-input-login'>
-            <a href='#'>Forgot Password? </a>
-          </span>
-        </Link>
+        <span className='signup-form-input-login'>
+          New to Rentoday? Sign-up <NavLink to='/SignUp'>here</NavLink>
+        </span>
+        <span className='signup-form-input-login'>
+          <NavLink to='/SignUp'>Forgot Password?</NavLink>
+        </span>
       </form>
       {showError()}
-      {showLoading()}
       {redirectUser()}
     </div>
   )
