@@ -2,11 +2,6 @@ import qs from 'qs'
 import GenericService from './GenericService'
 import axios from 'axios'
 class CategoryService extends GenericService {
-  //     constructor() {
-  //     super();
-  //     this.populate = ['category'];
-  //   }
-
   getCategories = () => {
     const allCategories = []
     return new Promise((resolve, reject) => {
@@ -21,10 +16,7 @@ class CategoryService extends GenericService {
           }
           resolve(allCategories)
         })
-        .catch((err) => {
-          console.log(err)
-          reject(err)
-        })
+        .catch((err) => reject(err))
     })
   }
   getCategoryList = (categoryName) => {
@@ -44,13 +36,9 @@ class CategoryService extends GenericService {
           for (let categoryType of data) {
             categoryList.push(this.extractCategoryList(categoryType))
           }
-          console.log(categoryList)
           resolve(categoryList)
         })
-        .catch((err) => {
-          console.log(err)
-          reject(err)
-        })
+        .catch((err) => reject(err))
     })
   }
 
