@@ -14,6 +14,7 @@ import DashBoard from './components/DashBoard/DashBoard'
 import AdminRoute from './auth/AdminRoute'
 import AdminDashBoard from './components/AdminDashBoard/AdminDashBoard'
 import AddCategory from './admin/AddCategory'
+import ApproveAd from './admin/ApproveAd'
 import AddProduct from './components/AddProduct/AddProduct'
 function Routes() {
   return (
@@ -21,15 +22,18 @@ function Routes() {
       <div className='app'>
         <Header />
         <Switch>
-          <PrivateRoute path='/user/dashboard'>
-            <DashBoard />
-          </PrivateRoute>
           <AdminRoute path='/admin/dashboard'>
             <AdminDashBoard />
           </AdminRoute>
           <AdminRoute path='/create/category'>
             <AddCategory />
           </AdminRoute>
+          <AdminRoute path='/approve/ad'>
+            <ApproveAd />
+          </AdminRoute>
+          <PrivateRoute path='/user/dashboard'>
+            <DashBoard />
+          </PrivateRoute>
           <PrivateRoute path='/create/product'>
             <AddProduct />
           </PrivateRoute>

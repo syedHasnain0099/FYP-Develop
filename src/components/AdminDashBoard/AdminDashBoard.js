@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import { isAuthenticated } from '../../auth'
 import userService from '../../services/UserService'
+import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
 function AdminDashBoard() {
+  const { id, username, email } = userData()
   const adminLinks = () => {
     return (
       <div className='card'>
@@ -14,7 +16,7 @@ function AdminDashBoard() {
             </Link>
           </li>
           <li class='list-group-item'>
-            <Link className='nav-link' to='/create/product'>
+            <Link className='nav-link' to='/approve/ad'>
               Approve Ad
             </Link>
           </li>
@@ -28,9 +30,8 @@ function AdminDashBoard() {
         <h3 className='card-header'> Admin Information</h3>
         <div class='card-body'>
           <ul class='list-group list-group-flush'>
-            <li class='list-group-item'>UserName</li>
-            <li class='list-group-item'>Email</li>
-            <li class='list-group-item'>Password</li>
+            <li class='list-group-item'>{username}</li>
+            <li class='list-group-item'>{email}</li>
           </ul>
         </div>
       </div>

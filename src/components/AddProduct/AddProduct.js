@@ -10,8 +10,19 @@ function AddProduct() {
     categoryService
       .getCategories()
       .then((response) => {
-        console.log(response)
         setValues({ ...values, categories: response, formData: new FormData() })
+      })
+      .catch((err) => {
+        setValues({ ...values, error: err })
+      })
+    categoryService
+      .getCategoryList('Digital')
+      .then((response) => {
+        setValues({
+          ...values,
+          subcategories: response,
+          formData: new FormData(),
+        })
       })
       .catch((err) => {
         setValues({ ...values, error: err })
@@ -24,6 +35,8 @@ function AddProduct() {
     rent: '',
     duration: '',
     categories: [],
+    subcategories: [],
+    subcategorie: '',
     category: '',
     quantity: '',
     photo: '',
@@ -39,8 +52,10 @@ function AddProduct() {
     rent,
     duration,
     categories,
+    subcategories,
     category,
     quantity,
+    subcategorie,
     loading,
     error,
     createdProduct,
@@ -113,7 +128,7 @@ function AddProduct() {
         />
       </div>
       <div className='form-group'>
-        <label className='text-muted'>Categroy</label>
+        <label className='text-muted'>Category</label>
         <select
           onChange={handleChange('category')}
           value={category}
@@ -123,6 +138,22 @@ function AddProduct() {
           {categories &&
             categories.map((c, i) => (
               <option key={i} value={c.name}>
+                {c.name}
+              </option>
+            ))}
+        </select>
+      </div>
+      <div className='form-group'>
+        <label className='text-muted'>Sub Category</label>
+        <select
+          onChange={handleChange('subcategorie')}
+          value={subcategorie}
+          className='form-control'
+        >
+          <option>Please Select</option>
+          {subcategories &&
+            subcategories.map((c, i) => (
+              <option key={i} values={c.name}>
                 {c.name}
               </option>
             ))}
@@ -140,11 +171,39 @@ function AddProduct() {
       <button className='btn btn-outline-primary'>Create Product</button>
     </form>
   )
+  const showError = () => (
+    <div
+      className='alert alert-danger'
+      style={{ display: error ? '' : 'none' }}
+    >
+      {error}
+    </div>
+  )
+  const showSuccess = () => (
+    <div
+      className='alert alert-info'
+      style={{ display: createdProduct ? '' : 'none' }}
+    >
+      <h2>{`${createdProduct}`} is created</h2>
+    </div>
+  )
+  const showLoading = () =>
+    loading && (
+      <div className='alert alert-success'>
+        <h2>Loading...</h2>
+      </div>
+    )
+
   return (
     <div className='container mt-4'>
       <div className='row'>
         <h3 className='card-header'>Post an ad</h3>
-        <div className='col-md-8 offset-md-2'>{newPostForm()}</div>
+        <div className='col-md-8 offset-md-2'>
+          {/* {showLoading()}
+          {showSuccess()}
+          {showError()} */}
+          {newPostForm()}
+        </div>
       </div>
     </div>
   )
