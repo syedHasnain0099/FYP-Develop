@@ -8,21 +8,17 @@ function AddProduct() {
   const { token } = isAuthenticated()
   const init = () => {
     categoryService
-      .getCategories()
-      .then((response) => {
-        setValues({ ...values, categories: response, formData: new FormData() })
+      .getCategoryList('Digital')
+      .then((resolve) => {
+        setSubCategories(resolve)
       })
       .catch((err) => {
         setValues({ ...values, error: err })
       })
     categoryService
-      .getCategoryList('Digital')
+      .getCategories()
       .then((response) => {
-        setValues({
-          ...values,
-          subcategories: response,
-          formData: new FormData(),
-        })
+        setCategories(response)
       })
       .catch((err) => {
         setValues({ ...values, error: err })
@@ -34,8 +30,6 @@ function AddProduct() {
     description: '',
     rent: '',
     duration: '',
-    categories: [],
-    subcategories: [],
     subcategorie: '',
     category: '',
     quantity: '',
@@ -44,15 +38,16 @@ function AddProduct() {
     error: '',
     createdProduct: '',
     redirectToProfile: false,
-    formData: '',
+    formData: new FormData(),
   })
+  const [categories, setCategories] = useState([])
+  const [subCategories, setSubCategories] = useState([])
+
   const {
     name,
     description,
     rent,
     duration,
-    categories,
-    subcategories,
     category,
     quantity,
     subcategorie,
@@ -136,9 +131,9 @@ function AddProduct() {
         >
           <option>Please Select</option>
           {categories &&
-            categories.map((c, i) => (
-              <option key={i} value={c.name}>
-                {c.name}
+            categories.map((cat, index) => (
+              <option key={index} value={cat.name}>
+                {cat.name}
               </option>
             ))}
         </select>
@@ -151,8 +146,8 @@ function AddProduct() {
           className='form-control'
         >
           <option>Please Select</option>
-          {subcategories &&
-            subcategories.map((c, i) => (
+          {subCategories &&
+            subCategories.map((c, i) => (
               <option key={i} values={c.name}>
                 {c.name}
               </option>
