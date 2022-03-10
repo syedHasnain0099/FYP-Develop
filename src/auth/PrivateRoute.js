@@ -1,5 +1,6 @@
-import { isAuthenticated } from './index'
+import { isAuthenticated, userData } from './index'
 import { Route, Redirect } from 'react-router-dom'
+const { type } = userData()
 const PrivateRoute = ({ children, ...rest }) => (
   <Route
     {...rest}
