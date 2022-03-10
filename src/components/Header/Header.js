@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import './Header.css'
 import SearchIcon from '@mui/icons-material/Search'
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket'
@@ -6,26 +6,29 @@ import { Link, Redirect } from 'react-router-dom'
 import { useStateValue } from '../StateProvider/StateProvider'
 import userService from '../../services/UserService'
 import { NavLink } from 'react-router-dom'
-import { isAuthenticated } from '../../auth'
+import { isAuthenticated, userData } from '../../auth'
 
 function Header() {
+  const { type } = userData()
+  const [redirectToReferrer, setRedirectToReferrer] = useState(false)
   const [{ basket, user }, dispatch] = useStateValue()
   const signOut = () => {
     userService
       .logout()
       .then((response) => {
         console.log('Signed out', response)
-        // dispatch({
-        //   type: 'ADD_USER',
-        //   user: null,
-        // })
-        // setRedirectToReferrer(true)
+        setRedirectToReferrer(true)
       })
       .catch((err) => {
         console.log('cant log out')
-        // setRedirectToReferrer(false)
+        setRedirectToReferrer(false)
       })
     // }
+  }
+  const redirectUser = () => {
+    if (redirectToReferrer) {
+      return <Redirect to='/'></Redirect>
+    }
   }
   return (
     <div>
@@ -88,12 +91,23 @@ function Header() {
                   </span>
                 </Link>
               )}
-              <NavLink
-                to='/user/dashboard'
-                className='btn btn-outline-dark ms-2'
-              >
-                <i className='fa fa-user me-1'></i>Profile
-              </NavLink>
+              {isAuthenticated() && type === 'admin' && (
+                <NavLink
+                  to='/admin/dashboard'
+                  className='btn btn-outline-dark ms-2'
+                >
+                  <i className='fa fa-user me-1'></i>Profile
+                </NavLink>
+              )}
+              {isAuthenticated() && type === 'user' && (
+                <NavLink
+                  to='/user/dashboard'
+                  className='btn btn-outline-dark ms-2'
+                >
+                  <i className='fa fa-user me-1'></i>Profile
+                </NavLink>
+              )}
+
               <NavLink to='/cart' className='btn btn-outline-dark ms-2'>
                 <i className='fa fa-shopping-cart me-1'></i> Cart(0)
               </NavLink>
@@ -101,6 +115,7 @@ function Header() {
           </div>
         </div>
       </nav>
+      {redirectUser()}
     </div>
   )
 }
