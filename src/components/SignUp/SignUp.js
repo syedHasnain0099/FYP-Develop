@@ -60,7 +60,7 @@ const SignUp = () => {
   )
   const signup = (user) => {
     userService
-      .addUser(user.username, user.email, user.password)
+      .addUser(user.username, user.email, user.password, "user")
       .then((data) => {
         console.log('congratulations you are registered ', data)
         setValues({

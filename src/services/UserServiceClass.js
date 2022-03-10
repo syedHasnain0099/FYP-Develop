@@ -130,11 +130,12 @@ class UserService extends GenericService {
         })
     })
 
-  addUser = (username, email, password) =>
+  addUser = (username, email, password, type) =>
     this.post(`${herokuLink}auth/local/register`, {
       username,
       email,
       password,
+      type
     })
 
   userDoesNotExist = (ID) =>

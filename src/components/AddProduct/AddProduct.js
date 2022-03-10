@@ -4,7 +4,7 @@ import { isAuthenticated } from '../../auth'
 import { userData } from '../../auth'
 import categoryService from '../../services/CategoryService'
 function AddProduct() {
-  const { id, username, email } = userData()
+  const { id, username, email, type } = userData()
   const { token } = isAuthenticated()
   const init = () => {
     categoryService
