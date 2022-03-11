@@ -4,8 +4,10 @@ import { isAuthenticated } from '../../auth'
 import { userData } from '../../auth'
 import categoryService from '../../services/CategoryService'
 function AddProduct() {
-  const { id, username, email, type } = userData()
+  const { id, username, email } = userData()
   const { token } = isAuthenticated()
+  const [categories, setCategories] = useState([])
+  const [subCategories, setSubCategories] = useState([])
   const init = () => {
     categoryService
       .getCategoryList('Digital')
@@ -37,11 +39,7 @@ function AddProduct() {
     loading: false,
     error: '',
     createdProduct: '',
-    redirectToProfile: false,
-    formData: new FormData(),
   })
-  const [categories, setCategories] = useState([])
-  const [subCategories, setSubCategories] = useState([])
 
   const {
     name,
@@ -54,26 +52,55 @@ function AddProduct() {
     loading,
     error,
     createdProduct,
-    redirectToProfile,
-    formData,
   } = values
   useEffect(() => {
     init()
   }, [])
+  // useEffect(() => {
+  //   init1()
+  // }, [category])
+  const videoHandleChange = (event) => {
+    setValues({ ...values, video: event.target.files[0] })
+  }
   const handleChange = (name) => (event) => {
     const value = name === 'photo' ? event.target.files[0] : event.target.value
-    formData.set(name, value)
     setValues({ ...values, [name]: value })
   }
   const clickSubmit = (event) => {
     event.preventDefault()
     setValues({ ...values, error: '', loading: true })
-    //id of user by using variable named id
-    //token of user by using varaible named token
-    //all data will be available in value formData
-    //if error use setValues({...values,error:data.error})
-    //else success empty the values using setValues({...values,name:"",description:'',photo:"",rent:"",quantity:"",loading:false, createdProduct:"data.name"})
+    //postAd({ productname, description,rent,photo, id, username, email })
   }
+  // const postAd = ({ productname, description,rent,photo, id, username, email }) => {
+  //   userService
+  //     .addUser({ productname, description,rent,photo, id, username, email })
+  //     .then((data) => {
+  //       console.log('congratulations you are registered ', data)
+  //       setValues({
+  //         ...values,
+  //         productname: '',
+  //         description: '',
+  //         photo: '',
+  //           video:'',
+  //         rent: '',
+  //          category:"",
+  //          subcategorie:"",
+  //          duration:'',
+  //         quantity: '',
+  //         loading: false,
+  //         createdProduct: 'data.name',
+  //       })
+  //     })
+  //     .catch((err) => {
+  //       let err_msg = err.response.data.error.message
+  //       if (!err.response) {
+  //         err_msg = 'Error occured please try later'
+  //       } else if (err_msg == 'Email is already taken') {
+  //         err_msg = err_msg + '\nPlease enter a new one!'
+  //       }
+  //       setValues({ ...values, error: err })
+  //     })
+  // }
   const newPostForm = () => (
     <form className='mb-3' onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
@@ -87,8 +114,19 @@ function AddProduct() {
           />
         </label>
       </div>
+      <h4>Post Video</h4>
       <div className='form-group'>
-        <label className='text-muted'>Name</label>
+        <label className='btn btn-secondary'>
+          <input
+            onChange={videoHandleChange}
+            type='file'
+            name='video'
+            accept='.mov,.mp4'
+          />
+        </label>
+      </div>
+      <div className='form-group'>
+        <label className='text-muted'>Product Name</label>
         <input
           onChange={handleChange('name')}
           type='text'
