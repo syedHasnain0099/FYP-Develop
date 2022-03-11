@@ -4,7 +4,7 @@ import { isAuthenticated } from '../../auth'
 import { userData } from '../../auth'
 import categoryService from '../../services/CategoryService'
 function AddProduct() {
-  const { id, username, email, type } = userData()
+  const { id, username, email } = userData()
   const { token } = isAuthenticated()
   const init = () => {
     categoryService
@@ -41,7 +41,6 @@ function AddProduct() {
     error: '',
     createdProduct: '',
     redirectToProfile: false,
-    formData: new FormData(),
   })
   const [categories, setCategories] = useState([])
   const [subCategories, setSubCategories] = useState([])
@@ -60,7 +59,6 @@ function AddProduct() {
     error,
     createdProduct,
     redirectToProfile,
-    formData,
   } = values
   useEffect(() => {
     init()
@@ -68,37 +66,35 @@ function AddProduct() {
   useEffect(() => {
     init1()
   }, [category])
+  const categoryHandleChange = (event) => {
+    setValues({ ...values, category: event.target.value })
+  }
+  const videoHandleChange = (event) => {
+    setValues({ ...values, video: event.target.files[0] })
+  }
   const handleChange = (name) => (event) => {
-    const value =
-      name === 'video' || 'photo' ? event.target.files[0] : event.target.value
-    formData.set(name, value)
+    const value = name === 'photo' ? event.target.files[0] : event.target.value
     setValues({ ...values, [name]: value })
   }
   const clickSubmit = (event) => {
     event.preventDefault()
-    console.log('photo', photo)
     setValues({ ...values, error: '', loading: true })
-    // postAd({ productname, description, rent, photo })
-
-    //id of user by using variable named id
-    //token of user by using varaible named token
-    //all data will be available in value formData
-    //if error use setValues({...values,error:data.error})
-    //else success empty the values using setValues({...values,productname:"",description:'',photo:"",rent:"",quantity:"",loading:false, createdProduct:"data.name"})
+    //postAd({ productname, description,rent,photo, id, username, email })
   }
-  // const postAd = (user) => {
+  // const postAd = ({ productname, description,rent,photo, id, username, email }) => {
   //   userService
-  //     .addUser(user.username, user.email, user.password, 'user')
+  //     .addUser({ productname, description,rent,photo, id, username, email })
   //     .then((data) => {
   //       console.log('congratulations you are registered ', data)
   //       setValues({
   //         ...values,
-  //         username: '',
-  //         email: '',
-  //         password: '',
-  //         password2: '',
-  //         error: false,
-  //         success: true,
+  //         productname: '',
+  //         description: '',
+  //         photo: '',
+  //         rent: '',
+  //         quantity: '',
+  //         loading: false,
+  //         createdProduct: 'data.name',
   //       })
   //     })
   //     .catch((err) => {
@@ -108,11 +104,7 @@ function AddProduct() {
   //       } else if (err_msg == 'Email is already taken') {
   //         err_msg = err_msg + '\nPlease enter a new one!'
   //       }
-  //       setValues({
-  //         ...values,
-  //         error: err_msg,
-  //         loading: false,
-  //       })
+  //       setValues({ ...values, error: err })
   //     })
   // }
   const newPostForm = () => (
@@ -132,7 +124,7 @@ function AddProduct() {
       <div className='form-group'>
         <label className='btn btn-secondary'>
           <input
-            onChange={handleChange('video')}
+            onChange={videoHandleChange}
             type='file'
             name='video'
             accept='.mov,.mp4'
@@ -140,7 +132,7 @@ function AddProduct() {
         </label>
       </div>
       <div className='form-group'>
-        <label className='text-muted'>Name</label>
+        <label className='text-muted'>Product Name</label>
         <input
           onChange={handleChange('productname')}
           type='text'
@@ -177,7 +169,7 @@ function AddProduct() {
       <div className='form-group'>
         <label className='text-muted'>Category</label>
         <select
-          onChange={handleChange('category')}
+          onChange={categoryHandleChange}
           value={category}
           className='form-control'
         >
