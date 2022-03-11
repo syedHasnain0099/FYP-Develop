@@ -56,9 +56,9 @@ function AddProduct() {
   useEffect(() => {
     init()
   }, [])
-  // useEffect(() => {
-  //   init1()
-  // }, [category])
+  useEffect(() => {
+    init1()
+  }, [category])
   const videoHandleChange = (event) => {
     setValues({ ...values, video: event.target.files[0] })
   }
