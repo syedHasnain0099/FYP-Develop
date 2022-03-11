@@ -1,3 +1,5 @@
+
+   
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { isAuthenticated } from '../../auth'
@@ -10,14 +12,6 @@ function AddProduct() {
   const [subCategories, setSubCategories] = useState([])
   const init = () => {
     categoryService
-      .getCategoryList('Digital')
-      .then((resolve) => {
-        setSubCategories(resolve)
-      })
-      .catch((err) => {
-        setValues({ ...values, error: err })
-      })
-    categoryService
       .getCategories()
       .then((response) => {
         setCategories(response)
@@ -26,9 +20,19 @@ function AddProduct() {
         setValues({ ...values, error: err })
       })
   }
+  const init1 = () => {
+    categoryService
+      .getCategoryList(category)
+      .then((resolve) => {
+        setSubCategories(resolve)
+      })
+      .catch((err) => {
+        setValues({ ...values, error: err })
+      })
+  }
 
   const [values, setValues] = useState({
-    name: '',
+    productname: '',
     description: '',
     rent: '',
     duration: '',
@@ -36,15 +40,18 @@ function AddProduct() {
     category: '',
     quantity: '',
     photo: '',
+    video: '',
     loading: false,
     error: '',
     createdProduct: '',
   })
 
   const {
-    name,
+    productname,
     description,
     rent,
+    photo,
+    video,
     duration,
     category,
     quantity,
@@ -128,9 +135,9 @@ function AddProduct() {
       <div className='form-group'>
         <label className='text-muted'>Product Name</label>
         <input
-          onChange={handleChange('name')}
+          onChange={handleChange('productname')}
           type='text'
-          value={name}
+          value={productname}
           className='form-control'
         />
       </div>
