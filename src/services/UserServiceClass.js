@@ -19,7 +19,7 @@ class UserService extends GenericService {
           localStorage.setItem('token', JSON.stringify(data.jwt))
           localStorage.setItem('user', JSON.stringify(data.user))
           console.log(JSON.stringify(data.user))
-          this.tokenUpdate()
+          // this.tokenUpdate()
           resolve(data.user)
         })
         .catch((err) => {
@@ -66,6 +66,7 @@ class UserService extends GenericService {
 
   logout = async () => {
     await localStorage.removeItem('token')
+    await localStorage.removeItem('user')
     console.log('removed')
     //this.tokenUpdate();
   }

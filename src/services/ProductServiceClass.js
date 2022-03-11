@@ -18,7 +18,7 @@ class ProductService extends GenericService {
       const query = qs.stringify({
         populate: this.populate,
       })
-      this.get(`${axios.defaults.baseURL}products?${query}`)
+      this.get(`${axios.defaults.baseURL}products?${query}`,{})
         .then((response) => {
           const { data } = response
           for (let ad of data) {
@@ -26,7 +26,9 @@ class ProductService extends GenericService {
           }
           resolve(allProducts)
         })
-        .catch((err) => reject(err))
+        .catch((err) => {
+          reject(err);
+        })
     })
   }
   getProductsByCategory(categoryListName) {

@@ -10,22 +10,24 @@ const authHeader = {
   }
 }
 class GenericService {
-  tokenUpdate = () => {
-    const token = localStorage.getItem('token');
-    if (token)
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-    else
-      delete axios.defaults.headers.common.Authorization;
-  };
+  // tokenUpdate = () => {
+  //   const token = localStorage.getItem('token');
+  //   if (token)
+  //     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  //   else
+  //     delete axios.defaults.headers.common.Authorization;
+  // };
 
   get = (url, data) =>
     new Promise((resolve, reject) => {
+      // delete axios.defaults.headers.common.Authorization;
       axios
         .get(url, data)
         .then((res) => {
           resolve(res.data);
         })
         .catch((err) => {
+          console.log("hello")
           reject(err);
         });
     });
