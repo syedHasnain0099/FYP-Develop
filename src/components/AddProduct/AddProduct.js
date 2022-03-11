@@ -28,7 +28,7 @@ function AddProduct() {
   }
 
   const [values, setValues] = useState({
-    name: '',
+    productname: '',
     description: '',
     rent: '',
     duration: '',
@@ -47,9 +47,11 @@ function AddProduct() {
   const [subCategories, setSubCategories] = useState([])
 
   const {
-    name,
+    productname,
     description,
     rent,
+    photo,
+    video,
     duration,
     category,
     quantity,
@@ -74,13 +76,45 @@ function AddProduct() {
   }
   const clickSubmit = (event) => {
     event.preventDefault()
+    console.log('photo', photo)
     setValues({ ...values, error: '', loading: true })
+    // postAd({ productname, description, rent, photo })
+
     //id of user by using variable named id
     //token of user by using varaible named token
     //all data will be available in value formData
     //if error use setValues({...values,error:data.error})
-    //else success empty the values using setValues({...values,name:"",description:'',photo:"",rent:"",quantity:"",loading:false, createdProduct:"data.name"})
+    //else success empty the values using setValues({...values,productname:"",description:'',photo:"",rent:"",quantity:"",loading:false, createdProduct:"data.name"})
   }
+  // const postAd = (user) => {
+  //   userService
+  //     .addUser(user.username, user.email, user.password, 'user')
+  //     .then((data) => {
+  //       console.log('congratulations you are registered ', data)
+  //       setValues({
+  //         ...values,
+  //         username: '',
+  //         email: '',
+  //         password: '',
+  //         password2: '',
+  //         error: false,
+  //         success: true,
+  //       })
+  //     })
+  //     .catch((err) => {
+  //       let err_msg = err.response.data.error.message
+  //       if (!err.response) {
+  //         err_msg = 'Error occured please try later'
+  //       } else if (err_msg == 'Email is already taken') {
+  //         err_msg = err_msg + '\nPlease enter a new one!'
+  //       }
+  //       setValues({
+  //         ...values,
+  //         error: err_msg,
+  //         loading: false,
+  //       })
+  //     })
+  // }
   const newPostForm = () => (
     <form className='mb-3' onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
@@ -108,9 +142,9 @@ function AddProduct() {
       <div className='form-group'>
         <label className='text-muted'>Name</label>
         <input
-          onChange={handleChange('name')}
+          onChange={handleChange('productname')}
           type='text'
-          value={name}
+          value={productname}
           className='form-control'
         />
       </div>
