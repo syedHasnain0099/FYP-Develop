@@ -8,14 +8,6 @@ function AddProduct() {
   const { token } = isAuthenticated()
   const init = () => {
     categoryService
-      .getCategoryList('Digital')
-      .then((resolve) => {
-        setSubCategories(resolve)
-      })
-      .catch((err) => {
-        setValues({ ...values, error: err })
-      })
-    categoryService
       .getCategories()
       .then((response) => {
         setCategories(response)
@@ -24,9 +16,19 @@ function AddProduct() {
         setValues({ ...values, error: err })
       })
   }
+  const init1 = () => {
+    categoryService
+      .getCategoryList(category)
+      .then((resolve) => {
+        setSubCategories(resolve)
+      })
+      .catch((err) => {
+        setValues({ ...values, error: err })
+      })
+  }
 
   const [values, setValues] = useState({
-    name: '',
+    productname: '',
     description: '',
     rent: '',
     duration: '',
@@ -34,6 +36,7 @@ function AddProduct() {
     category: '',
     quantity: '',
     photo: '',
+    video: '',
     loading: false,
     error: '',
     createdProduct: '',
@@ -44,9 +47,11 @@ function AddProduct() {
   const [subCategories, setSubCategories] = useState([])
 
   const {
-    name,
+    productname,
     description,
     rent,
+    photo,
+    video,
     duration,
     category,
     quantity,
@@ -60,20 +65,56 @@ function AddProduct() {
   useEffect(() => {
     init()
   }, [])
+  useEffect(() => {
+    init1()
+  }, [category])
   const handleChange = (name) => (event) => {
-    const value = name === 'photo' ? event.target.files[0] : event.target.value
+    const value =
+      name === 'video' || 'photo' ? event.target.files[0] : event.target.value
     formData.set(name, value)
     setValues({ ...values, [name]: value })
   }
   const clickSubmit = (event) => {
     event.preventDefault()
+    console.log('photo', photo)
     setValues({ ...values, error: '', loading: true })
+    // postAd({ productname, description, rent, photo })
+
     //id of user by using variable named id
     //token of user by using varaible named token
     //all data will be available in value formData
     //if error use setValues({...values,error:data.error})
-    //else success empty the values using setValues({...values,name:"",description:'',photo:"",rent:"",quantity:"",loading:false, createdProduct:"data.name"})
+    //else success empty the values using setValues({...values,productname:"",description:'',photo:"",rent:"",quantity:"",loading:false, createdProduct:"data.name"})
   }
+  // const postAd = (user) => {
+  //   userService
+  //     .addUser(user.username, user.email, user.password, 'user')
+  //     .then((data) => {
+  //       console.log('congratulations you are registered ', data)
+  //       setValues({
+  //         ...values,
+  //         username: '',
+  //         email: '',
+  //         password: '',
+  //         password2: '',
+  //         error: false,
+  //         success: true,
+  //       })
+  //     })
+  //     .catch((err) => {
+  //       let err_msg = err.response.data.error.message
+  //       if (!err.response) {
+  //         err_msg = 'Error occured please try later'
+  //       } else if (err_msg == 'Email is already taken') {
+  //         err_msg = err_msg + '\nPlease enter a new one!'
+  //       }
+  //       setValues({
+  //         ...values,
+  //         error: err_msg,
+  //         loading: false,
+  //       })
+  //     })
+  // }
   const newPostForm = () => (
     <form className='mb-3' onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
@@ -87,12 +128,23 @@ function AddProduct() {
           />
         </label>
       </div>
+      <h4>Post Video</h4>
+      <div className='form-group'>
+        <label className='btn btn-secondary'>
+          <input
+            onChange={handleChange('video')}
+            type='file'
+            name='video'
+            accept='.mov,.mp4'
+          />
+        </label>
+      </div>
       <div className='form-group'>
         <label className='text-muted'>Name</label>
         <input
-          onChange={handleChange('name')}
+          onChange={handleChange('productname')}
           type='text'
-          value={name}
+          value={productname}
           className='form-control'
         />
       </div>
