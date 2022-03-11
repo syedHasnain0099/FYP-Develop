@@ -66,8 +66,8 @@ class UserService extends GenericService {
 
   logout = async () => {
     await localStorage.removeItem('token')
-    console.log('removed')
-    //this.tokenUpdate();
+
+    this.tokenUpdate()
   }
 
   isLoggedInToken = () =>
@@ -135,7 +135,7 @@ class UserService extends GenericService {
       username,
       email,
       password,
-      type
+      type,
     })
 
   userDoesNotExist = (ID) =>
