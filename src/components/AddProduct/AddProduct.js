@@ -1,13 +1,12 @@
-
-   
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { isAuthenticated } from '../../auth'
 import { userData } from '../../auth'
 import categoryService from '../../services/CategoryService'
+import productService from '../../services/ProductService'
 function AddProduct() {
-  const { id, username, email } = userData()
-  const { token } = isAuthenticated()
+  
+  const { id } = userData()
   const [categories, setCategories] = useState([])
   const [subCategories, setSubCategories] = useState([])
   const init = () => {
@@ -36,7 +35,7 @@ function AddProduct() {
     description: '',
     rent: '',
     duration: '',
-    subcategorie: '',
+    subcategory: '',
     category: '',
     quantity: '',
     photo: '',
@@ -55,7 +54,7 @@ function AddProduct() {
     duration,
     category,
     quantity,
-    subcategorie,
+    subcategory,
     loading,
     error,
     createdProduct,
@@ -76,38 +75,36 @@ function AddProduct() {
   const clickSubmit = (event) => {
     event.preventDefault()
     setValues({ ...values, error: '', loading: true })
-    //postAd({ productname, description,rent,photo, id, username, email })
+    postAd({productname, description,rent,photo,duration,subcategory,quantity,id} )
   }
-  // const postAd = ({ productname, description,rent,photo, id, username, email }) => {
-  //   userService
-  //     .addUser({ productname, description,rent,photo, id, username, email })
-  //     .then((data) => {
-  //       console.log('congratulations you are registered ', data)
-  //       setValues({
-  //         ...values,
-  //         productname: '',
-  //         description: '',
-  //         photo: '',
-  //           video:'',
-  //         rent: '',
-  //          category:"",
-  //          subcategorie:"",
-  //          duration:'',
-  //         quantity: '',
-  //         loading: false,
-  //         createdProduct: 'data.name',
-  //       })
-  //     })
-  //     .catch((err) => {
-  //       let err_msg = err.response.data.error.message
-  //       if (!err.response) {
-  //         err_msg = 'Error occured please try later'
-  //       } else if (err_msg == 'Email is already taken') {
-  //         err_msg = err_msg + '\nPlease enter a new one!'
-  //       }
-  //       setValues({ ...values, error: err })
-  //     })
-  // }
+  const postAd = (props) => {
+    productService
+      .postAd(props.productname, props.description,props.rent,props.photo,props.duration,props.subcategory,props.quantity,props.id)
+      .then((data) => {
+        console.log('congratulations your post is added ', data)
+        setValues({
+          ...values,
+          productname: '',
+          description: '',
+          photo: '',
+            video:'',
+          rent: '',
+           category:"",
+           subcategory:"",
+           duration:'',
+          quantity: '',
+          loading: false,
+          createdProduct: 'data.name',
+        })
+      })
+      .catch((err) => {
+        let err_msg = err.response.data.error.message
+        if (!err.response) {
+          err_msg = 'Error occured please try later'
+        }
+        setValues({ ...values, error: err_msg })
+      })
+  }
   const newPostForm = () => (
     <form className='mb-3' onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
@@ -186,14 +183,14 @@ function AddProduct() {
       <div className='form-group'>
         <label className='text-muted'>Sub Category</label>
         <select
-          onChange={handleChange('subcategorie')}
-          value={subcategorie}
+          onChange={handleChange('subcategory')}
+          value={subcategory}
           className='form-control'
         >
           <option>Please Select</option>
           {subCategories &&
             subCategories.map((c, i) => (
-              <option key={i} values={c.name}>
+              <option key={i} values={c.id}>
                 {c.name}
               </option>
             ))}

@@ -46,10 +46,18 @@ class GenericService {
         });
     });
     
-  authPost = (url, data) =>
-    new Promise((resolve, reject) => {
+  authPost = (url, data) =>{
+  console.log("data: ",data)
+    return new Promise((resolve, reject) => {
       axios
-        .post(url, JSON.stringify(data),authHeader)
+        .post(url, JSON.stringify(data)
+        ,{ 
+          headers: 
+            {
+              "Authorization" : `Bearer ${localStorage.getItem('token')}`
+            } 
+        }
+        )
         .then((res) => {
           resolve(res.data);
         })
@@ -59,6 +67,7 @@ class GenericService {
           reject(err);
         });
     });
+  }
 
   delete = (url) =>
     new Promise((resolve, reject) => {

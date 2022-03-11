@@ -5,12 +5,17 @@ class ProductService extends GenericService {
   constructor() {
     super()
     this.populate = [
-      'reviews',
-      'estimated_price',
-      'image',
+      'product_media',
       'users_permissions_user',
       'category_list',
     ]
+    // [
+    //   'reviews',
+    //   'estimated_price',
+    //   'image',
+    //   'users_permissions_user',
+    //   'category_list',
+    // ]
   }
   getAllAds = () => {
     const allProducts = []
@@ -18,8 +23,8 @@ class ProductService extends GenericService {
       const query = qs.stringify({
         populate: this.populate,
       })
-      this.get(`${axios.defaults.baseURL}products?${query}`,{})
-        .then((response) => {
+      this.get(`http://localhost:1337/api/products?${query}`,{})
+      .then((response) => {
           const { data } = response
           for (let ad of data) {
             allProducts.push(this.extractProducts(ad))
@@ -29,6 +34,42 @@ class ProductService extends GenericService {
         .catch((err) => {
           reject(err);
         })
+      })
+    }
+    getRequestedAds = () => {
+      const allads = []
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        populate: this.populate,
+      })
+      this.get(`http://localhost:1337/api/requested_ads?${query}`,{})
+      .then((response) => {
+          const { data } = response
+          for (let ad of data) {
+            allads.push(this.extractProducts(ad))
+          }
+          resolve(allads)
+        })
+        .catch((err) => {
+          reject(err);
+        })
+      })
+    }
+    requestConfirmation = () => {
+
+  }
+  postAd = (name,description,rent, photo, duration,subcategory,quantity,id) => {
+    return new Promise((resolve,reject) => {
+      this.authPost(`http://localhost:1337/api/requested-ads`, {
+        product_name:name,
+        product_decription:description,
+        product_media:photo,
+        product_quantity:quantity,
+        estimated_rent:rent,
+        estimated_duration:duration,
+        users_permissions_user:id,
+        category_list:subcategory
+    })
     })
   }
   getProductsByCategory(categoryListName) {
@@ -74,7 +115,53 @@ class ProductService extends GenericService {
         .catch((err) => reject(err))
     })
   }
+  extractAds = (ad) => {
+    const { id, attributes } = ad
+    const {
+      product_name,
+      product_description,
+      product_quantity,
+      estimated_rent,
+      estimated_duration,
+      product_media,
+      users_permissions_user,
+      category_list
+    } = attributes
+    
+    var ad = {
+      id: '',
+      name: '',
+      description: '',
+      quantity:'',
+      rent: '',
+      duration: '',
+      image_urls: [],
+      supplier: {},
+      categoryType:''
+    }
+    ad.id = id
+    ad.name = product_name
+    ad.description = product_description
+    ad.quantity=product_quantity
+    ad.rent = estimated_rent
+    ad.duration = estimated_duration
+    ad.categoryType=category_list
 
+
+    if (product_media) {
+      const { data } = product_media
+      for (let index = 0; index < data.length; index++) {
+        const singleMedia = data[index]
+        ad.image_urls.push(this.extractImage(singleMedia))
+      }
+    }
+
+    if (users_permissions_user) {
+      const { data } = users_permissions_user
+      ad.supplier = this.extractSupplier(data)
+    }
+    return ad
+  }
   extractProducts = (ad) => {
     const { id, attributes } = ad
     const {
