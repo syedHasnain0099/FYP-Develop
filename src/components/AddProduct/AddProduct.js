@@ -36,6 +36,7 @@ function AddProduct() {
     category: '',
     quantity: '',
     photo: '',
+    video: '',
     loading: false,
     error: '',
     createdProduct: '',
@@ -66,7 +67,8 @@ function AddProduct() {
     init1()
   }, [category])
   const handleChange = (name) => (event) => {
-    const value = name === 'photo' ? event.target.files[0] : event.target.value
+    const value =
+      name === 'video' || 'photo' ? event.target.files[0] : event.target.value
     formData.set(name, value)
     setValues({ ...values, [name]: value })
   }
@@ -89,6 +91,17 @@ function AddProduct() {
             type='file'
             name='photo'
             accept='image/*'
+          />
+        </label>
+      </div>
+      <h4>Post Video</h4>
+      <div className='form-group'>
+        <label className='btn btn-secondary'>
+          <input
+            onChange={handleChange('video')}
+            type='file'
+            name='video'
+            accept='.mov,.mp4'
           />
         </label>
       </div>

@@ -1,7 +1,7 @@
 import { isAuthenticated, userData } from './index'
 import { Route, Redirect } from 'react-router-dom'
 const { type } = userData()
-
+console.log(type)
 const AdminRoute = ({ children, ...rest }) => (
   <Route
     {...rest}

@@ -30,7 +30,7 @@ class UserService extends GenericService {
 
   forgetPassword = (email) =>
     new Promise((resolve, reject) => {
-      this.tokenUpdate()
+      //this.tokenUpdate()
       this.post(`${herokuLink}auth/forgot-password`, {
         email,
       })
@@ -44,7 +44,7 @@ class UserService extends GenericService {
 
   resetPassword = (code, password) =>
     new Promise((resolve, reject) => {
-      this.tokenUpdate()
+      //this.tokenUpdate()
       this.post(`${herokuLink}auth/reset-password`, {
         code,
         password,
