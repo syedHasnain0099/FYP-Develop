@@ -6,6 +6,8 @@ import categoryService from '../../services/CategoryService'
 function AddProduct() {
   const { id, username, email } = userData()
   const { token } = isAuthenticated()
+  const [categories, setCategories] = useState([])
+  const [subCategories, setSubCategories] = useState([])
   const init = () => {
     categoryService
       .getCategories()
@@ -40,10 +42,7 @@ function AddProduct() {
     loading: false,
     error: '',
     createdProduct: '',
-    redirectToProfile: false,
   })
-  const [categories, setCategories] = useState([])
-  const [subCategories, setSubCategories] = useState([])
 
   const {
     productname,
@@ -58,7 +57,6 @@ function AddProduct() {
     loading,
     error,
     createdProduct,
-    redirectToProfile,
   } = values
   useEffect(() => {
     init()
@@ -66,9 +64,6 @@ function AddProduct() {
   useEffect(() => {
     init1()
   }, [category])
-  const categoryHandleChange = (event) => {
-    setValues({ ...values, category: event.target.value })
-  }
   const videoHandleChange = (event) => {
     setValues({ ...values, video: event.target.files[0] })
   }
@@ -91,7 +86,11 @@ function AddProduct() {
   //         productname: '',
   //         description: '',
   //         photo: '',
+  //           video:'',
   //         rent: '',
+  //          category:"",
+  //          subcategorie:"",
+  //          duration:'',
   //         quantity: '',
   //         loading: false,
   //         createdProduct: 'data.name',
@@ -169,7 +168,7 @@ function AddProduct() {
       <div className='form-group'>
         <label className='text-muted'>Category</label>
         <select
-          onChange={categoryHandleChange}
+          onChange={handleChange('category')}
           value={category}
           className='form-control'
         >
