@@ -8,17 +8,19 @@ function AddProduct() {
   const { token } = isAuthenticated()
   const init = () => {
     categoryService
-      .getCategoryList('Digital')
-      .then((resolve) => {
-        setSubCategories(resolve)
+      .getCategories()
+      .then((response) => {
+        setCategories(response)
       })
       .catch((err) => {
         setValues({ ...values, error: err })
       })
+  }
+  const init1 = () => {
     categoryService
-      .getCategories()
-      .then((response) => {
-        setCategories(response)
+      .getCategoryList(category)
+      .then((resolve) => {
+        setSubCategories(resolve)
       })
       .catch((err) => {
         setValues({ ...values, error: err })
@@ -60,6 +62,9 @@ function AddProduct() {
   useEffect(() => {
     init()
   }, [])
+  useEffect(() => {
+    init1()
+  }, [category])
   const handleChange = (name) => (event) => {
     const value = name === 'photo' ? event.target.files[0] : event.target.value
     formData.set(name, value)
