@@ -136,7 +136,7 @@ class UserService extends GenericService {
       username,
       email,
       password,
-      type
+      type,
     })
 
   userDoesNotExist = (ID) =>

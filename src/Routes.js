@@ -45,6 +45,10 @@ function Routes() {
             <Header />
             <ForgotPasswordForm></ForgotPasswordForm>
           </Route>
+          <Route path='/products'>
+            <Header />
+            <Products />
+          </Route>
           <Route path='/ResetPageForm/:id'>
             <Header />
             <ResetPageForm></ResetPageForm>
@@ -69,10 +73,6 @@ function Routes() {
           <Route path='/'>
             <Header />
             <Home></Home>
-          </Route>
-          <Route path='/products'>
-            <Header />
-            <Products />
           </Route>
         </Switch>
       </div>
