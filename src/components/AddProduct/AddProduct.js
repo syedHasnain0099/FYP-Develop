@@ -94,7 +94,7 @@ function AddProduct() {
            duration:'',
           quantity: '',
           loading: false,
-          createdProduct: 'data.name',
+          createdProduct: 'data.productname',
         })
       })
       .catch((err) => {
@@ -236,9 +236,9 @@ function AddProduct() {
       <div className='row'>
         <h3 className='card-header'>Post an ad</h3>
         <div className='col-md-8 offset-md-2'>
-          {/* {showLoading()}
+          {showLoading()}
           {showSuccess()}
-          {showError()} */}
+          {showError()}
           {newPostForm()}
         </div>
       </div>
