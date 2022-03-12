@@ -3,6 +3,7 @@ import { useStateValue } from '../StateProvider/StateProvider'
 import productService from '../../services/ProductService'
 import categoryService from '../../services/CategoryService'
 import { Skeleton } from '@mui/material'
+import { Link } from 'react-router-dom'
 function Products() {
   const [data, setData] = useState([])
   const [filter, setFilter] = useState(data)
@@ -90,17 +91,33 @@ function Products() {
                   <img
                     class='card-img-top'
                     src={product.image_urls[0]}
-                    alt={product.title}
+                    alt={product.name}
                     height='250px'
+                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
                   />
                   <div class='card-body'>
-                    <h5 class='card-title mb-0 lead fw-bold'>
-                      {product.description}...
+                    <h5
+                      class='card-title mb-1
+                     lead fw-bold'
+                    >
+                      {product.name}
                     </h5>
-                    <p class='card-text'>{product.price}</p>
-                    <a href='#' class='btn btn-outline-dark'>
-                      Add To Cart
-                    </a>
+                    <p class='card-text'>
+                      {product.description.substring(0, 20)}...
+                    </p>
+                    <p class='card-text'>
+                      Rs {product.price} / {product.duration}
+                    </p>
+                    <Link to='/'>
+                      <button className='btn btn-outline-dark mt-2 mb-2'>
+                        View Product
+                      </button>
+                    </Link>
+                    <Link to='/'>
+                      <button className='btn btn-outline-dark mt-2 mb-2'>
+                        Add to cart
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>
