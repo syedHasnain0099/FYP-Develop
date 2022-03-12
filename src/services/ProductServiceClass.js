@@ -60,7 +60,7 @@ class ProductService extends GenericService {
   }
   postAd = (name,description,rent, photo, duration,subcategory,quantity,id) => {
     return new Promise((resolve,reject) => {
-      this.authPost(`http://localhost:1337/api/requested-ads`, {
+      this.authPost(`${axios.defaults.baseURL}requested-ads`, {
         product_name:name,
         product_decription:description,
         product_media:photo,
