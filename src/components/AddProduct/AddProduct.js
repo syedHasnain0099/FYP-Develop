@@ -66,13 +66,8 @@ function AddProduct() {
   useEffect(() => {
     init1()
   }, [category])
-  const videoHandleChange = (event) => {
-    setValues({ ...values, video: event.target.files[0] })
-  }
 
-  const handleChange = (name) => async(event) => {
-    const value = name === 'photo' ? event.target.files[0] : event.target.value
-    setValues({ ...values, [name]: value })
+  const mediaHandleChange = (event) => {
     productService
       .uploadMedia(event.target.files)
       .then(res => {
@@ -82,12 +77,18 @@ function AddProduct() {
       .catch(err => console.log(err))
   }
 
+  const handleChange = (name) => async(event) => {
+    const value = name === 'photo' ? event.target.files[0] : event.target.value
+    setValues({ ...values, [name]: value })
+  }
+
   const clickSubmit = (event) => {
     event.preventDefault()
     setValues({ ...values, error: '', loading: true })
     postAd({productname, description,rent,duration,subcategory,quantity,id},mediaIds)
   }
   const postAd = (props,mediaIds) => {
+    console.log("media ids: ",mediaIds)
     productService
       .postAd(props.productname, props.description,props.rent,props.duration,props.subcategory,props.quantity,props.id,mediaIds)
       .then((data) => {
@@ -122,7 +123,7 @@ function AddProduct() {
       <div className='form-group'>
         <label className='btn btn-secondary'>
           <input
-            onChange={handleChange('photo')}
+            onChange={mediaHandleChange}
             type='file'
             name='photo'
             accept='image/*'
@@ -133,7 +134,7 @@ function AddProduct() {
       <div className='form-group'>
         <label className='btn btn-secondary'>
           <input
-            onChange={videoHandleChange}
+            // onChange={videoHandleChange}
             type='file'
             name='video'
             accept='.mov,.mp4'
