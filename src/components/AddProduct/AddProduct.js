@@ -213,7 +213,7 @@ function AddProduct() {
       <div className='form-group'>
         <label className='text-muted'>Sub Category</label>
         <select
-          onChange={handleChange('subcategory')}
+          onChange={subCategoryHandleChange}
           value={subcategory}
           className='form-control'
         >
