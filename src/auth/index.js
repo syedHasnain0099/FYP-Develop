@@ -3,7 +3,6 @@ export const isAuthenticated = () => {
     console.log('window is undefined')
     return false
   }
-  console.log("admin authenticated? ",localStorage.getItem('token'))
   if (localStorage.getItem('token')) {
     return true
   } else {

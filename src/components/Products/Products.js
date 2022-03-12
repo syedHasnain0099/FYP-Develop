@@ -26,7 +26,6 @@ function Products() {
             setData(response)
             setFilter(response)
             setLoading(false)
-            console.log(filter)
           }
         })
         .catch((err) => {

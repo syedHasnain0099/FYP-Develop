@@ -4,10 +4,11 @@ import { isAuthenticated } from '../../auth'
 import { userData } from '../../auth'
 import categoryService from '../../services/CategoryService'
 import productService from '../../services/ProductService'
+import axios from 'axios'
 function AddProduct() {
-  
   const { id } = userData()
   const [categories, setCategories] = useState([])
+  const [mediaIds, setMediaIds] = useState([])
   const [subCategories, setSubCategories] = useState([])
   const init = () => {
     categoryService
@@ -68,18 +69,27 @@ function AddProduct() {
   const videoHandleChange = (event) => {
     setValues({ ...values, video: event.target.files[0] })
   }
-  const handleChange = (name) => (event) => {
+
+  const handleChange = (name) => async(event) => {
     const value = name === 'photo' ? event.target.files[0] : event.target.value
     setValues({ ...values, [name]: value })
+    productService
+      .uploadMedia(event.target.files)
+      .then(res => {
+        console.log("id of uploaded image",res)
+        setMediaIds(res);
+      })
+      .catch(err => console.log(err))
   }
+
   const clickSubmit = (event) => {
     event.preventDefault()
     setValues({ ...values, error: '', loading: true })
-    postAd({productname, description,rent,photo,duration,subcategory,quantity,id} )
+    postAd({productname, description,rent,duration,subcategory,quantity,id},mediaIds)
   }
-  const postAd = (props) => {
+  const postAd = (props,mediaIds) => {
     productService
-      .postAd(props.productname, props.description,props.rent,props.photo,props.duration,props.subcategory,props.quantity,props.id)
+      .postAd(props.productname, props.description,props.rent,props.duration,props.subcategory,props.quantity,props.id,mediaIds)
       .then((data) => {
         console.log('congratulations your post is added ', data)
         setValues({
@@ -96,6 +106,7 @@ function AddProduct() {
           loading: false,
           createdProduct: 'data.productname',
         })
+        setMediaIds('')
       })
       .catch((err) => {
         let err_msg = err.response.data.error.message

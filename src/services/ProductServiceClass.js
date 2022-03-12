@@ -39,7 +39,7 @@ class ProductService extends GenericService {
       .then((response) => {
           const { data } = response
           for (let ad of data) {
-            allads.push(this.extractProducts(ad))
+            allads.push(this.extractAds(ad))
           }
           resolve(allads)
         })
@@ -48,24 +48,61 @@ class ProductService extends GenericService {
         })
       })
     }
-    requestConfirmation = () => {
-
+   
+  postAd = (name,description,rent, duration,subcategory,quantity,id,mediaIds) => {
+      return this.authPost(`requested-ads`, 
+      {
+        "data":{
+          "product_name":name,
+          "product_decription":description,
+          "product_media":mediaIds,
+          "product_quantity":quantity,
+          "estimated_rent":rent,
+          "estimated_duration":duration,
+          "users_permissions_user":id,
+          "category_list":1
+      }
+    }
+    )
   }
-  postAd = (name,description,rent, photo, duration,subcategory,quantity,id) => {
+  uploadMedia = (files) => {
+    const mediaIds = []
+    const data = new FormData();
+    if(!files[0]){
+      console.log("please select some file")
+    }
+    for(let i=0; i<files.length; i++){
+      data.append('files',files[i]);
+      console.log("file: ",files[i])
+    }
     return new Promise((resolve,reject) => {
-      this.authPost(`${axios.defaults.baseURL}requested-ads`, {
-        product_name:name,
-        product_decription:description,
-        product_media:photo,
-        product_quantity:quantity,
-        estimated_rent:rent,
-        estimated_duration:duration,
-        users_permissions_user:id,
-        category_list:subcategory
-    })
+      axios
+        .post(
+          `upload`,
+          data,
+          {
+            onUploadProgress: (progress) => {
+              const{loaded,total} = progress;
+              const percentage = (loaded/total)
+              console.log("loading percentage: ",percentage)
+            }
+          }
+        )
+        .then(response => {
+          const { data } = response
+              for (let singleMedia of data) {
+                mediaIds.push(this.extractMediaId(singleMedia))
+              }
+              resolve(mediaIds)
+        })
+        .catch(err => reject(err))
     })
   }
-  getProductsByCategory(categoryListName) {
+  extractMediaId = (data) => {
+    const { id } = data
+    return id
+  }
+  getProductsByCategory = (categoryListName) => {
     const filteredProducts = []
     return new Promise((resolve, reject) => {
       const query = qs.stringify({
@@ -202,9 +239,6 @@ class ProductService extends GenericService {
       const { data } = users_permissions_user
       product.supplier = this.extractSupplier(data)
     }
-    // for(let att in product){
-    //     console.log(`${att}: ${product[att]}`);
-    // }
     return product
   }
   extractReviews = (data) => {

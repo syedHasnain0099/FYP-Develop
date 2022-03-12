@@ -1,7 +1,6 @@
 import axios from 'axios';
 // import renameFile from 'src/utils/renameFile';
 
-axios.defaults.baseURL = 'http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/';
 // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8' || 'application/json;';
 const authHeader = {
@@ -38,8 +37,9 @@ class GenericService {
         });
     });
 
-    post = (url, data) =>
-    new Promise((resolve, reject) => {
+    post = (url, data) => {
+       console.log("data: ",JSON.stringify(data))
+    return new Promise((resolve, reject) => {
       axios
         .post(url, JSON.stringify(data))
         .then((res) => {
@@ -51,19 +51,14 @@ class GenericService {
           reject(err);
         });
     });
+  }
     
   authPost = (url, data) =>{
-  console.log("data: ",data)
+  console.log("data: ",JSON.stringify(data))
     return new Promise((resolve, reject) => {
+    console.log("data: ",data)
       axios
-        .post(url, JSON.stringify(data)
-        ,{ 
-          headers: 
-            {
-              "Authorization" : `Bearer ${localStorage.getItem('token')}`
-            } 
-        }
-        )
+        .post(url, JSON.stringify(data))
         .then((res) => {
           resolve(res.data);
         })
