@@ -56,7 +56,7 @@ class ProductService extends GenericService {
         "data":{
           "product_name":name,
           "product_decription":description,
-          "product_media":46,
+          "product_media":mediaIds,
           "product_quantity":quantity,
           "estimated_rent":rent,
           "estimated_duration":duration,
