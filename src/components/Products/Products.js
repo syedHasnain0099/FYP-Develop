@@ -85,7 +85,7 @@ function Products() {
         {filter.map((product) => {
           return (
             <>
-              <div className='col-md-3 mb-4'>
+              <div className='col-4 mb-3'>
                 <div class='card h-100 text-center p-4' key={product.id}>
                   <img
                     class='card-img-top'
@@ -107,13 +107,14 @@ function Products() {
                     <p class='card-text'>
                       Rs {product.price} / {product.duration}
                     </p>
+                    {/* mr-2 in button */}
                     <Link to='/'>
-                      <button className='btn btn-outline-dark mt-2 mb-2'>
+                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
                         View Product
                       </button>
                     </Link>
                     <Link to='/'>
-                      <button className='btn btn-outline-dark mt-2 mb-2'>
+                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
                         Add to cart
                       </button>
                     </Link>

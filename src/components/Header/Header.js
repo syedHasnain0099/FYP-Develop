@@ -51,24 +51,24 @@ function Header() {
       <div class='collapse navbar-collapse' id='navbarSupportedContent'>
         <ul class='navbar-nav mx-auto mb-2 mb-lg-0'>
           <li class='nav-item '>
-            <NavLink class='nav-link' to='/'>
+            <Link class='nav-link' to='/'>
               Home
-            </NavLink>
+            </Link>
           </li>
           <li class='nav-item'>
-            <NavLink class='nav-link' to='/products'>
+            <Link class='nav-link' to='/products'>
               Products
-            </NavLink>
+            </Link>
           </li>
           <li class='nav-item'>
-            <NavLink class='nav-link' to='/about'>
+            <Link class='nav-link' to='/about'>
               About
-            </NavLink>
+            </Link>
           </li>
           <li class='nav-item'>
-            <NavLink class='nav-link' to='/contact'>
+            <Link class='nav-link' to='/contact'>
               Contact
-            </NavLink>
+            </Link>
           </li>
         </ul>
 

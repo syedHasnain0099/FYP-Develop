@@ -70,14 +70,20 @@ function AddProduct() {
   const mediaHandleChange = (event) => {
     productService
       .uploadMedia(event.target.files)
-      .then(res => {
-        console.log("id of uploaded image",res)
-        setMediaIds(res);
+      .then((res) => {
+        console.log('id of uploaded image', res)
+        setMediaIds(res)
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err))
+  }
+  const subCategoryHandleChange = (event) => {
+    const index = event.target.selectedIndex
+    const el = event.target.childNodes[index]
+    const option = el.getAttribute('id')
+    setValues({ ...values, subcategory: option })
   }
 
-  const handleChange = (name) => async(event) => {
+  const handleChange = (name) => async (event) => {
     const value = name === 'photo' ? event.target.files[0] : event.target.value
     setValues({ ...values, [name]: value })
   }
@@ -85,12 +91,24 @@ function AddProduct() {
   const clickSubmit = (event) => {
     event.preventDefault()
     setValues({ ...values, error: '', loading: true })
-    postAd({productname, description,rent,duration,subcategory,quantity,id},mediaIds)
+    postAd(
+      { productname, description, rent, duration, subcategory, quantity, id },
+      mediaIds
+    )
   }
-  const postAd = (props,mediaIds) => {
-    console.log("media ids: ",mediaIds)
+  const postAd = (props, mediaIds) => {
+    console.log('media ids: ', mediaIds)
     productService
-      .postAd(props.productname, props.description,props.rent,props.duration,props.subcategory,props.quantity,props.id,mediaIds)
+      .postAd(
+        props.productname,
+        props.description,
+        props.rent,
+        props.duration,
+        props.subcategory,
+        props.quantity,
+        props.id,
+        mediaIds
+      )
       .then((data) => {
         console.log('congratulations your post is added ', data)
         setValues({
@@ -98,11 +116,11 @@ function AddProduct() {
           productname: '',
           description: '',
           photo: '',
-            video:'',
+          video: '',
           rent: '',
-           category:"",
-           subcategory:"",
-           duration:'',
+          category: '',
+          subcategory: '',
+          duration: '',
           quantity: '',
           loading: false,
           createdProduct: 'data.productname',
@@ -202,7 +220,7 @@ function AddProduct() {
           <option>Please Select</option>
           {subCategories &&
             subCategories.map((c, i) => (
-              <option key={i} values={c.id}>
+              <option key={i} id={c.id}>
                 {c.name}
               </option>
             ))}
