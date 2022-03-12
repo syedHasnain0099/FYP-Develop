@@ -20,14 +20,12 @@ class GenericService {
   get = (url, data) =>
     new Promise((resolve, reject) => {
       // delete axios.defaults.headers.common.Authorization;
-      console.log(url)
       axios
         .get(url, data, authHeader)
         .then((res) => {
           resolve(res.data);
         })
         .catch((err) => {
-          console.log("hello")
           reject(err);
         });
     });
@@ -49,16 +47,13 @@ class GenericService {
   }
     
   authPost = (url, data) =>{
-  console.log("data: ",JSON.stringify(data))
     return new Promise((resolve, reject) => {
-    console.log("data: ",data)
       axios
         .post(url, JSON.stringify(data))
         .then((res) => {
           resolve(res.data);
         })
         .catch((err) => {
-          console.log("here i am");
           console.warn(err);
           reject(err);
         });

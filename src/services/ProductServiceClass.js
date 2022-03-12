@@ -19,7 +19,7 @@ class ProductService extends GenericService {
       const query = qs.stringify({
         populate: this.populate,
       })
-      this.get(`${axios.defaults.baseURL}products?${query}`,{})
+      this.get(`products?${query}`,{})
       .then((response) => {
           const { data } = response
           for (let ad of data) {
@@ -35,7 +35,7 @@ class ProductService extends GenericService {
     getRequestedAds = () => {
       const allads = []
       return new Promise((resolve, reject) => {
-        this.get(`http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/requested-ads?populate=product_media,users_permissions_user,category_list`,{})
+        this.get(`requested-ads?populate=product_media,users_permissions_user,category_list`,{})
         .then((response) => {
             const { data } = response
             for (let ad of data) {
@@ -114,7 +114,7 @@ class ProductService extends GenericService {
           },
         },
       })
-      this.get(`${axios.defaults.baseURL}products?${query}`)
+      this.get(`products?${query}`)
         .then((response) => {
           const { data } = response
           for (let ad of data) {
@@ -135,7 +135,7 @@ class ProductService extends GenericService {
           name: productName,
         },
       })
-      this.get(`${axios.defaults.baseURL}products?${query}`)
+      this.get(`products?${query}`)
         .then((response) => {
           const { data } = response
           for (let ad of data) {
