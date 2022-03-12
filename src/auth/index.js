@@ -5,7 +5,7 @@ export const isAuthenticated = () => {
   }
   console.log("admin authenticated? ",localStorage.getItem('token'))
   if (localStorage.getItem('token')) {
-    return JSON.parse(localStorage.getItem('token'))
+    return true
   } else {
     return false
   }

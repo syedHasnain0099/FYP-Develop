@@ -2,7 +2,7 @@
 import qs from 'qs'
 import GenericService from './GenericService'
 import axios from 'axios'
-
+axios.defaults.baseURL = 'http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/';
 const herokuLink = 'https://strapi-project-deployement.herokuapp.com/api/'
 class UserService extends GenericService {
   // eslint-disable-next-line no-useless-constructor
@@ -11,7 +11,7 @@ class UserService extends GenericService {
   // }
   loginUser = (ID, Password) =>
     new Promise((resolve, reject) => {
-      this.post(`${herokuLink}auth/local`, {
+      this.post(`auth/local`, {
         identifier: ID,
         password: Password,
       })
@@ -31,7 +31,7 @@ class UserService extends GenericService {
   forgetPassword = (email) =>
     new Promise((resolve, reject) => {
       //this.tokenUpdate()
-      this.post(`${herokuLink}auth/forgot-password`, {
+      this.post(`auth/forgot-password`, {
         email,
       })
         .then((data) => {
@@ -45,7 +45,7 @@ class UserService extends GenericService {
   resetPassword = (code, password) =>
     new Promise((resolve, reject) => {
       //this.tokenUpdate()
-      this.post(`${herokuLink}auth/reset-password`, {
+      this.post(`auth/reset-password`, {
         code,
         password,
         passwordConfirmation: password,
@@ -58,7 +58,7 @@ class UserService extends GenericService {
         })
     })
   register = (username, email, password) =>
-    this.post(`${herokuLink}users/register`, {
+    this.post(`users/register`, {
       password,
       email,
       username,

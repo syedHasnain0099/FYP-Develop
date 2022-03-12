@@ -1,7 +1,7 @@
 import axios from 'axios';
 // import renameFile from 'src/utils/renameFile';
 
-axios.defaults.baseURL = 'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/';
+axios.defaults.baseURL = 'http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/';
 // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8' || 'application/json;';
 const authHeader = {
@@ -22,7 +22,13 @@ class GenericService {
     new Promise((resolve, reject) => {
       // delete axios.defaults.headers.common.Authorization;
       axios
-        .get(url, data)
+        .get(url, data,
+          { 
+          headers: 
+            {
+              "Authorization" : `Bearer ${localStorage.getItem('token')}`
+            } 
+        })
         .then((res) => {
           resolve(res.data);
         })

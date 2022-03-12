@@ -6,7 +6,7 @@ const AdminRoute = ({ children, ...rest }) => (
   <Route
     {...rest}
     render={({ location }) =>
-      isAuthenticated() && type === 'admin' ? (
+      isAuthenticated() ? (
         children
       ) : (
         <Redirect

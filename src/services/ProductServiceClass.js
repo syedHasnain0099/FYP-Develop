@@ -5,11 +5,6 @@ class ProductService extends GenericService {
   constructor() {
     super()
     this.populate = 
-    // [
-    //   'product_media',
-    //   'users_permissions_user',
-    //   'category_list',
-    // ]
     [
       'reviews',
       'estimated_price',
@@ -40,10 +35,7 @@ class ProductService extends GenericService {
     getRequestedAds = () => {
       const allads = []
     return new Promise((resolve, reject) => {
-      const query = qs.stringify({
-        populate: this.populate,
-      })
-      this.get(`http://localhost:1337/api/requested_ads?${query}`,{})
+      this.get(`${axios.defaults.baseURL}requested-ads?populate=product_media,users_permissions_user,category_list`)
       .then((response) => {
           const { data } = response
           for (let ad of data) {
@@ -61,7 +53,7 @@ class ProductService extends GenericService {
   }
   postAd = (name,description,rent, photo, duration,subcategory,quantity,id) => {
     return new Promise((resolve,reject) => {
-      this.authPost(`http://localhost:1337/api/requested-ads`, {
+      this.authPost(`${axios.defaults.baseURL}requested-ads`, {
         product_name:name,
         product_decription:description,
         product_media:photo,

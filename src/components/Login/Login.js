@@ -6,7 +6,7 @@ import axios from 'axios'
 import userService from '../../services/UserService'
 import { useStateValue } from '../StateProvider/StateProvider'
 axios.defaults.baseURL =
-  'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/'
+  'http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/'
 // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
 function Login(callback) {
