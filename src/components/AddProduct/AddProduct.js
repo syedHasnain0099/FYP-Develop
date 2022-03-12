@@ -220,7 +220,7 @@ function AddProduct() {
           <option>Please Select</option>
           {subCategories &&
             subCategories.map((c, i) => (
-              <option key={i} id={c.id}>
+              <option key={i} id={c.id} value={c.id}>
                 {c.name}
               </option>
             ))}
