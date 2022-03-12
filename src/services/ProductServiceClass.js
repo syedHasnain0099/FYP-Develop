@@ -61,7 +61,7 @@ class ProductService extends GenericService {
           "estimated_rent":rent,
           "estimated_duration":duration,
           "users_permissions_user":id,
-          "category_list":1
+          "category_list":subcategory
       }
     }
     )
