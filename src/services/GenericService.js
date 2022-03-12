@@ -3,11 +3,7 @@ import axios from 'axios';
 
 // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8' || 'application/json;';
-const authHeader = {
-  headers:{
-    Authorization: `Bearer ${localStorage.getItem('token')}`
-  }
-}
+
 class GenericService {
   // tokenUpdate = () => {
   //   const token = localStorage.getItem('token');
@@ -21,7 +17,7 @@ class GenericService {
     new Promise((resolve, reject) => {
       // delete axios.defaults.headers.common.Authorization;
       axios
-        .get(url, data, authHeader)
+        .get(url, data)
         .then((res) => {
           resolve(res.data);
         })
@@ -32,6 +28,7 @@ class GenericService {
 
     post = (url, data) => {
        console.log("data: ",JSON.stringify(data))
+       if(axios.defaults.headers.common.Authorization) delete axios.defaults.headers.common.Authorization;
     return new Promise((resolve, reject) => {
       axios
         .post(url, JSON.stringify(data))

@@ -19,7 +19,7 @@ class UserService extends GenericService {
           localStorage.setItem('token', JSON.stringify(data.jwt))
           localStorage.setItem('user', JSON.stringify(data.user))
           console.log(JSON.stringify(data.user))
-          // this.tokenUpdate()
+          this.tokenUpdate()
           resolve(data.user)
         })
         .catch((err) => {
