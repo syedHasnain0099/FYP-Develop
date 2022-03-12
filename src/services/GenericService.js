@@ -20,14 +20,9 @@ class GenericService {
   get = (url, data) =>
     new Promise((resolve, reject) => {
       // delete axios.defaults.headers.common.Authorization;
+      console.log(url)
       axios
-        .get(url, data,
-          { 
-          headers: 
-            {
-              "Authorization" : `Bearer ${localStorage.getItem('token')}`
-            } 
-        })
+        .get(url, data, authHeader)
         .then((res) => {
           resolve(res.data);
         })

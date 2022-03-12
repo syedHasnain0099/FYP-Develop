@@ -34,19 +34,20 @@ class ProductService extends GenericService {
     }
     getRequestedAds = () => {
       const allads = []
-    return new Promise((resolve, reject) => {
-      this.get(`${axios.defaults.baseURL}requested-ads?populate=product_media,users_permissions_user,category_list`)
-      .then((response) => {
-          const { data } = response
-          for (let ad of data) {
-            allads.push(this.extractAds(ad))
-          }
-          resolve(allads)
+      return new Promise((resolve, reject) => {
+        this.get(`http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/requested-ads?populate=product_media,users_permissions_user,category_list`,{})
+        .then((response) => {
+            const { data } = response
+            for (let ad of data) {
+              allads.push(this.extractAds(ad))
+            }
+            resolve(allads)
+          })
+          .catch((err) => {
+            console.log("hell")
+            reject(err);
+          })
         })
-        .catch((err) => {
-          reject(err);
-        })
-      })
     }
    
   postAd = (name,description,rent, duration,subcategory,quantity,id,mediaIds) => {
