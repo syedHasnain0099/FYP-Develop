@@ -42,12 +42,12 @@ const SignUp = () => {
     console.log('errors: ', Object.keys(errors))
     if (Object.keys(errors).length === 0) {
       console.log('field errors are not present')
-      checkUserExistence({username, email});
-      console.log("inside if: ",(!usernameExists && !emailExists))
-      if(!usernameExists && !emailExists)
-      {
-        signup({ username, email, password, password2 })
-      }
+      checkUserExistence({ username, email, password, password2 });
+      // console.log("inside if: ",(!usernameExists && !emailExists))
+      // if(!usernameExists && !emailExists)
+      // {
+      //   signup({ username, email, password, password2 })
+      // }
     }
 
     console.log(values)
@@ -66,26 +66,41 @@ const SignUp = () => {
     </div>
   )
   const checkUserExistence = async(user) => {
-     userService
-      .findUserbyEmail(user.email)
-      .then(user => {
-        setEmailExists(true)
-        console.log("email already exists? ",emailExists)
-      })
-      .catch(err => {
-        if(err === 'User not found') setEmailExists(false)
-        console.log("email already exists? ",emailExists)
-      })
     userService
+      .userExists(user.email)
+      .then(res => {
+        if(res == true){
+          console.log("email already exists! please enter a new one ")
+          setEmailExists(true)
+        }
+        else setEmailExists(false)
+      })
+      .catch(err => console.log(err))
+
+     userService
       .findUserbyName(user.username)
-      .then(user => {
-        setUsernameExists(true)
-        console.log("username already exists? ",usernameExists)
+      .then(res => {
+        if(res == true){
+          console.log("username already exists! please enter some else: ")
+          setUsernameExists(true)
+        }
+        else setUsernameExists(false)
       })
-      .catch(err => {
-        if(err === 'User not found') setUsernameExists(false)
-        console.log("username already exists? ",usernameExists)
-      })
+      .catch(err => console.log(err))
+
+      if(!emailExists && !usernameExists){
+        signup(user)
+      }
+    // userService
+    //   .findUserbyName(user.username)
+    //   .then(user => {
+    //     setUsernameExists(true)
+    //     console.log("username already exists? ",usernameExists)
+    //   })
+    //   .catch(err => {
+    //     if(err === 'User not found') setUsernameExists(false)
+    //     console.log("username already exists? ",usernameExists)
+    //   })
   }
   const signup = (user) => {
     userService

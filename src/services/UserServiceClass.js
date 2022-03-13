@@ -110,46 +110,44 @@ class UserService extends GenericService {
   }
   
   findUserbyName = (name) =>
-    new Promise((resolve, reject) => {
-      const query = qs.stringify({
-        filters: {
+   new Promise((resolve, reject) => {
+    const query = qs.stringify({
+      filters: {
           username: {
-            $eq: name,
-          },
+            $eq: name
+          }
         },
       })
       this.get(`users?${query}`, {})
-        .then((user) => {
-          if (user.length > 0) {
-            return resolve(user[0])
-          }
-          reject(new Error('User not found'))
+        .then((response) => {
+          if (response.length > 0) return resolve(true)
+          resolve(false)
         })
         .catch((err) => {
           reject(err)
         })
     })
-      findUserbyEmail = (email) =>
-    new Promise((resolve, reject) => {
-      const query = qs.stringify({
-        filters: {
-          email: {
-            $eq: email,
-          },
-        },
-      })
-      this.get(`users?${query}`, {})
-        .then((user) => {
-          if (user.length > 0) {
-            return resolve(user[0])
-          }
+    //   findUserbyEmail = (email) =>
+    // new Promise((resolve, reject) => {
+    //   const query = qs.stringify({
+    //     filters: {
+    //       email: {
+    //         $eq: email,
+    //       },
+    //     },
+    //   })
+    //   this.get(`users?${query}`, {})
+    //     .then((user) => {
+    //       if (user.length > 0) {
+    //         return resolve(user[0])
+    //       }
 
-          reject(new Error('User not found'))
-        })
-        .catch((err) => {
-          reject(err)
-        })
-    })
+    //       reject(new Error('User not found'))
+    //     })
+    //     .catch((err) => {
+    //       reject(err)
+    //     })
+    // })
 
   userExists = (email) =>
   new Promise((resolve, reject) => {
@@ -162,11 +160,8 @@ class UserService extends GenericService {
       })
       this.get(`users?${query}`, {})
         .then((response) => {
-          console.log(response)
           if (response.length > 0) return resolve(true)
-          // reject(new Error('Already taken'))
           resolve(false)
-          // reject(new Error('user does not exists'))
         })
         .catch((err) => {
           reject(err)
