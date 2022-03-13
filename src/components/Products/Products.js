@@ -4,40 +4,31 @@ import productService from '../../services/ProductService'
 import categoryService from '../../services/CategoryService'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
+import Search from '../Search/Search'
 function Products() {
   const [data, setData] = useState([])
-  const [filter, setFilter] = useState(data)
   const [loading, setLoading] = useState(false)
-  let componentMounted = true
   // categoryService.getCategories()
   // sub categories of home appliances
   // categoryService.getCategoryList('Home Appliances')
   // productService.getProductsByCategory('Air Purifiers')
   // productService.find('iphone 8 plus')
   // productService.getAllAds()
-  
-
+  const getData = () => {
+    console.log('running in getData')
+    setLoading(true)
+    productService
+      .getAllAds()
+      .then((response) => {
+        setData(response)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   useEffect(() => {
-    const getProducts = async () => {
-      setLoading(true)
-      productService
-        .getAllAds()
-        .then((response) => {
-          console.log(response)
-          if (componentMounted) {
-            setData(response)
-            setFilter(response)
-            setLoading(false)
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-      return () => {
-        componentMounted = false
-      }
-    }
-    getProducts()
+    getData()
   }, [])
   const Loading = () => {
     return (
@@ -57,34 +48,11 @@ function Products() {
       </>
     )
   }
-  const filterProduct = (cat) => {
-    const updatedList = data.filter((x) => x.category === cat)
-    setFilter(updatedList)
-  }
+
   const ShowProducts = () => {
     return (
       <>
-        <div className='buttons d-flex justfiy-content-center mb-5 pb-5 '>
-          <button
-            className='btn btn-outline-dark me-2'
-            onClick={() => setFilter(data)}
-          >
-            All
-          </button>
-          <button
-            className='btn btn-outline-dark me-2'
-            onClick={() => filterProduct("mens's clothing")}
-          >
-            Home Appliances
-          </button>
-          <button
-            className='btn btn-outline-dark me-2'
-            onClick={() => filterProduct("mens's clothing")}
-          >
-            Digital
-          </button>
-        </div>
-        {filter.map((product) => {
+        {data.map((product) => {
           return (
             <>
               <div className='col-4 mb-3'>
@@ -109,7 +77,6 @@ function Products() {
                     <p class='card-text'>
                       Rs {product.price} / {product.duration}
                     </p>
-                    {/* mr-2 in button */}
                     <Link to='/'>
                       <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
                         View Product
@@ -138,6 +105,7 @@ function Products() {
             <hr />
           </div>
         </div>
+        <Search />
         <div className='row justify-content-center'>
           {loading ? <Loading /> : <ShowProducts />}
         </div>
