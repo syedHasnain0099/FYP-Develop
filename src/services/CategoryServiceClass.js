@@ -52,9 +52,9 @@ class CategoryService extends GenericService {
   }
 
   extractCategory = (data) => {
-    const { attributes } = data
+    const { id, attributes } = data
     const { name } = attributes
-    return { name }
+    return { id,name }
   }
   extractCategoryList = (data) => {
     const { id,attributes } = data

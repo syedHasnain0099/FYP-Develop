@@ -146,17 +146,31 @@ class ProductService extends GenericService {
         .catch((err) => reject(err))
     })
   }
-  search = (keyword) => {
+  search = (keyword, subCatgeryId = '') => {
     const filteredProducts = []
     return new Promise((resolve,reject) => {
-      const query = qs.stringify({
-        populate: this.populate,
-        filters: {
-          name: {
-            $containsi: keyword,
-          },
-        }
-      })
+      if(subCatgeryId = ''){
+        const query = qs.stringify({
+          populate: this.populate,
+          filters: {
+            name: {
+              $containsi: keyword,
+            },
+          }
+        })
+      }
+      else{
+        const query = qs.stringify({
+          populate: this.populate,
+          filters: {
+            category_list: {
+              name: {
+                $containsi: subCatgeryId,
+              }
+            },
+          }
+        })
+      }
       this.get(`products?${query}`)
         .then((response) => {
           const { data } = response
