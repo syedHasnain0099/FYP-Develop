@@ -41,7 +41,7 @@ function Login(callback) {
     setIsSubmitting(true)
     checkUserExistance({ email, password })
   }
-  //update from video private route for admin 3:02
+
   const redirectUser = () => {
     if (redirectToReferrer) {
       return <Redirect to='/'></Redirect>
@@ -56,15 +56,14 @@ function Login(callback) {
   const checkUserExistance = (user) => {
     userService
       .userExists(user.email)
-      .then(res => {
-        if(res === true){
+      .then((res) => {
+        if (res === true) {
           signin(user)
-        }
-        else {
+        } else {
           console.log("user with these credentials doesn't exists")
         }
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err))
   }
   const signin = (user) => {
     userService
@@ -125,7 +124,7 @@ function Login(callback) {
           New to Rentoday? Sign-up <NavLink to='/SignUp'>here</NavLink>
         </span>
         <span className='signup-form-input-login'>
-          <NavLink to='/SignUp'>Forgot Password?</NavLink>
+          <NavLink to='/ForgotPasswordForm'>Forgot Password?</NavLink>
         </span>
       </form>
       {showError()}

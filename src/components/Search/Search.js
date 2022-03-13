@@ -49,17 +49,18 @@ function Search() {
       .then((response) => {
         console.log(response)
         setDigitalResults(response)
+        setData({ ...data, searched: true })
       })
       .catch((err) => {
         console.log(err)
       })
   }
   const searchData = () => {
-    console.log('search')
     productService
       .find(search)
       .then((response) => {
         setSearchResults(response)
+        setData({ ...data, searched: true })
       })
       .catch((err) => {
         console.log(err)
@@ -72,6 +73,7 @@ function Search() {
       .getProductsByCategory(categoryHomeAppliance)
       .then((response) => {
         setHomeApplianceResults(response)
+        setData({ ...data, searched: true })
       })
       .catch((err) => {
         console.log(err)
@@ -85,7 +87,37 @@ function Search() {
   }
   const handleChange = (name) => (event) => {
     setData({ ...data, [name]: event.target.value, searched: false })
+    if (name === 'categoryHomeAppliance') {
+      setSubCategoriesDigital('')
+    }
+    if (name === 'categoryDigital') {
+      setSubCategoriesHomeAppliance('')
+    }
   }
+  const searchMessage = (
+    searched,
+    searchResults,
+    homeApplianceResults,
+    digitalResults
+  ) => {
+    if (
+      searched &&
+      searchResults.length > 0 &&
+      homeApplianceResults.length > 0 &&
+      digitalResults.length > 0
+    ) {
+      return `Found ${searchResults.length} products`
+    }
+    if (
+      searched &&
+      searchResults.length < 1 &&
+      homeApplianceResults.length < 1 &&
+      digitalResults.length < 1
+    ) {
+      return `No products found`
+    }
+  }
+
   const searchedProducts1 = (searchResults = []) => {
     return (
       <>
@@ -281,6 +313,14 @@ function Search() {
       </div>
       <div>
         <div className='container my-2 py-2'>
+          <h2 className='mt-4 mb-4'>
+            {searchMessage(
+              searched,
+              searchResults,
+              homeApplianceResults,
+              digitalResults
+            )}
+          </h2>
           <div className='row justify-content-center'>
             {searchedProducts3(homeApplianceResults)}
             {searchedProducts2(digitalResults)}
