@@ -4,8 +4,7 @@ import axios from 'axios'
 class ProductService extends GenericService {
   constructor() {
     super()
-    this.populate = 
-    [
+    this.populate = [
       'reviews',
       'estimated_price',
       'image',
@@ -19,8 +18,8 @@ class ProductService extends GenericService {
       const query = qs.stringify({
         populate: this.populate,
       })
-      this.get(`products?${query}`,{})
-      .then((response) => {
+      this.get(`products?${query}`, {})
+        .then((response) => {
           const { data } = response
           for (let ad of data) {
             allProducts.push(this.extractProducts(ad))
@@ -28,27 +27,27 @@ class ProductService extends GenericService {
           resolve(allProducts)
         })
         .catch((err) => {
-          reject(err);
+          reject(err)
         })
-      })
-    }
-    getRequestedAds = () => {
-      const allads = []
-      return new Promise((resolve, reject) => {
-        this.get(`requested-ads?populate=product_media,users_permissions_user,category_list`,{})
+    })
+  }
+  getRequestedAds = () => {
+    const allads = []
+    return new Promise((resolve, reject) => {
+      this.get(
+        `requested-ads?populate=product_media,users_permissions_user,category_list`,
+        {}
+      )
         .then((response) => {
-            const { data } = response
-            for (let ad of data) {
-              allads.push(this.extractAds(ad))
-            }
-            resolve(allads)
-          })
-          .catch((err) => {
-            console.log("hell")
-            reject(err);
-          })
+          const { data } = response
+          for (let ad of data) {
+            allads.push(this.extractAds(ad))
+          }
+          resolve(allads)
         })
-    }
+    })
+  }
+    
    
   postAd = (name,description,rent, duration,subcategory,quantity,id,mediaIds) => {
       return this.post(`requested-ads`, 
@@ -68,15 +67,15 @@ class ProductService extends GenericService {
   }
   uploadMedia = (files) => {
     const mediaIds = []
-    const data = new FormData();
-    if(!files[0]){
-      console.log("please select some file")
+    const data = new FormData()
+    if (!files[0]) {
+      console.log('please select some file')
     }
-    for(let i=0; i<files.length; i++){
-      data.append('files',files[i]);
-      console.log("file: ",files[i])
+    for (let i = 0; i < files.length; i++) {
+      data.append('files', files[i])
+      console.log('file: ', files[i])
     }
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       axios
         .post(
           `upload`,
@@ -91,12 +90,12 @@ class ProductService extends GenericService {
         )
         .then(response => {
           const { data } = response
-              for (let singleMedia of data) {
-                mediaIds.push(this.extractMediaId(singleMedia))
-              }
-              resolve(mediaIds)
+          for (let singleMedia of data) {
+            mediaIds.push(this.extractMediaId(singleMedia))
+          }
+          resolve(mediaIds)
         })
-        .catch(err => reject(err))
+        .catch((err) => reject(err))
     })
   }
   extractMediaId = (data) => {
@@ -156,28 +155,27 @@ class ProductService extends GenericService {
       estimated_duration,
       product_media,
       users_permissions_user,
-      category_list
+      category_list,
     } = attributes
-    
+
     var ad = {
       id: '',
       name: '',
       description: '',
-      quantity:'',
+      quantity: '',
       rent: '',
       duration: '',
       image_urls: [],
       supplier: {},
-      categoryType:''
+      categoryType: '',
     }
     ad.id = id
     ad.name = product_name
     ad.description = product_description
-    ad.quantity=product_quantity
+    ad.quantity = product_quantity
     ad.rent = estimated_rent
     ad.duration = estimated_duration
-    ad.categoryType=category_list
-
+    ad.categoryType = category_list
 
     if (product_media) {
       const { data } = product_media

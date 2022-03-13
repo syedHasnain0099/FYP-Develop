@@ -123,7 +123,7 @@ function AddProduct() {
           duration: '',
           quantity: '',
           loading: false,
-          createdProduct: data.productname,
+          createdProduct: data.data.attributes.product_name,
         })
         setMediaIds('')
       })

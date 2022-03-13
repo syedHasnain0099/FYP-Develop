@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
 // import renameFile from 'src/utils/renameFile';
 
 axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8' || 'application/json;';
+
 
 class GenericService {
   tokenUpdate = () => {
@@ -20,12 +21,12 @@ class GenericService {
       axios
         .get(url, data)
         .then((res) => {
-          resolve(res.data);
+          resolve(res.data)
         })
         .catch((err) => {
-          reject(err);
-        });
-    });
+          reject(err)
+        })
+    })
 
     post = (url, data) => {
        console.log("data: ",JSON.stringify(data))
@@ -33,14 +34,14 @@ class GenericService {
       axios
         .post(url, JSON.stringify(data))
         .then((res) => {
-          resolve(res.data);
+          resolve(res.data)
         })
         .catch((err) => {
-          console.log("here i am");
-          console.warn(err);
-          reject(err);
-        });
-    });
+          console.log('here i am')
+          console.warn(err)
+          reject(err)
+        })
+    })
   }
 
   delete = (url) =>
@@ -48,38 +49,38 @@ class GenericService {
       axios
         .delete(url)
         .then((res) => {
-          resolve(res.data);
+          resolve(res.data)
         })
         .catch((err) => {
-          reject(err);
-        });
-    });
+          reject(err)
+        })
+    })
 
   put = (url, data) =>
     new Promise((resolve, reject) => {
       axios
         .put(url, data)
         .then((res) => {
-          resolve(res.data);
+          resolve(res.data)
         })
         .catch((err) => {
-          reject(err);
-        });
-    });
+          reject(err)
+        })
+    })
 
   upload(file, name, onUploadProgress) {
-    let formData = new FormData();
+    let formData = new FormData()
 
-    console.log(file);
-    const extension = file.name.split(".");
+    console.log(file)
+    const extension = file.name.split('.')
     // formData.append("files", renameFile(file, `${name}.${extension[extension.length - 1]};`));
 
-    return axios.post("upload", formData, {
+    return axios.post('upload', formData, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       },
       onUploadProgress,
-    });
+    })
   }
 }
-export default GenericService;
+export default GenericService
