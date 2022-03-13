@@ -113,7 +113,6 @@ function Search() {
                     <p class='card-text'>
                       Rs {product.price} / {product.duration}
                     </p>
-
                     <Link to='/'>
                       <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
                         View Product
@@ -161,7 +160,6 @@ function Search() {
                     <p class='card-text'>
                       Rs {product.price} / {product.duration}
                     </p>
-
                     <Link to='/'>
                       <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
                         View Product

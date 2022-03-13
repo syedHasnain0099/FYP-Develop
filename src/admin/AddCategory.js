@@ -1,9 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import categoryService from '../services/CategoryService'
 function AddCategory() {
+  const [categories, setCategories] = useState([])
+  const [category, setCategory] = useState('')
   const [name, setName] = useState('')
   const [error, setError] = useState(false)
   const [success, setSuccess] = useState(false)
+  const init = () => {
+    categoryService
+      .getCategories()
+      .then((response) => {
+        setCategories(response)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
+  const categoryHandleChange = (event) => {
+    const index = event.target.selectedIndex
+    const el = event.target.childNodes[index]
+    const option = el.getAttribute('id')
+    setCategory = option
+  }
   const handleChange = (e) => {
     setError('')
     setName(e.target.value)
@@ -35,6 +58,22 @@ function AddCategory() {
   const newCategroyForm = () => (
     <form onSubmit={clickSubmit}>
       <div className='form-group'>
+        <label className='text-muted'>Category</label>
+        <select
+          onChange={categoryHandleChange}
+          value={category}
+          className='form-control'
+        >
+          <option>Please Select</option>
+          {categories &&
+            categories.map((cat, index) => (
+              <option key={index} id={cat.id} value={cat.name}>
+                {cat.name}
+              </option>
+            ))}
+        </select>
+      </div>
+      <div className='form-group'>
         <label for='addcategory'>Name</label>
         <input
           type='text'
@@ -46,13 +85,14 @@ function AddCategory() {
           required
         />
       </div>
+
       <button className='btn btn-outline-primary'>Create Categroy</button>
     </form>
   )
   return (
     <div className='container mt-4'>
       <div className='row'>
-        <h3 className='card-header'>Create Category</h3>
+        <h3 className='card-header'>Create Sub-Category</h3>
         <div className='mt-4 col-md-8 offset-md-2'>{newCategroyForm()}</div>
         {goBack()}
       </div>
