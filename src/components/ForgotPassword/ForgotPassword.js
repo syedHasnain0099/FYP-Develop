@@ -19,27 +19,31 @@ function ForgotPassword(callback) {
     }
     setErrors(validateInfo(values))
     setIsSubmitting(true)
+    checkEmailExistance(values.email)
+  }
+  
+  const checkEmailExistance = (email) => {
     userService
-				.forgetPassword(values.email)
+      .userExists(email)
+        .then(res => {
+          if(res === true){
+            forgetPassword(email)
+          }
+          else {
+            console.log("Email doesn't exists")
+          }
+        })
+        .catch(err => console.log(err))
+  }
+  const forgetPassword = (email) => {
+     userService
+				.forgetPassword(email)
 				.then((data) => {
 					console.log('Your user received an email')
 				})
 				.catch((err) => {
           console.log('An error occurred:', err.response)
 				})
-    // axios
-      // .post(
-      //   'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/auth/forgot-password',
-      //   {
-      //     email: values.email, // user's email
-      //   }
-      // )
-      // .then((response) => {
-      //   console.log('Your user received an email')
-      // })
-      // .catch((error) => {
-      //   console.log('An error occurred:', error.response)
-      // })
   }
   useEffect(() => {
     if (Object.keys(errors) === 0 && isSubmitting) {
