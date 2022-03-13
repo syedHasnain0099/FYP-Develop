@@ -5,10 +5,7 @@ import axios from 'axios'
 axios.defaults.baseURL = 'http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/';
 const herokuLink = 'https://strapi-project-deployement.herokuapp.com/api/'
 class UserService extends GenericService {
-  // eslint-disable-next-line no-useless-constructor
-  // constructor() {
-  //   super();
-  // }
+
   loginUser = (ID, Password) =>
     new Promise((resolve, reject) => {
       this.post(`auth/local`, {
@@ -16,10 +13,10 @@ class UserService extends GenericService {
         password: Password,
       })
         .then((data) => {
-          localStorage.setItem('token', JSON.stringify(data.jwt))
+          localStorage.setItem('token', data.jwt)
+          this.tokenUpdate()
           localStorage.setItem('user', JSON.stringify(data.user))
           console.log(JSON.stringify(data.user))
-          // this.tokenUpdate()
           resolve(data.user)
         })
         .catch((err) => {
@@ -30,7 +27,7 @@ class UserService extends GenericService {
 
   forgetPassword = (email) =>
     new Promise((resolve, reject) => {
-      //this.tokenUpdate()
+      this.tokenUpdate()
       this.post(`auth/forgot-password`, {
         email,
       })
@@ -38,53 +35,62 @@ class UserService extends GenericService {
           resolve(data)
         })
         .catch((err) => {
+          console.log("PLease provide a valid email address")
+          // this.findUser()
+          // .then((res)=> {
+          //   console.log()
+          // })
+    //          if (!user) {
+    //   console.log('This email does not exist');
+    // }
+
+    // // User blocked
+    // if (user.blocked) {
+    //   console.log('This user is disabled');
+    // }
           reject(err)
         })
     })
 
   resetPassword = (code, password) =>
     new Promise((resolve, reject) => {
-      //this.tokenUpdate()
+      this.tokenUpdate()
       this.post(`auth/reset-password`, {
         code,
         password,
         passwordConfirmation: password,
       })
         .then((data) => {
+          console.log("confirmation email has been set")
           resolve(data)
         })
         .catch((err) => {
           reject(err)
         })
     })
-  register = (username, email, password) =>
-    this.post(`users/register`, {
-      password,
-      email,
-      username,
-    })
+
 
   logout = async () => {
     await localStorage.removeItem('token')
     await localStorage.removeItem('user')
     console.log('removed')
-    //this.tokenUpdate();
+    this.tokenUpdate();
   }
 
-  isLoggedInToken = () =>
-    typeof localStorage.getItem('token') === 'undefined' ||
-    localStorage.getItem('token') === null
+  // isLoggedInToken = () =>
+  //   typeof localStorage.getItem('token') === 'undefined' ||
+  //   localStorage.getItem('token') === null
 
-  isLoggedIn = () =>
-    new Promise((resolve, reject) => {
-      if (this.isLoggedInToken()) {
-        this.tokenUpdate(null)
-        reject(new Error('Not Logged In'))
-        return false
-      }
-      resolve()
-      return true
-    })
+  // isLoggedIn = () =>
+  //   new Promise((resolve, reject) => {
+  //     if (this.isLoggedInToken()) {
+  //       this.tokenUpdate(null)
+  //       reject(new Error('Not Logged In'))
+  //       return false
+  //     }
+  //     resolve()
+  //     return true
+  //   })
 
   getLoggedInUser = () => {
     new Promise((resolve, reject) => {
@@ -108,18 +114,48 @@ class UserService extends GenericService {
         })
     })
 
-  findUser = (ID) =>
+    
+    addUser = (username, email, password, type) => {
+      this.tokenUpdate();
+    return this.post(`auth/local/register`, {
+      username,
+      email,
+      password,
+      type,
+    })
+  }
+  
+  findUserbyName = (name) =>
     new Promise((resolve, reject) => {
       const query = qs.stringify({
         filters: {
           username: {
-            $eq: ID,
+            $eq: name,
           },
         },
       })
       this.get(`users?${query}`, {})
         .then((user) => {
-          console.log(user)
+          if (user.length > 0) {
+            return resolve(user[0])
+          }
+          reject(new Error('User not found'))
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+      findUserbyEmail = (email) =>
+    new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
+          email: {
+            $eq: email,
+          },
+        },
+      })
+      this.get(`users?${query}`, {})
+        .then((user) => {
           if (user.length > 0) {
             return resolve(user[0])
           }
@@ -131,18 +167,10 @@ class UserService extends GenericService {
         })
     })
 
-  addUser = (username, email, password, type) =>
-    this.post(`${herokuLink}auth/local/register`, {
-      username,
-      email,
-      password,
-      type,
-    })
-
   userDoesNotExist = (ID) =>
-    new Promise((resolve, reject) => {
-      const query = qs.stringify({
-        filters: {
+  new Promise((resolve, reject) => {
+    const query = qs.stringify({
+      filters: {
           username: {
             $eq: ID,
           },
@@ -158,57 +186,8 @@ class UserService extends GenericService {
           reject(err)
         })
     })
-
-  extractData(attributes) {
-    const { contact, user: user_object, image: img } = attributes
-    let phone, address, city, province
-    if (contact) {
-      let city_object
-      ;({ phone, address, city: city_object } = contact)
-      const { data: city_data } = city_object
-      const { attributes: city_attributes } = city_data
-      ;({ name: city, province } = city_attributes)
-    }
-
-    let u_id, username, name, email, blocked, dob, gender
-
-    if (user_object) {
-      const { data: u_data } = user_object
-      if (u_data) {
-        const { id: u_idd, attributes: u_attributes } = u_data
-        ;({ username, name, email, blocked, dob, gender } = u_attributes)
-        u_id = u_idd
-      }
-    }
-
-    let image = undefined
-    let imageID
-    if (img) {
-      const { data: img_data } = img
-      if (img_data) {
-        image = img_data.attributes.url
-        imageID = img_data.id
-      }
-    }
-
-    const user = {
-      u_id,
-      username,
-      name,
-      email,
-      blocked,
-      phone,
-      image,
-      imageID,
-      gender,
-      address,
-      city,
-      province,
-      dob,
-    }
-    return user
-  }
-
+  
+  
   lock = (ID) =>
     this.put(`users/${ID}`, {
       blocked: true,

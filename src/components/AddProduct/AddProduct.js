@@ -91,9 +91,9 @@ function AddProduct() {
   const clickSubmit = (event) => {
     event.preventDefault()
     setValues({ ...values, error: '', loading: true })
+    console.log(mediaIds)
     postAd(
-      { productname, description, rent, duration, subcategory, quantity, id },
-      mediaIds
+      { productname, description, rent, duration, subcategory, quantity, id },mediaIds
     )
   }
   const postAd = (props, mediaIds) => {

@@ -51,20 +51,20 @@ class ProductService extends GenericService {
     }
    
   postAd = (name,description,rent, duration,subcategory,quantity,id,mediaIds) => {
-      return this.authPost(`requested-ads`, 
-      {
-        "data":{
-          "product_name":name,
-          "product_decription":description,
-          "product_media":mediaIds,
-          "product_quantity":quantity,
-          "estimated_rent":rent,
-          "estimated_duration":duration,
-          "users_permissions_user":id,
-          "category_list":subcategory
-      }
-    }
-    )
+      return this.post(`requested-ads`, 
+        {
+          "data": {
+            "product_name":name,
+            "product_decription":description,
+            "product_media":mediaIds,
+            "product_quantity":quantity,
+            "estimated_rent":rent,
+            "estimated_duration":duration,
+            "users_permissions_user":id,
+            "category_list":subcategory
+          }
+        }
+      )
   }
   uploadMedia = (files) => {
     const mediaIds = []
@@ -84,7 +84,7 @@ class ProductService extends GenericService {
           {
             onUploadProgress: (progress) => {
               const{loaded,total} = progress;
-              const percentage = (loaded/total)
+              const percentage = `${Math.round(loaded/total*100)}%`
               console.log("loading percentage: ",percentage)
             }
           }

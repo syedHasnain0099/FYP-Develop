@@ -1,21 +1,22 @@
 import axios from 'axios';
 // import renameFile from 'src/utils/renameFile';
 
-// axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
+axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8' || 'application/json;';
 
 class GenericService {
-  // tokenUpdate = () => {
-  //   const token = localStorage.getItem('token');
-  //   if (token)
-  //     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-  //   else
-  //     delete axios.defaults.headers.common.Authorization;
-  // };
+  tokenUpdate = () => {
+    const token = localStorage.getItem('token');
+    if (token!=null)
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    else
+      delete axios.defaults.headers.common.Authorization;
+  };
 
   get = (url, data) =>
     new Promise((resolve, reject) => {
       // delete axios.defaults.headers.common.Authorization;
+      this.tokenUpdate()
       axios
         .get(url, data)
         .then((res) => {
@@ -28,7 +29,6 @@ class GenericService {
 
     post = (url, data) => {
        console.log("data: ",JSON.stringify(data))
-       if(axios.defaults.headers.common.Authorization) delete axios.defaults.headers.common.Authorization;
     return new Promise((resolve, reject) => {
       axios
         .post(url, JSON.stringify(data))
@@ -37,20 +37,6 @@ class GenericService {
         })
         .catch((err) => {
           console.log("here i am");
-          console.warn(err);
-          reject(err);
-        });
-    });
-  }
-    
-  authPost = (url, data) =>{
-    return new Promise((resolve, reject) => {
-      axios
-        .post(url, JSON.stringify(data))
-        .then((res) => {
-          resolve(res.data);
-        })
-        .catch((err) => {
           console.warn(err);
           reject(err);
         });
