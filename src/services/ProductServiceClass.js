@@ -146,11 +146,12 @@ class ProductService extends GenericService {
         .catch((err) => reject(err))
     })
   }
-  search = (keyword, subCatgeryId = '') => {
+  search = (keyword, subCatgeryName = '') => {
     const filteredProducts = []
     let query;
     return new Promise((resolve,reject) => {
-      if(subCatgeryId = ''){
+      if(subCatgeryName == ''){
+        console.log("inside if")
          query = qs.stringify({
           populate: this.populate,
           filters: {
@@ -161,12 +162,14 @@ class ProductService extends GenericService {
         })
       }
       else{
+        console.log("subcatgeoyr id : ",subCatgeryName)
+        console.log("inside else")
          query = qs.stringify({
           populate: this.populate,
           filters: {
             category_list: {
               name: {
-                $eq: subCatgeryId,
+                $eq: subCatgeryName,
               }
             },
             name: {

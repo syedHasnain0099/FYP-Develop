@@ -5,13 +5,6 @@ const subcategoryName='';
 const categoryId=1;
 const searchKeyword='phone'
 
-const addSubCategory = (subcategoryName,categoryId) => {
-  productService.addSubCategory(subcategoryName,categoryId)
-    .then(data => {
-      console.log(`${data} is added`)
-    })
-    .catch(err => console.log(err))
-}
 const getRequestedAds = () => {
   productService
   .getRequestedAds()
@@ -22,8 +15,8 @@ const getRequestedAds = () => {
       console.log(err)
     })
 }
-const searchByKeyword = (keyword) => {
-  productService.search(keyword)
+const searchByKeyword = (keyword,subcategoryName) => {
+  productService.search(keyword,subcategoryName)
     .then(res => {
       console.log("search results: ",res)
     })
@@ -31,7 +24,7 @@ const searchByKeyword = (keyword) => {
 }
 function ApproveAd() {
   getRequestedAds();
-  searchByKeyword(searchKeyword);
+  searchByKeyword(searchKeyword,"Mobiles");
   return <div>ApproveAd</div>
 }
 
