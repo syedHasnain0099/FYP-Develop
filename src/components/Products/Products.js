@@ -15,6 +15,8 @@ function Products() {
   // productService.getProductsByCategory('Air Purifiers')
   // productService.find('iphone 8 plus')
   // productService.getAllAds()
+  
+
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true)

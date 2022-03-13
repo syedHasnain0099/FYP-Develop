@@ -30,6 +30,7 @@ class GenericService {
 
     post = (url, data) => {
        console.log("data: ",JSON.stringify(data))
+       this.tokenUpdate()
     return new Promise((resolve, reject) => {
       axios
         .post(url, JSON.stringify(data))

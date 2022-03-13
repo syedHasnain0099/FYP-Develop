@@ -69,28 +69,12 @@ class UserService extends GenericService {
         })
     })
 
-
   logout = async () => {
     await localStorage.removeItem('token')
     await localStorage.removeItem('user')
     console.log('removed')
     this.tokenUpdate();
   }
-
-  // isLoggedInToken = () =>
-  //   typeof localStorage.getItem('token') === 'undefined' ||
-  //   localStorage.getItem('token') === null
-
-  // isLoggedIn = () =>
-  //   new Promise((resolve, reject) => {
-  //     if (this.isLoggedInToken()) {
-  //       this.tokenUpdate(null)
-  //       reject(new Error('Not Logged In'))
-  //       return false
-  //     }
-  //     resolve()
-  //     return true
-  //   })
 
   getLoggedInUser = () => {
     new Promise((resolve, reject) => {
@@ -103,6 +87,7 @@ class UserService extends GenericService {
       }
     })
   }
+
   getUser = (ID) =>
     new Promise((resolve, reject) => {
       this.get(`users/${ID}`, {})
@@ -114,7 +99,6 @@ class UserService extends GenericService {
         })
     })
 
-    
     addUser = (username, email, password, type) => {
       this.tokenUpdate();
     return this.post(`auth/local/register`, {
@@ -167,13 +151,16 @@ class UserService extends GenericService {
         })
     })
 
-  userDoesNotExist = (ID) =>
+  userDoesNotExist = (name,email) =>
   new Promise((resolve, reject) => {
     const query = qs.stringify({
       filters: {
           username: {
-            $eq: ID,
+            $eq: name
           },
+          email: {
+            $eq: email
+          }
         },
       })
       this.get(`users?${query}`, {})
@@ -187,7 +174,6 @@ class UserService extends GenericService {
         })
     })
   
-  
   lock = (ID) =>
     this.put(`users/${ID}`, {
       blocked: true,
@@ -197,6 +183,21 @@ class UserService extends GenericService {
     this.put(`users/${ID}`, {
       blocked: false,
     })
+  
+  // isLoggedInToken = () =>
+  //   typeof localStorage.getItem('token') === 'undefined' ||
+  //   localStorage.getItem('token') === null
+
+  // isLoggedIn = () =>
+  //   new Promise((resolve, reject) => {
+  //     if (this.isLoggedInToken()) {
+  //       this.tokenUpdate(null)
+  //       reject(new Error('Not Logged In'))
+  //       return false
+  //     }
+  //     resolve()
+  //     return true
+  //   })
 }
 
 export default UserService

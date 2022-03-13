@@ -49,7 +49,7 @@ class ProductService extends GenericService {
   }
     
    
-  postAd = (name,description,rent, duration,subcategory,quantity,id,mediaIds) => {
+  postAd = (name,description,rent, duration,categoryId,quantity,id,mediaIds) => {
       return this.post(`requested-ads`, 
         {
           "data": {
@@ -60,10 +60,19 @@ class ProductService extends GenericService {
             "estimated_rent":rent,
             "estimated_duration":duration,
             "users_permissions_user":id,
-            "category_list":subcategory
+            "category_list":categoryId
           }
         }
       )
+  }
+  addSubCategory = (subcategoryName, categoryId) => {
+    return this.post(`category-lists`,
+    {
+      "data": {
+        "name":subcategoryName,
+        "category":categoryId
+      }
+    })
   }
   uploadMedia = (files) => {
     const mediaIds = []
@@ -133,6 +142,50 @@ class ProductService extends GenericService {
         filters: {
           name: productName,
         },
+      })
+      this.get(`products?${query}`)
+        .then((response) => {
+          const { data } = response
+          for (let ad of data) {
+            filteredProducts.push(this.extractProducts(ad))
+          }
+          resolve(filteredProducts)
+        })
+        .catch((err) => reject(err))
+    })
+  }
+  search = (keyword) => {
+    const filteredProducts = []
+    return new Promise((resolve,reject) => {
+      const query = qs.stringify({
+        populate: this.populate,
+        filters: {
+          name: {
+            $containsi: keyword,
+          },
+        }
+      })
+      this.get(`products?${query}`)
+        .then((response) => {
+          const { data } = response
+          for (let ad of data) {
+            filteredProducts.push(this.extractProducts(ad))
+          }
+          resolve(filteredProducts)
+        })
+        .catch((err) => reject(err))
+    })
+  }
+  searchbySubCategory = (keyword,subcategoryId) => {
+    const filteredProducts = []
+    return new Promise((resolve,reject) => {
+      const query = qs.stringify({
+        populate: this.populate,
+        filters: {
+          name: {
+            $containsi: keyword,
+          },
+        }
       })
       this.get(`products?${query}`)
         .then((response) => {
