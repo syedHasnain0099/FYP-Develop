@@ -53,6 +53,9 @@ function Login(callback) {
     </div>
   )
 
+  const checkUserExistance = (name) => {
+
+  }
   const signin = (user) => {
     userService
       .loginUser(user.email, user.password)

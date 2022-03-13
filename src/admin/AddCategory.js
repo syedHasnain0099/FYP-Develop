@@ -35,7 +35,16 @@ function AddCategory() {
     e.preventDefault()
     setError('')
     setSuccess(false)
-    //make request to api to create category
+    //make request to api to create subcategory
+    // addSubCategory(subCategoryName,id)
+  }
+  const addSubCategory = (subcategoryName,categoryId) => {
+    categoryService.addSubCategory(subcategoryName,categoryId)
+      .then(data => {
+        console.log(`category is added`)
+      })
+      .catch(err => console.log(err))
+
   }
   const showSuccess = () => {
     if (success) {

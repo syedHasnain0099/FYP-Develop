@@ -65,15 +65,7 @@ class ProductService extends GenericService {
         }
       )
   }
-  addSubCategory = (subcategoryName, categoryId) => {
-    return this.post(`category-lists`,
-    {
-      "data": {
-        "name":subcategoryName,
-        "category":categoryId
-      }
-    })
-  }
+  
   uploadMedia = (files) => {
     const mediaIds = []
     const data = new FormData()

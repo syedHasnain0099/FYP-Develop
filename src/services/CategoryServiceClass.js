@@ -19,6 +19,15 @@ class CategoryService extends GenericService {
         .catch((err) => reject(err))
     })
   }
+  addSubCategory = (subcategoryName, categoryId) => {
+    return this.post(`category-lists`,
+    {
+      "data": {
+        "name":subcategoryName,
+        "category":categoryId
+      }
+    })
+  }
   getCategoryList = (categoryName) => {
     const categoryList = []
     return new Promise((resolve, reject) => {
