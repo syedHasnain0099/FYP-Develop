@@ -11,6 +11,7 @@ function AddCategory() {
     categoryService
       .getCategories()
       .then((response) => {
+        console.log(response)
         setCategories(response)
       })
       .catch((err) => {
@@ -22,10 +23,13 @@ function AddCategory() {
     init()
   }, [])
   const categoryHandleChange = (event) => {
+    console.log('event occurs')
     const index = event.target.selectedIndex
     const el = event.target.childNodes[index]
     const option = el.getAttribute('id')
-    setCategory = option
+    console.log(option)
+    setCategory(option)
+    console.log(category)
   }
   const handleChange = (e) => {
     setError('')
@@ -35,16 +39,21 @@ function AddCategory() {
     e.preventDefault()
     setError('')
     setSuccess(false)
-    //make request to api to create subcategory
-    // addSubCategory(subCategoryName,id)
+    console.log('set name', name)
+    console.log('ste id', category)
+    addSubCategory(name, category)
   }
-  const addSubCategory = (subcategoryName,categoryId) => {
-    categoryService.addSubCategory(subcategoryName,categoryId)
-      .then(data => {
-        console.log(`category is added`)
+  const addSubCategory = (name, category) => {
+    categoryService
+      .addSubCategory(name, category)
+      .then((data) => {
+        console.log(`category is added`, data)
+        setError('')
+        setSuccess(true)
       })
-      .catch(err => console.log(err))
-
+      .catch((err) => {
+        setError(true)
+      })
   }
   const showSuccess = () => {
     if (success) {
@@ -53,7 +62,7 @@ function AddCategory() {
   }
   const showError = () => {
     if (error) {
-      return <h3 className='text-danger'>Category should be unique</h3>
+      return <h3 className='text-danger'>{name} should be unique</h3>
     }
   }
   const goBack = () => (
@@ -76,7 +85,7 @@ function AddCategory() {
           <option>Please Select</option>
           {categories &&
             categories.map((cat, index) => (
-              <option key={index} id={cat.id} value={cat.name}>
+              <option key={index} id={cat.id} value={cat.id}>
                 {cat.name}
               </option>
             ))}
@@ -102,7 +111,11 @@ function AddCategory() {
     <div className='container mt-4'>
       <div className='row'>
         <h3 className='card-header'>Create Sub-Category</h3>
-        <div className='mt-4 col-md-8 offset-md-2'>{newCategroyForm()}</div>
+        <div className='mt-4 col-md-8 offset-md-2'>
+          {showError()}
+          {showSuccess()}
+          {newCategroyForm()}
+        </div>
         {goBack()}
       </div>
     </div>
