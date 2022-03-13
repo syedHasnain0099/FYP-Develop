@@ -39,7 +39,7 @@ function Login(callback) {
     event.preventDefault()
     setErrors(validateInfo(values))
     setIsSubmitting(true)
-    signin({ email, password })
+    checkUserExistance({ email, password })
   }
   //update from video private route for admin 3:02
   const redirectUser = () => {
@@ -53,8 +53,18 @@ function Login(callback) {
     </div>
   )
 
-  const checkUserExistance = (name) => {
-
+  const checkUserExistance = (user) => {
+    userService
+      .userExists(user.email)
+      .then(res => {
+        if(res === true){
+          signin(user)
+        }
+        else {
+          console.log("user with these credentials doesn't exists")
+        }
+      })
+      .catch(err => console.log(err))
   }
   const signin = (user) => {
     userService

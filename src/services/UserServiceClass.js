@@ -151,13 +151,10 @@ class UserService extends GenericService {
         })
     })
 
-  userDoesNotExist = (name,email) =>
+  userExists = (email) =>
   new Promise((resolve, reject) => {
     const query = qs.stringify({
       filters: {
-          username: {
-            $eq: name
-          },
           email: {
             $eq: email
           }
@@ -165,9 +162,11 @@ class UserService extends GenericService {
       })
       this.get(`users?${query}`, {})
         .then((response) => {
-          console.log(response, query)
-          if (response.length > 0) return reject(new Error('Already taken'))
-          resolve()
+          console.log(response)
+          if (response.length > 0) return resolve(true)
+          // reject(new Error('Already taken'))
+          resolve(false)
+          // reject(new Error('user does not exists'))
         })
         .catch((err) => {
           reject(err)
