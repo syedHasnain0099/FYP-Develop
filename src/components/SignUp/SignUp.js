@@ -13,8 +13,8 @@ const SignUp = () => {
     error: '',
     success: '',
   })
-  const [emailExists, setEmailExists] = useState(false);
-  const [usernameExists, setUsernameExists] = useState(false);
+  const [emailExists, setEmailExists] = useState(false)
+  const [usernameExists, setUsernameExists] = useState(false)
   const { username, email, password, password2, error, success } = values
   const [errors, setErrors] = useState({})
 
@@ -42,7 +42,7 @@ const SignUp = () => {
     console.log('errors: ', Object.keys(errors))
     if (Object.keys(errors).length === 0) {
       console.log('field errors are not present')
-      checkUserExistence({ username, email, password, password2 });
+      checkUserExistence({ username, email, password, password2 })
       // console.log("inside if: ",(!usernameExists && !emailExists))
       // if(!usernameExists && !emailExists)
       // {
@@ -65,32 +65,30 @@ const SignUp = () => {
       New account is created. please Signin
     </div>
   )
-  const checkUserExistence = async(user) => {
+  const checkUserExistence = async (user) => {
     userService
       .userExists(user.email)
-      .then(res => {
-        if(res == true){
-          console.log("email already exists! please enter a new one ")
+      .then((res) => {
+        if (res == true) {
+          console.log('email already exists! please enter a new one ')
           setEmailExists(true)
-        }
-        else setEmailExists(false)
+        } else setEmailExists(false)
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err))
 
-     userService
+    userService
       .findUserbyName(user.username)
-      .then(res => {
-        if(res == true){
-          console.log("username already exists! please enter some else: ")
+      .then((res) => {
+        if (res == true) {
+          console.log('username already exists! please enter some else: ')
           setUsernameExists(true)
-        }
-        else setUsernameExists(false)
+        } else setUsernameExists(false)
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err))
 
-      if(!emailExists && !usernameExists){
-        signup(user)
-      }
+    if (!emailExists && !usernameExists) {
+      signup(user)
+    }
     // userService
     //   .findUserbyName(user.username)
     //   .then(user => {
