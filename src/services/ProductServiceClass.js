@@ -148,9 +148,10 @@ class ProductService extends GenericService {
   }
   search = (keyword, subCatgeryId = '') => {
     const filteredProducts = []
+    let query;
     return new Promise((resolve,reject) => {
       if(subCatgeryId = ''){
-        const query = qs.stringify({
+         query = qs.stringify({
           populate: this.populate,
           filters: {
             name: {
@@ -160,14 +161,17 @@ class ProductService extends GenericService {
         })
       }
       else{
-        const query = qs.stringify({
+         query = qs.stringify({
           populate: this.populate,
           filters: {
             category_list: {
               name: {
-                $containsi: subCatgeryId,
+                $eq: subCatgeryId,
               }
             },
+            name: {
+              $containsi: keyword
+            }
           }
         })
       }
@@ -182,28 +186,7 @@ class ProductService extends GenericService {
         .catch((err) => reject(err))
     })
   }
-  searchbySubCategory = (keyword,subcategoryId) => {
-    const filteredProducts = []
-    return new Promise((resolve,reject) => {
-      const query = qs.stringify({
-        populate: this.populate,
-        filters: {
-          name: {
-            $containsi: keyword,
-          },
-        }
-      })
-      this.get(`products?${query}`)
-        .then((response) => {
-          const { data } = response
-          for (let ad of data) {
-            filteredProducts.push(this.extractProducts(ad))
-          }
-          resolve(filteredProducts)
-        })
-        .catch((err) => reject(err))
-    })
-  }
+
   extractAds = (ad) => {
     const { id, attributes } = ad
     const {
