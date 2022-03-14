@@ -55,13 +55,13 @@ function ResetPage(callback) {
     }
   }, [errors])
   const showError = () => (
-    <div className='login-form-error' style={{ display: error ? '' : 'none' }}>
+    <div className='reset-form-error' style={{ display: error ? '' : 'none' }}>
       {error}
     </div>
   )
   const showSuccess = () => (
     <div
-      className='signup-form-success'
+      className='reset-form-success'
       style={{ display: success ? '' : 'none' }}
     >
       {success}

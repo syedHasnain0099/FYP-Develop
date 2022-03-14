@@ -117,7 +117,7 @@
   color: #27cdff;
   font-weight: 600;
 }
-.login-form-error {
+.reset-form-error {
   font-size: 0.8rem;
   margin: 20px;
   color: #f00e0e;
@@ -126,7 +126,7 @@
   margin-left: 72px;
   margin-top: 72px;
 }
-.signup-form-success {
+.reset-form-success {
   font-size: 0.8rem;
   margin: 20px;
   color: white;

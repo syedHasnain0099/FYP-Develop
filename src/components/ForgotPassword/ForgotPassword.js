@@ -63,13 +63,16 @@ function ForgotPassword(callback) {
     }
   }, [errors])
   const showError = () => (
-    <div className='login-form-error' style={{ display: error ? '' : 'none' }}>
+    <div
+      className='forgotpassword-form-error'
+      style={{ display: error ? '' : 'none' }}
+    >
       {error}
     </div>
   )
   const showSuccess = () => (
     <div
-      className='signup-form-success'
+      className='forgotpassword-form-success'
       style={{ display: success ? '' : 'none' }}
     >
       {success}

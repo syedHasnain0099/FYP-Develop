@@ -47,7 +47,7 @@ const SignUp = () => {
       {error}
     </div>
   )
-  const showSuccess = ({ username, email, password, password2 }) => (
+  const showSuccess = () => (
     <div
       className='signup-form-success'
       style={{ display: success ? '' : 'none' }}
@@ -62,7 +62,7 @@ const SignUp = () => {
         if (res == true) {
           setValues({
             ...values,
-            error: 'email already exists! please enter a new one',
+            error: 'Email already exists! please enter a new one',
             success: false,
           })
         } else {
@@ -73,7 +73,7 @@ const SignUp = () => {
                 console.log('username already exists! please enter some else: ')
                 setValues({
                   ...values,
-                  error: 'username already exists! please enter some else:',
+                  error: 'Username already exists! please enter a new one',
                   success: false,
                 })
               } else {
@@ -220,7 +220,7 @@ const SignUp = () => {
         </span>
       </form>
       {showError()}
-      {showSuccess({ username, email, password, password2 })}
+      {showSuccess()}
     </div>
   )
 }
