@@ -29,35 +29,13 @@ function ResetPage(callback) {
     setIsSubmitting(true)
     console.log(values)
     userService
-				.resetPassword(resetCode,values.password)
-				.then((data) => {
-					console.log("Your user's password has been reset.")
-				})
-				.catch((err) => {
-          console.log('An error occurred:', err.response)
-				})
-    // Request API to reset password.
-    // axios
-    //   .post(
-    //     'http://rentalelectronics-env.eba-zs7v2ewu.ap-south-1.elasticbeanstalk.com/api/auth/reset-password',
-    //     {
-    //       code: currentURL, // code contained in the reset link of step 3.
-    //       password: values.password,
-    //       passwordConfirmation: values.password2
-    //     }
-        // ,
-        // {
-        //   headers:{
-        //     authorization:`Bearer ${localStorage.getItem('token')}`
-        //   }
-        // }
-      // )
-      // .then((response) => {
-      //   console.log("Your user's password has been reset.")
-      // })
-      // .catch((error) => {
-      //   console.log('An error occurred:', error.response)
-      // })
+      .resetPassword(resetCode, values.password)
+      .then((data) => {
+        console.log("Your user's password has been reset.")
+      })
+      .catch((err) => {
+        console.log('An error occurred:', err.response)
+      })
   }
   useEffect(() => {
     if (Object.keys(errors) === 0 && isSubmitting) {

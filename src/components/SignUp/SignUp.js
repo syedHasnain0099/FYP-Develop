@@ -13,8 +13,8 @@ const SignUp = () => {
     error: '',
     success: '',
   })
-  const [emailExists, setEmailExists] = useState(false)
-  const [usernameExists, setUsernameExists] = useState(false)
+  const [emailExists, setEmailExists] = useState('')
+  const [usernameExists, setUsernameExists] = useState('')
   const { username, email, password, password2, error, success } = values
   const [errors, setErrors] = useState({})
 
@@ -33,7 +33,7 @@ const SignUp = () => {
   const clearErrorFields = () => {
     setErrors('')
   }
-  async function submitHandler(event) {
+  function submitHandler(event) {
     clearErrorFields()
     event.preventDefault()
     console.log('values: ', values)
@@ -43,15 +43,18 @@ const SignUp = () => {
     if (Object.keys(errors).length === 0) {
       console.log('field errors are not present')
       checkUserExistence({ username, email, password, password2 })
-      // console.log("inside if: ",(!usernameExists && !emailExists))
-      // if(!usernameExists && !emailExists)
-      // {
-      //   signup({ username, email, password, password2 })
-      // }
     }
+    setTimeout(function () {
+      console.log('email exists', emailExists)
+      console.log('username exists', usernameExists)
+      // if (!emailExists && !usernameExists) {
+      //   signup(user)
+      // }
+    }, 5000)
 
     console.log(values)
   }
+
   const showError = () => (
     <div className='signup-form-error' style={{ display: error ? '' : 'none' }}>
       {error}
@@ -65,13 +68,14 @@ const SignUp = () => {
       New account is created. please Signin
     </div>
   )
-  const checkUserExistence = async (user) => {
+  const checkUserExistence = (user) => {
     userService
       .userExists(user.email)
       .then((res) => {
         if (res == true) {
-          console.log('email already exists! please enter a new one ')
+          console.log('email already exists! please enter a new one ', res)
           setEmailExists(true)
+          console.log(emailExists)
         } else setEmailExists(false)
       })
       .catch((err) => console.log(err))
@@ -82,24 +86,12 @@ const SignUp = () => {
         if (res == true) {
           console.log('username already exists! please enter some else: ')
           setUsernameExists(true)
+          console.log(usernameExists)
         } else setUsernameExists(false)
       })
       .catch((err) => console.log(err))
-
-    if (!emailExists && !usernameExists) {
-      signup(user)
-    }
-    // userService
-    //   .findUserbyName(user.username)
-    //   .then(user => {
-    //     setUsernameExists(true)
-    //     console.log("username already exists? ",usernameExists)
-    //   })
-    //   .catch(err => {
-    //     if(err === 'User not found') setUsernameExists(false)
-    //     console.log("username already exists? ",usernameExists)
-    //   })
   }
+
   const signup = (user) => {
     userService
       .addUser(user.username, user.email, user.password, 'user')

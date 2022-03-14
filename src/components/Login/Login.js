@@ -20,13 +20,13 @@ function Login(callback) {
     error: '',
     redirectToReferrer: false,
   })
-  const addUser = () => {
-    const emailCopy = email.split('@')
-    dispatch({
-      type: 'ADD_USER',
-      user: emailCopy[0],
-    })
-  }
+  // const addUser = () => {
+  //   const emailCopy = email.split('@')
+  //   dispatch({
+  //     type: 'ADD_USER',
+  //     user: emailCopy[0],
+  //   })
+  // }
 
   const emailChangeHandler = (event) => {
     setValues({ ...values, error: false, email: event.target.value })
@@ -60,6 +60,10 @@ function Login(callback) {
         if (res === true) {
           signin(user)
         } else {
+          setValues({
+            ...values,
+            error: "User with these credentials doesn't exists",
+          })
           console.log("user with these credentials doesn't exists")
         }
       })

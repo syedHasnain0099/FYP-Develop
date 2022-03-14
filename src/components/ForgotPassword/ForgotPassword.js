@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
 import './ForgotPassword.css'
-import validateInfo from './validateInfo'
-import axios from 'axios'
+import validateInfo1 from './validatInfo1'
 import userService from '../../services/UserService'
 
 function ForgotPassword(callback) {
   const [enteredEmail, setEnteredEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState({})
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const usernameChangeHandler = (event) => {
     setEnteredEmail(event.target.value)
   }
@@ -17,39 +17,64 @@ function ForgotPassword(callback) {
     const values = {
       email: enteredEmail,
     }
-    setErrors(validateInfo(values))
+    var error1 = {}
     setIsSubmitting(true)
-    checkEmailExistance(values.email)
+    setError('')
+    setSuccess('')
+    setErrors(validateInfo1(values))
+    error1 = validateInfo1(values)
+    console.log(error1)
+    if (Object.keys(error1).length === 0) {
+      console.log('field errors are not present')
+      checkEmailExistance(values.email)
+    }
   }
-  
+
   const checkEmailExistance = (email) => {
     userService
       .userExists(email)
-        .then(res => {
-          if(res === true){
-            forgetPassword(email)
-          }
-          else {
-            console.log("Email doesn't exists")
-          }
-        })
-        .catch(err => console.log(err))
+      .then((res) => {
+        if (res === true) {
+          forgetPassword(email)
+          setError('')
+        } else {
+          setError("Email doesn't exists")
+          setSuccess('')
+        }
+      })
+      .catch((err) => console.log(err))
   }
   const forgetPassword = (email) => {
-     userService
-				.forgetPassword(email)
-				.then((data) => {
-					console.log('Your user received an email')
-				})
-				.catch((err) => {
-          console.log('An error occurred:', err.response)
-				})
+    console.log('it is working')
+    userService
+      .forgetPassword(email)
+      .then((data) => {
+        console.log('Your user received an email')
+        setSuccess('User has received an email')
+      })
+      .catch((err) => {
+        setError(`An error occurred: ${err.response}`)
+        console.log('An error occurred:', err.response)
+      })
   }
   useEffect(() => {
     if (Object.keys(errors) === 0 && isSubmitting) {
       callback()
     }
   }, [errors])
+  const showError = () => (
+    <div className='login-form-error' style={{ display: error ? '' : 'none' }}>
+      {error}
+    </div>
+  )
+  const showSuccess = () => (
+    <div
+      className='signup-form-success'
+      style={{ display: success ? '' : 'none' }}
+    >
+      {success}
+    </div>
+  )
   return (
     <div className='forgot-form-content-right'>
       <form className='forgot-form' onSubmit={submitHandler}>
@@ -70,6 +95,8 @@ function ForgotPassword(callback) {
           Recover Password
         </button>
       </form>
+      {showError()}
+      {showSuccess()}
     </div>
   )
 }
