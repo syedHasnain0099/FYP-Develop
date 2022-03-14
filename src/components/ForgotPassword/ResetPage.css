@@ -117,3 +117,20 @@
   color: #27cdff;
   font-weight: 600;
 }
+.login-form-error {
+  font-size: 0.8rem;
+  margin: 20px;
+  color: #f00e0e;
+  font-size: 0.8rem;
+  width: max-content;
+  margin-left: 72px;
+  margin-top: 72px;
+}
+.signup-form-success {
+  font-size: 0.8rem;
+  margin: 20px;
+  color: white;
+  font-size: 0.8rem;
+  width: max-content;
+  margin-left: 72px;
+}

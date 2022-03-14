@@ -12,6 +12,8 @@ function ResetPage(callback) {
   const [enteredPassword2, setEnteredPassword2] = useState('')
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const passwordChangeHandler = (event) => {
     setEnteredPassword(event.target.value)
   }
@@ -25,23 +27,46 @@ function ResetPage(callback) {
       password: enteredPassword,
       password2: enteredPassword2,
     }
+    var error1 = {}
+    setError('')
+    setSuccess('')
     setErrors(validateInfo(values))
     setIsSubmitting(true)
+    error1 = validateInfo(values)
+    if (Object.keys(error1).length === 0) {
+      userService
+        .resetPassword(resetCode, values.password)
+        .then((data) => {
+          console.log("Your user's password has been reset.")
+          setSuccess("Your user's password has been reset.")
+          setError('')
+        })
+        .catch((err) => {
+          setError(`An error occurred: ${err.response}`)
+          setSuccess('')
+          console.log('An error occurred:', err.response)
+        })
+    }
     console.log(values)
-    userService
-      .resetPassword(resetCode, values.password)
-      .then((data) => {
-        console.log("Your user's password has been reset.")
-      })
-      .catch((err) => {
-        console.log('An error occurred:', err.response)
-      })
   }
   useEffect(() => {
     if (Object.keys(errors) === 0 && isSubmitting) {
       callback()
     }
   }, [errors])
+  const showError = () => (
+    <div className='login-form-error' style={{ display: error ? '' : 'none' }}>
+      {error}
+    </div>
+  )
+  const showSuccess = () => (
+    <div
+      className='signup-form-success'
+      style={{ display: success ? '' : 'none' }}
+    >
+      {success}
+    </div>
+  )
   return (
     <div className='reset-form-content-right'>
       <form className='reset-form' onSubmit={submitHandler}>
@@ -74,6 +99,8 @@ function ResetPage(callback) {
           reset
         </button>
       </form>
+      {showError()}
+      {showSuccess()}
     </div>
   )
 }
