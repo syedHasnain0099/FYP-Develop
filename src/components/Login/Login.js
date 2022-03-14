@@ -36,10 +36,15 @@ function Login(callback) {
   }
   const { email, password, error, loading, redirectToReferrer } = values
   const submitHandler = (event) => {
+    var error1 = {}
+    setIsSubmitting(true)
     event.preventDefault()
     setErrors(validateInfo(values))
-    setIsSubmitting(true)
-    checkUserExistance({ email, password })
+    error1 = validateInfo(values)
+    if (Object.keys(error1).length === 0) {
+      console.log('field errors are not present')
+      checkUserExistance({ email, password })
+    }
   }
 
   const redirectUser = () => {
@@ -88,7 +93,7 @@ function Login(callback) {
         }
         setValues({
           ...values,
-          error: err_msg,
+          error: "User with these credentials doesn't exists",
         })
       })
   }
