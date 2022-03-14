@@ -26,6 +26,7 @@ function AddCategory() {
     const index = event.target.selectedIndex
     const el = event.target.childNodes[index]
     const option = el.getAttribute('id')
+    setCategory(option)
   }
   const handleChange = (e) => {
     setError('')

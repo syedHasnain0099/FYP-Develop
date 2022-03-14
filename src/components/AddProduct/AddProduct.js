@@ -93,7 +93,8 @@ function AddProduct() {
     setValues({ ...values, error: '', loading: true })
     console.log(mediaIds)
     postAd(
-      { productname, description, rent, duration, subcategory, quantity, id },mediaIds
+      { productname, description, rent, duration, subcategory, quantity, id },
+      mediaIds
     )
   }
   const postAd = (props, mediaIds) => {
@@ -251,7 +252,7 @@ function AddProduct() {
       className='alert alert-info'
       style={{ display: createdProduct ? '' : 'none' }}
     >
-      <h2>{`${createdProduct}`} is created</h2>
+      <h2>{`${createdProduct}`} ad is created</h2>
     </div>
   )
   const showLoading = () =>

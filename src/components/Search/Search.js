@@ -211,7 +211,6 @@ function Search() {
                     src={product.image_urls[0]}
                     alt={product.name}
                     height='250px'
-                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
                   />
                   <div class='card-body'>
                     <h5
