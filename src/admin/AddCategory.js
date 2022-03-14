@@ -11,7 +11,6 @@ function AddCategory() {
     categoryService
       .getCategories()
       .then((response) => {
-        console.log(response)
         setCategories(response)
       })
       .catch((err) => {
@@ -27,9 +26,6 @@ function AddCategory() {
     const index = event.target.selectedIndex
     const el = event.target.childNodes[index]
     const option = el.getAttribute('id')
-    console.log(option)
-    setCategory(option)
-    console.log(category)
   }
   const handleChange = (e) => {
     setError('')
@@ -81,6 +77,7 @@ function AddCategory() {
           onChange={categoryHandleChange}
           value={category}
           className='form-control'
+          required
         >
           <option>Please Select</option>
           {categories &&
@@ -99,7 +96,6 @@ function AddCategory() {
           onChange={handleChange}
           value={name}
           id='addcategory'
-          autoFocus
           required
         />
       </div>

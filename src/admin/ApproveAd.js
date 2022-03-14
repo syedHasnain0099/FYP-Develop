@@ -1,13 +1,13 @@
 import productService from '../services/ProductService'
 import React from 'react'
 
-const subcategoryName='';
-const categoryId=1;
-const searchKeyword='phone'
+const subcategoryName = ''
+const categoryId = 1
+const searchKeyword = 'i phone'
 
 const getRequestedAds = () => {
   productService
-  .getRequestedAds()
+    .getRequestedAds()
     .then((response) => {
       console.log(response)
     })
@@ -15,16 +15,17 @@ const getRequestedAds = () => {
       console.log(err)
     })
 }
-const searchByKeyword = (keyword,subcategoryName) => {
-  productService.search(keyword,subcategoryName)
-    .then(res => {
-      console.log("search results: ",res)
+const searchByKeyword = (keyword, subcategoryName) => {
+  productService
+    .search(keyword, '')
+    .then((res) => {
+      console.log('search results: ', res)
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err))
 }
 function ApproveAd() {
-  getRequestedAds();
-  searchByKeyword(searchKeyword,"Mobiles");
+  getRequestedAds()
+  searchByKeyword(searchKeyword, 'Mobiles')
   return <div>ApproveAd</div>
 }
 
