@@ -13,8 +13,6 @@ const SignUp = () => {
     error: '',
     success: '',
   })
-  const [emailExists, setEmailExists] = useState('')
-  const [usernameExists, setUsernameExists] = useState('')
   const { username, email, password, password2, error, success } = values
   const [errors, setErrors] = useState({})
 
@@ -36,23 +34,12 @@ const SignUp = () => {
   function submitHandler(event) {
     clearErrorFields()
     event.preventDefault()
-    console.log('values: ', values)
     setErrors(validateInfo(values))
     var errors = validateInfo(values)
-    console.log('errors: ', Object.keys(errors))
     if (Object.keys(errors).length === 0) {
       console.log('field errors are not present')
       checkUserExistence({ username, email, password, password2 })
     }
-    setTimeout(function () {
-      console.log('email exists', emailExists)
-      console.log('username exists', usernameExists)
-      // if (!emailExists && !usernameExists) {
-      //   signup(user)
-      // }
-    }, 5000)
-
-    console.log(values)
   }
 
   const showError = () => (
@@ -60,7 +47,7 @@ const SignUp = () => {
       {error}
     </div>
   )
-  const showSuccess = () => (
+  const showSuccess = ({ username, email, password, password2 }) => (
     <div
       className='signup-form-success'
       style={{ display: success ? '' : 'none' }}
@@ -73,54 +60,89 @@ const SignUp = () => {
       .userExists(user.email)
       .then((res) => {
         if (res == true) {
-          console.log('email already exists! please enter a new one ', res)
-          setEmailExists(true)
-          console.log(emailExists)
-        } else setEmailExists(false)
-      })
-      .catch((err) => console.log(err))
-
-    userService
-      .findUserbyName(user.username)
-      .then((res) => {
-        if (res == true) {
-          console.log('username already exists! please enter some else: ')
-          setUsernameExists(true)
-          console.log(usernameExists)
-        } else setUsernameExists(false)
-      })
-      .catch((err) => console.log(err))
-  }
-
-  const signup = (user) => {
-    userService
-      .addUser(user.username, user.email, user.password, 'user')
-      .then((data) => {
-        console.log('congratulations you are registered ', data)
-        setValues({
-          ...values,
-          username: '',
-          email: '',
-          password: '',
-          password2: '',
-          error: false,
-          success: true,
-        })
-      })
-      .catch((err) => {
-        let err_msg = err.response.data.error.message
-        if (!err.response) {
-          err_msg = 'Error occured please try later'
-        } else if (err_msg == 'Email is already taken') {
-          err_msg = err_msg + '\nPlease enter a new one!'
+          setValues({
+            ...values,
+            error: 'email already exists! please enter a new one',
+            success: false,
+          })
+        } else {
+          userService
+            .findUserbyName(user.username)
+            .then((res) => {
+              if (res == true) {
+                console.log('username already exists! please enter some else: ')
+                setValues({
+                  ...values,
+                  error: 'username already exists! please enter some else:',
+                  success: false,
+                })
+              } else {
+                setValues({ ...values, error: false, success: true })
+                userService
+                  .addUser(user.username, user.email, user.password, 'user')
+                  .then((data) => {
+                    console.log('congratulations you are registered ', data)
+                    setValues({
+                      ...values,
+                      username: '',
+                      email: '',
+                      password: '',
+                      password2: '',
+                      error: false,
+                      success: true,
+                    })
+                  })
+                  .catch((err) => {
+                    let err_msg = err.response.data.error.message
+                    if (!err.response) {
+                      err_msg = 'Error occured please try later'
+                    } else if (err_msg == 'Email is already taken') {
+                      err_msg = err_msg + '\nPlease enter a new one!'
+                    }
+                    setValues({
+                      ...values,
+                      error: err_msg,
+                      loading: false,
+                    })
+                  })
+              }
+            })
+            .catch((err) => console.log(err))
         }
-        setValues({
-          ...values,
-          error: err_msg,
-          loading: false,
-        })
       })
+      .catch((err) => console.log(err))
   }
+
+  // const signup = (user) => {
+  //   console.log('why the hell it is working')
+  //   userService
+  //     .addUser(user.username, user.email, user.password, 'user')
+  //     .then((data) => {
+  //       console.log('congratulations you are registered ', data)
+  //       setValues({
+  //         ...values,
+  //         username: '',
+  //         email: '',
+  //         password: '',
+  //         password2: '',
+  //         error: false,
+  //         success: true,
+  //       })
+  //     })
+  //     .catch((err) => {
+  //       let err_msg = err.response.data.error.message
+  //       if (!err.response) {
+  //         err_msg = 'Error occured please try later'
+  //       } else if (err_msg == 'Email is already taken') {
+  //         err_msg = err_msg + '\nPlease enter a new one!'
+  //       }
+  //       setValues({
+  //         ...values,
+  //         error: err_msg,
+  //         loading: false,
+  //       })
+  //     })
+  // }
 
   return (
     <div className='signup-form-container'>
@@ -198,7 +220,7 @@ const SignUp = () => {
         </span>
       </form>
       {showError()}
-      {showSuccess()}
+      {showSuccess({ username, email, password, password2 })}
     </div>
   )
 }
