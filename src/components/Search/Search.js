@@ -42,8 +42,55 @@ function Search() {
     init1()
     init2()
   }, [])
+  const searchResult = () => {
+    if (categoryDigital === '') {
+      productService
+        .search(search, categoryHomeAppliance)
+        .then((res) => {
+          setSearchResults(res)
+          setData({ ...data, searched: true })
+        })
+        .catch((err) => console.log(err))
+    }
+    if (categoryHomeAppliance === '') {
+      productService
+        .search(search, categoryDigital)
+        .then((res) => {
+          setSearchResults(res)
+          setData({ ...data, searched: true })
+        })
+        .catch((err) => console.log(err))
+    }
+    if (search === '' && categoryHomeAppliance === '') {
+      productService
+        .search('', categoryDigital)
+        .then((res) => {
+          setSearchResults(res)
+          setData({ ...data, searched: true })
+        })
+        .catch((err) => console.log(err))
+    }
+    if (search === '' && categoryDigital === '') {
+      productService
+        .search('', categoryHomeAppliance)
+        .then((res) => {
+          setSearchResults(res)
+          setData({ ...data, searched: true })
+        })
+        .catch((err) => console.log(err))
+    }
+    if (categoryHomeAppliance === '' && categoryDigital === '') {
+      productService
+        .search(search, '')
+        .then((res) => {
+          setSearchResults(res)
+          setData({ ...data, searched: true })
+        })
+        .catch((err) => console.log(err))
+    }
+  }
   const searchDataDigital = () => {
-    console.log('digital')
+    console.log(categoryDigital)
     productService
       .getProductsByCategory(categoryDigital)
       .then((response) => {
@@ -56,6 +103,7 @@ function Search() {
       })
   }
   const searchData = () => {
+    console.log(search)
     productService
       .find(search)
       .then((response) => {
@@ -68,7 +116,7 @@ function Search() {
   }
 
   const searchDataHomeAppliance = () => {
-    console.log('HomeAppliance')
+    console.log(categoryHomeAppliance)
     productService
       .getProductsByCategory(categoryHomeAppliance)
       .then((response) => {
@@ -81,9 +129,10 @@ function Search() {
   }
   const searchSubmit = (event) => {
     event.preventDefault()
-    searchDataHomeAppliance()
-    searchDataDigital()
-    searchData()
+    // searchDataHomeAppliance()
+    // searchDataDigital()
+    // searchData()
+    searchResult()
   }
   const handleChange = (name) => (event) => {
     setData({ ...data, [name]: event.target.value, searched: false })
@@ -94,26 +143,11 @@ function Search() {
       setSubCategoriesHomeAppliance('')
     }
   }
-  const searchMessage = (
-    searched,
-    searchResults,
-    homeApplianceResults,
-    digitalResults
-  ) => {
-    if (
-      searched &&
-      searchResults.length > 0 &&
-      homeApplianceResults.length > 0 &&
-      digitalResults.length > 0
-    ) {
+  const searchMessage = (searched, searchResults) => {
+    if (searched && searchResults.length > 0) {
       return `Found ${searchResults.length} products`
     }
-    if (
-      searched &&
-      searchResults.length < 1 &&
-      homeApplianceResults.length < 1 &&
-      digitalResults.length < 1
-    ) {
+    if (searched && searchResults.length < 1) {
       return `No products found`
     }
   }
