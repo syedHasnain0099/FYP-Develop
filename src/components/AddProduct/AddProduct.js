@@ -9,6 +9,7 @@ function AddProduct() {
   const { id } = userData()
   const [categories, setCategories] = useState([])
   const [mediaIds, setMediaIds] = useState([])
+  const [videoMediaId, setVideoMediaId] = useState([])
   const [subCategories, setSubCategories] = useState([])
   const init = () => {
     categoryService
@@ -39,8 +40,6 @@ function AddProduct() {
     subcategory: '',
     category: '',
     quantity: '',
-    photo: '',
-    video: '',
     loading: false,
     error: '',
     createdProduct: '',
@@ -50,8 +49,7 @@ function AddProduct() {
     productname,
     description,
     rent,
-    photo,
-    video,
+
     duration,
     category,
     quantity,
@@ -76,6 +74,15 @@ function AddProduct() {
       })
       .catch((err) => console.log(err))
   }
+  const videoMediaHandleChange = (event) => {
+    // productService
+    //   .uploadMedia(event.target.files)
+    //   .then((res) => {
+    //     console.log('id of uploaded video', res)
+    //     setVideoMediaId(res)
+    //   })
+    //   .catch((err) => console.log(err))
+  }
   const subCategoryHandleChange = (event) => {
     const index = event.target.selectedIndex
     const el = event.target.childNodes[index]
@@ -94,11 +101,12 @@ function AddProduct() {
     console.log(mediaIds)
     postAd(
       { productname, description, rent, duration, subcategory, quantity, id },
-      mediaIds
+      mediaIds,
+      videoMediaId
     )
   }
-  const postAd = (props, mediaIds) => {
-    console.log('media ids: ', mediaIds)
+  const postAd = (props, mediaIds, videoMediaId) => {
+    console.log('image ids: ', mediaIds)
     productService
       .postAd(
         props.productname,
@@ -153,7 +161,7 @@ function AddProduct() {
       <div className='form-group'>
         <label className='btn btn-secondary'>
           <input
-            // onChange={videoHandleChange}
+            onChange={videoMediaHandleChange}
             type='file'
             name='video'
             accept='.mov,.mp4'
@@ -183,6 +191,7 @@ function AddProduct() {
           onChange={handleChange('rent')}
           value={rent}
           type='number'
+          min='0'
           className='form-control'
         />
       </div>
@@ -192,6 +201,7 @@ function AddProduct() {
           onChange={handleChange('duration')}
           value={duration}
           type='number'
+          min='0'
           className='form-control'
         />
       </div>
@@ -233,6 +243,7 @@ function AddProduct() {
           onChange={handleChange('quantity')}
           value={quantity}
           type='number'
+          min='0'
           className='form-control'
         />
       </div>
