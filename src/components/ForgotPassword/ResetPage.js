@@ -4,12 +4,9 @@ import validateInfo from './validateInfo'
 import './ResetPage.css'
 import axios from 'axios'
 import userService from '../../services/UserService'
-// import { useParams } from 'react-router-dom'
 
 function ResetPage(callback) {
   const resetCode = window.location.href
-  // const { id } = useParams()
-  // console.log('iddddd', id)
   console.log(resetCode)
   const myArray = resetCode.split('http://localhost:3000/ResetPageForm/?code=')
   console.log(myArray[1])
