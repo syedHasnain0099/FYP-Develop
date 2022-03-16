@@ -8,8 +8,8 @@ import axios from 'axios'
 function AddProduct() {
   const { id } = userData()
   const [categories, setCategories] = useState([])
-  const [mediaIds, setMediaIds] = useState([])
-  const [videoMediaId, setVideoMediaId] = useState([])
+  const [mediaIds, setMediaIds] = useState('')
+  const [videoMediaId, setVideoMediaId] = useState('')
   const [subCategories, setSubCategories] = useState([])
   const init = () => {
     categoryService
@@ -49,7 +49,6 @@ function AddProduct() {
     productname,
     description,
     rent,
-
     duration,
     category,
     quantity,
@@ -69,19 +68,20 @@ function AddProduct() {
     productService
       .uploadMedia(event.target.files)
       .then((res) => {
+        console.log(res)
         console.log('id of uploaded image', res)
         setMediaIds(res)
       })
       .catch((err) => console.log(err))
   }
   const videoMediaHandleChange = (event) => {
-    // productService
-    //   .uploadMedia(event.target.files)
-    //   .then((res) => {
-    //     console.log('id of uploaded video', res)
-    //     setVideoMediaId(res)
-    //   })
-    //   .catch((err) => console.log(err))
+    productService
+      .uploadMedia(event.target.files)
+      .then((res) => {
+        console.log('id of uploaded video', res)
+        setVideoMediaId(res)
+      })
+      .catch((err) => console.log(err))
   }
   const subCategoryHandleChange = (event) => {
     const index = event.target.selectedIndex
@@ -116,7 +116,8 @@ function AddProduct() {
         props.subcategory,
         props.quantity,
         props.id,
-        mediaIds
+        mediaIds,
+        videoMediaId
       )
       .then((data) => {
         console.log('congratulations your post is added ', data)
@@ -135,6 +136,7 @@ function AddProduct() {
           createdProduct: data.data.attributes.product_name,
         })
         setMediaIds('')
+        setVideoMediaId('')
       })
       .catch((err) => {
         let err_msg = err.response.data.error.message
@@ -186,7 +188,7 @@ function AddProduct() {
         />
       </div>
       <div className='form-group'>
-        <label className='text-muted'>Estimated Rent</label>
+        <label className='text-muted'>Estimated Rent Per Day</label>
         <input
           onChange={handleChange('rent')}
           value={rent}
@@ -196,7 +198,9 @@ function AddProduct() {
         />
       </div>
       <div className='form-group'>
-        <label className='text-muted'>Estimated Duration</label>
+        <label className='text-muted'>
+          Max availability of Product for Rent
+        </label>
         <input
           onChange={handleChange('duration')}
           value={duration}
@@ -238,7 +242,7 @@ function AddProduct() {
         </select>
       </div>
       <div className='form-group'>
-        <label className='text-muted'>Quantity</label>
+        <label className='text-muted'>Quantity of product</label>
         <input
           onChange={handleChange('quantity')}
           value={quantity}

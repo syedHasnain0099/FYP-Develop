@@ -2,10 +2,10 @@
 import qs from 'qs'
 import GenericService from './GenericService'
 import axios from 'axios'
-axios.defaults.baseURL = 'http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/';
+axios.defaults.baseURL =
+  'http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/'
 const herokuLink = 'https://strapi-project-deployement.herokuapp.com/api/'
 class UserService extends GenericService {
-
   loginUser = (ID, Password) =>
     new Promise((resolve, reject) => {
       this.post(`auth/local`, {
@@ -35,19 +35,19 @@ class UserService extends GenericService {
           resolve(data)
         })
         .catch((err) => {
-          console.log("PLease provide a valid email address")
+          console.log('PLease provide a valid email address')
           // this.findUser()
           // .then((res)=> {
           //   console.log()
           // })
-    //          if (!user) {
-    //   console.log('This email does not exist');
-    // }
+          //          if (!user) {
+          //   console.log('This email does not exist');
+          // }
 
-    // // User blocked
-    // if (user.blocked) {
-    //   console.log('This user is disabled');
-    // }
+          // // User blocked
+          // if (user.blocked) {
+          //   console.log('This user is disabled');
+          // }
           reject(err)
         })
     })
@@ -61,7 +61,7 @@ class UserService extends GenericService {
         passwordConfirmation: password,
       })
         .then((data) => {
-          console.log("confirmation email has been set")
+          console.log('confirmation email has been set')
           resolve(data)
         })
         .catch((err) => {
@@ -73,7 +73,7 @@ class UserService extends GenericService {
     await localStorage.removeItem('token')
     await localStorage.removeItem('user')
     console.log('removed')
-    this.tokenUpdate();
+    this.tokenUpdate()
   }
 
   getLoggedInUser = () => {
@@ -99,23 +99,34 @@ class UserService extends GenericService {
         })
     })
 
-    addUser = (username, email, password, type) => {
-      this.tokenUpdate();
+  addUser = (
+    username,
+    email,
+    password,
+    first_name,
+    last_name,
+    contact_number,
+    type
+  ) => {
+    this.tokenUpdate()
     return this.post(`auth/local/register`, {
       username,
       email,
       password,
+      first_name,
+      last_name,
+      contact_number,
       type,
     })
   }
-  
+
   findUserbyName = (name) =>
-   new Promise((resolve, reject) => {
-    const query = qs.stringify({
-      filters: {
+    new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
           username: {
-            $eq: name
-          }
+            $eq: name,
+          },
         },
       })
       this.get(`users?${query}`, {})
@@ -127,35 +138,35 @@ class UserService extends GenericService {
           reject(err)
         })
     })
-    //   findUserbyEmail = (email) =>
-    // new Promise((resolve, reject) => {
-    //   const query = qs.stringify({
-    //     filters: {
-    //       email: {
-    //         $eq: email,
-    //       },
-    //     },
-    //   })
-    //   this.get(`users?${query}`, {})
-    //     .then((user) => {
-    //       if (user.length > 0) {
-    //         return resolve(user[0])
-    //       }
+  //   findUserbyEmail = (email) =>
+  // new Promise((resolve, reject) => {
+  //   const query = qs.stringify({
+  //     filters: {
+  //       email: {
+  //         $eq: email,
+  //       },
+  //     },
+  //   })
+  //   this.get(`users?${query}`, {})
+  //     .then((user) => {
+  //       if (user.length > 0) {
+  //         return resolve(user[0])
+  //       }
 
-    //       reject(new Error('User not found'))
-    //     })
-    //     .catch((err) => {
-    //       reject(err)
-    //     })
-    // })
+  //       reject(new Error('User not found'))
+  //     })
+  //     .catch((err) => {
+  //       reject(err)
+  //     })
+  // })
 
   userExists = (email) =>
-  new Promise((resolve, reject) => {
-    const query = qs.stringify({
-      filters: {
+    new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
           email: {
-            $eq: email
-          }
+            $eq: email,
+          },
         },
       })
       this.get(`users?${query}`, {})
@@ -167,7 +178,7 @@ class UserService extends GenericService {
           reject(err)
         })
     })
-  
+
   lock = (ID) =>
     this.put(`users/${ID}`, {
       blocked: true,
@@ -177,7 +188,7 @@ class UserService extends GenericService {
     this.put(`users/${ID}`, {
       blocked: false,
     })
-  
+
   // isLoggedInToken = () =>
   //   typeof localStorage.getItem('token') === 'undefined' ||
   //   localStorage.getItem('token') === null

@@ -108,7 +108,15 @@ const SignUp = () => {
               } else {
                 setValues({ ...values, error: false, success: true })
                 userService
-                  .addUser(user.username, user.email, user.password, 'user')
+                  .addUser(
+                    user.username,
+                    user.email,
+                    user.password,
+                    user.firstname,
+                    user.lastname,
+                    user.contactNo,
+                    'user'
+                  )
                   .then((data) => {
                     console.log('congratulations you are registered ', data)
                     setValues({
@@ -214,7 +222,7 @@ const SignUp = () => {
         </div>
         <div className='signup-form-inputs'>
           <label htmlFor='email' className='signup-form-label'>
-            Contact No (Format : 0123-4567890)
+            Contact No (Format : 01234567890)
           </label>
           <input
             type='tel'
@@ -222,7 +230,8 @@ const SignUp = () => {
             id='contactNo'
             className='signup-form-input'
             placeholder='Enter your ContactNo'
-            pattern='[0-9]{4}-[0-9]{7}'
+            // pattern='[0-9]{4}-[0-9]{7}'
+            pattern='[0-9]{11}'
             onChange={contactNoChangeHandler}
             value={contactNo}
           />

@@ -1,8 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
+import userService from '../../services/UserService'
 function DashBoard() {
+  const [data, setData] = useState([])
+
   const { id, username, email } = userData()
+  console.log(id)
+  userService
+    .getUser(id)
+    .then((data) => {
+      console.log('user data: ', data)
+      setData(data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   const userLinks = () => {
     return (
       <div className='card'>
@@ -33,8 +46,11 @@ function DashBoard() {
         <h3 className='card-header'> User Information</h3>
         <div class='card-body'>
           <ul class='list-group list-group-flush'>
-            <li class='list-group-item'>{username}</li>
-            <li class='list-group-item'>{email}</li>
+            <li class='list-group-item'>{data.firstname}</li>
+            <li class='list-group-item'>{data.lastname}</li>
+            <li class='list-group-item'>{data.username}</li>
+            <li class='list-group-item'>{data.email}</li>
+            <li class='list-group-item'>{data.contactno}</li>
           </ul>
         </div>
       </div>

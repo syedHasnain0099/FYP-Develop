@@ -37,37 +37,48 @@ class ProductService extends GenericService {
       this.get(
         `requested-ads?populate=product_media,users_permissions_user,category_list`,
         {}
-      )
-        .then((response) => {
-          const { data } = response
-          for (let ad of data) {
-            allads.push(this.extractAds(ad))
-          }
-          resolve(allads)
-        })
+      ).then((response) => {
+        const { data } = response
+        for (let ad of data) {
+          allads.push(this.extractAds(ad))
+        }
+        resolve(allads)
+      })
     })
   }
-    
-   
-  postAd = (name,description,rent, duration,categoryId,quantity,id,mediaIds) => {
-      return this.post(`requested-ads`, 
-        {
-          "data": {
-            "product_name":name,
-            "product_decription":description,
-            "product_media":mediaIds,
-            "product_quantity":quantity,
-            "estimated_rent":rent,
-            "estimated_duration":duration,
-            "users_permissions_user":id,
-            "category_list":categoryId
-          }
-        }
-      )
+
+  postAd = (
+    name,
+    description,
+    rent,
+    duration,
+    categoryId,
+    quantity,
+    id,
+    mediaIds,
+    videoMediaId
+  ) => {
+    // mediaIds.push(videoMediaId)
+    const Id = [mediaIds, videoMediaId]
+    console.log(mediaIds)
+    // console.log(Id[0])
+    // console.log(Id[1])
+    return this.post(`requested-ads`, {
+      data: {
+        product_name: name,
+        product_decription: description,
+        product_media: Id,
+        product_quantity: quantity,
+        estimated_rent: rent,
+        estimated_duration: duration,
+        users_permissions_user: id,
+        category_list: categoryId,
+      },
+    })
   }
-  
+
   uploadMedia = (files) => {
-    const mediaIds = []
+    let mediaIds = ''
     const data = new FormData()
     if (!files[0]) {
       console.log('please select some file')
@@ -78,21 +89,17 @@ class ProductService extends GenericService {
     }
     return new Promise((resolve, reject) => {
       axios
-        .post(
-          `upload`,
-          data,
-          {
-            onUploadProgress: (progress) => {
-              const{loaded,total} = progress;
-              const percentage = `${Math.round(loaded/total*100)}%`
-              console.log("loading percentage: ",percentage)
-            }
-          }
-        )
-        .then(response => {
+        .post(`upload`, data, {
+          onUploadProgress: (progress) => {
+            const { loaded, total } = progress
+            const percentage = `${Math.round((loaded / total) * 100)}%`
+            console.log('loading percentage: ', percentage)
+          },
+        })
+        .then((response) => {
           const { data } = response
           for (let singleMedia of data) {
-            mediaIds.push(this.extractMediaId(singleMedia))
+            mediaIds = this.extractMediaId(singleMedia)
           }
           resolve(mediaIds)
         })
@@ -148,34 +155,33 @@ class ProductService extends GenericService {
   }
   search = (keyword, subCatgeryName = '') => {
     const filteredProducts = []
-    let query;
-    return new Promise((resolve,reject) => {
-      if(subCatgeryName == ''){
-        console.log("inside if")
-         query = qs.stringify({
+    let query
+    return new Promise((resolve, reject) => {
+      if (subCatgeryName == '') {
+        console.log('inside if')
+        query = qs.stringify({
           populate: this.populate,
           filters: {
             name: {
               $containsi: keyword,
             },
-          }
+          },
         })
-      }
-      else{
-        console.log("subcatgeoyr id : ",subCatgeryName)
-        console.log("inside else")
-         query = qs.stringify({
+      } else {
+        console.log('subcatgeoyr id : ', subCatgeryName)
+        console.log('inside else')
+        query = qs.stringify({
           populate: this.populate,
           filters: {
             category_list: {
               name: {
                 $eq: subCatgeryName,
-              }
+              },
             },
             name: {
-              $containsi: keyword
-            }
-          }
+              $containsi: keyword,
+            },
+          },
         })
       }
       this.get(`products?${query}`)
