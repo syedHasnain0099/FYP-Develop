@@ -6,16 +6,37 @@ import userService from '../../services/UserService'
 
 const SignUp = () => {
   const [values, setValues] = useState({
+    firstname: '',
+    lastname: '',
     username: '',
     email: '',
+    contactNo: '',
     password: '',
     password2: '',
     error: '',
     success: '',
   })
-  const { username, email, password, password2, error, success } = values
+  const {
+    username,
+    email,
+    password,
+    password2,
+    error,
+    success,
+    firstname,
+    lastname,
+    contactNo,
+  } = values
   const [errors, setErrors] = useState({})
-
+  const contactNoChangeHandler = (event) => {
+    setValues({ ...values, error: false, contactNo: event.target.value })
+  }
+  const firstnameChangeHandler = (event) => {
+    setValues({ ...values, error: false, firstname: event.target.value })
+  }
+  const lastnameChangeHandler = (event) => {
+    setValues({ ...values, error: false, lastname: event.target.value })
+  }
   const usernameChangeHandler = (event) => {
     setValues({ ...values, error: false, username: event.target.value })
   }
@@ -37,8 +58,16 @@ const SignUp = () => {
     setErrors(validateInfo(values))
     var errors = validateInfo(values)
     if (Object.keys(errors).length === 0) {
-      console.log('field errors are not present')
-      checkUserExistence({ username, email, password, password2 })
+      console.log(values)
+      checkUserExistence({
+        username,
+        email,
+        password,
+        password2,
+        firstname,
+        lastname,
+        contactNo,
+      })
     }
   }
 
@@ -88,6 +117,9 @@ const SignUp = () => {
                       email: '',
                       password: '',
                       password2: '',
+                      firstname: '',
+                      lastname: '',
+                      contactNo: '',
                       error: false,
                       success: true,
                     })
@@ -113,37 +145,6 @@ const SignUp = () => {
       .catch((err) => console.log(err))
   }
 
-  // const signup = (user) => {
-  //   console.log('why the hell it is working')
-  //   userService
-  //     .addUser(user.username, user.email, user.password, 'user')
-  //     .then((data) => {
-  //       console.log('congratulations you are registered ', data)
-  //       setValues({
-  //         ...values,
-  //         username: '',
-  //         email: '',
-  //         password: '',
-  //         password2: '',
-  //         error: false,
-  //         success: true,
-  //       })
-  //     })
-  //     .catch((err) => {
-  //       let err_msg = err.response.data.error.message
-  //       if (!err.response) {
-  //         err_msg = 'Error occured please try later'
-  //       } else if (err_msg == 'Email is already taken') {
-  //         err_msg = err_msg + '\nPlease enter a new one!'
-  //       }
-  //       setValues({
-  //         ...values,
-  //         error: err_msg,
-  //         loading: false,
-  //       })
-  //     })
-  // }
-
   return (
     <div className='signup-form-container'>
       <form className='signup-form' onSubmit={submitHandler}>
@@ -153,7 +154,37 @@ const SignUp = () => {
         </h1>
         <div className='signup-form-inputs'>
           <label htmlFor='username' className='signup-form-label'>
-            Username
+            FirstName
+          </label>
+          <input
+            type='text'
+            id='firstname'
+            className='signup-form-input'
+            name='firstname'
+            placeholder='Enter your firstname'
+            onChange={firstnameChangeHandler}
+            value={firstname}
+          />
+          {errors.firstname && <p>{errors.firstname}</p>}
+        </div>
+        <div className='signup-form-inputs'>
+          <label htmlFor='username' className='signup-form-label'>
+            LastName
+          </label>
+          <input
+            type='text'
+            id='lastname'
+            className='signup-form-input'
+            name='lastname'
+            placeholder='Enter your lastname'
+            onChange={lastnameChangeHandler}
+            value={lastname}
+          />
+          {errors.lastname && <p>{errors.lastname}</p>}
+        </div>
+        <div className='signup-form-inputs'>
+          <label htmlFor='username' className='signup-form-label'>
+            Username (Only alphanumeric)
           </label>
           <input
             type='text'
@@ -180,6 +211,21 @@ const SignUp = () => {
             value={email}
           />
           {errors.email && <p>{errors.email}</p>}
+        </div>
+        <div className='signup-form-inputs'>
+          <label htmlFor='email' className='signup-form-label'>
+            Contact No (Format : 0123-4567890)
+          </label>
+          <input
+            type='tel'
+            name='contactNo'
+            id='contactNo'
+            className='signup-form-input'
+            placeholder='Enter your ContactNo'
+            pattern='[0-9]{4}-[0-9]{7}'
+            onChange={contactNoChangeHandler}
+            value={contactNo}
+          />
         </div>
         <div className='signup-form-inputs'>
           <label htmlFor='password' className='signup-form-label'>
