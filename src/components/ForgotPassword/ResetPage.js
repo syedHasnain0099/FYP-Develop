@@ -4,10 +4,15 @@ import validateInfo from './validateInfo'
 import './ResetPage.css'
 import axios from 'axios'
 import userService from '../../services/UserService'
+// import { useParams } from 'react-router-dom'
 
 function ResetPage(callback) {
   const resetCode = window.location.href
-
+  // const { id } = useParams()
+  // console.log('iddddd', id)
+  console.log(resetCode)
+  const myArray = resetCode.split('http://localhost:3000/ResetPageForm/?code=')
+  console.log(myArray[1])
   const [enteredPassword, setEnteredPassword] = useState('')
   const [enteredPassword2, setEnteredPassword2] = useState('')
   const [errors, setErrors] = useState({})
@@ -76,7 +81,6 @@ function ResetPage(callback) {
           <input
             type='password'
             name='password'
-            id='password'
             className='reset-form-input'
             placeholder='Enter your Password'
             onChange={passwordChangeHandler}
@@ -88,7 +92,6 @@ function ResetPage(callback) {
           <input
             type='password'
             name='password'
-            id='password'
             className='reset-form-input'
             placeholder='Enter your Password'
             onChange={password2ChangeHandler}

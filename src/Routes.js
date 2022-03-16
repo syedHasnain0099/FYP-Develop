@@ -49,6 +49,10 @@ function Routes() {
             <Header />
             <Products />
           </Route>
+          {/* <Route path='/ResetPageForm/:id'>
+            <Header />
+            <ResetPageForm></ResetPageForm>
+          </Route> */}
           <Route path='/ResetPageForm'>
             <Header />
             <ResetPageForm></ResetPageForm>
