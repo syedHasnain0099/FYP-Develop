@@ -7,15 +7,17 @@ function DashBoard() {
 
   const { id, username, email } = userData()
   console.log(id)
-  userService
-    .getUser(id)
-    .then((data) => {
-      console.log('user data: ', data)
-      setData(data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+  const showUserInfo = () => {
+    userService
+      .getUser(id)
+      .then((data) => {
+        console.log('user data: ', data.first_name)
+        setData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   const userLinks = () => {
     return (
       <div className='card'>
@@ -41,16 +43,17 @@ function DashBoard() {
     )
   }
   const userInfo = () => {
+    showUserInfo()
     return (
       <div className='card mb-5 mu-5'>
         <h3 className='card-header'> User Information</h3>
         <div class='card-body'>
           <ul class='list-group list-group-flush'>
-            <li class='list-group-item'>{data.firstname}</li>
-            <li class='list-group-item'>{data.lastname}</li>
+            <li class='list-group-item'>{data.first_name}</li>
+            <li class='list-group-item'>{data.last_name}</li>
             <li class='list-group-item'>{data.username}</li>
             <li class='list-group-item'>{data.email}</li>
-            <li class='list-group-item'>{data.contactno}</li>
+            <li class='list-group-item'>{data.contact_number}</li>
           </ul>
         </div>
       </div>

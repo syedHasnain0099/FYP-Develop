@@ -5,7 +5,9 @@ import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
 function AdminDashBoard() {
   const [data, setData] = useState([])
-  userService
+  const { id, username, email } = userData()
+  const showAdminInfo = () => {
+     userService
     .getUser(id)
     .then((data) => {
       console.log('user data: ', data)
@@ -14,7 +16,8 @@ function AdminDashBoard() {
     .catch((err) => {
       console.log(err)
     })
-  const { id, username, email } = userData()
+  }
+
   const adminLinks = () => {
     return (
       <div className='card'>
@@ -35,16 +38,17 @@ function AdminDashBoard() {
     )
   }
   const adminInfo = () => {
+    showAdminInfo()
     return (
       <div className='card mb-5 mu-5'>
         <h3 className='card-header'> Admin Information</h3>
         <div class='card-body'>
           <ul class='list-group list-group-flush'>
-            <li class='list-group-item'>{data.firstname}</li>
-            <li class='list-group-item'>{data.lastname}</li>
+            <li class='list-group-item'>{data.first_name}</li>
+            <li class='list-group-item'>{data.last_name}</li>
             <li class='list-group-item'>{data.username}</li>
             <li class='list-group-item'>{data.email}</li>
-            <li class='list-group-item'>{data.contactno}</li>
+            <li class='list-group-item'>{data.contact_number}</li>
           </ul>
         </div>
       </div>
