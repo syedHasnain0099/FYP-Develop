@@ -76,7 +76,52 @@ class ProductService extends GenericService {
       },
     })
   }
+  deleteRequestedAd = (id) => {
+    return this.delete(`requested-ads/${id}`)
+  }
 
+  uploadPost = (post) => {
+        const Id = [post.mediaIds, post.videoMediaId]
+    console.log(post.mediaIds)
+    return this.post(`products`, {
+      data: {
+        name: post.name,
+        description: post.description,
+        image: Id,
+        estimated_price:{
+          price: post.rent,
+          duration: post.duration
+        },
+        quantity: post.quantity,
+        users_permissions_user: post.id,
+        category_list: post.categoryId,
+      },
+    })
+  }
+
+  getUserAds = (userId) =>{
+    const allAds = []
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
+          users_permissions_user: {
+            id: userId
+          }
+        }
+      })
+      this.get(`products?populate=users_permissions_user&${query}`, {})
+        .then((response) => {
+          const { data } = response
+          for (let ad of data) {
+            allAds.push(this.extractProducts(ad))
+          }
+          resolve(allAds)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
   uploadMedia = (files) => {
     let mediaIds = ''
     const data = new FormData()

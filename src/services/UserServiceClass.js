@@ -3,9 +3,10 @@ import qs from 'qs'
 import GenericService from './GenericService'
 import axios from 'axios'
 axios.defaults.baseURL =
-  'http://renttoday14-env.eba-csx4ziu6.ap-south-1.elasticbeanstalk.com/api/'
+  'http://erental14-env.eba-smiuwvwp.ap-south-1.elasticbeanstalk.com/api/'
 const herokuLink = 'https://strapi-project-deployement.herokuapp.com/api/'
 class UserService extends GenericService {
+  
   loginUser = (ID, Password) =>
     new Promise((resolve, reject) => {
       this.post(`auth/local`, {
@@ -98,7 +99,8 @@ class UserService extends GenericService {
           reject(err)
         })
     })
-
+  
+  
   addUser = (
     username,
     email,
@@ -159,7 +161,9 @@ class UserService extends GenericService {
   //       reject(err)
   //     })
   // })
+    getUserAds = (userId) => {
 
+    }
   userExists = (email) =>
     new Promise((resolve, reject) => {
       const query = qs.stringify({
