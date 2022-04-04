@@ -18,6 +18,9 @@ function DashBoard() {
         console.log(err)
       })
   }
+  useEffect(() => {
+    showUserInfo()
+  }, [])
   const userLinks = () => {
     return (
       <div className='card'>
@@ -43,7 +46,6 @@ function DashBoard() {
     )
   }
   const userInfo = () => {
-    showUserInfo()
     return (
       <div className='card mb-5 mu-5'>
         <h3 className='card-header'> User Information</h3>
