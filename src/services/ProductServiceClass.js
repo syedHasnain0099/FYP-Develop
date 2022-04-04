@@ -82,7 +82,7 @@ class ProductService extends GenericService {
 
   uploadPost = (post) => {
         const Id = [post.mediaIds, post.videoMediaId]
-    console.log(post.mediaIds)
+    console.log("post media ids",post.mediaIds)
     return this.post(`products`, {
       data: {
         name: post.name,
@@ -203,7 +203,6 @@ class ProductService extends GenericService {
     let query
     return new Promise((resolve, reject) => {
       if (subCatgeryName == '') {
-        console.log('inside if')
         query = qs.stringify({
           populate: this.populate,
           filters: {
@@ -214,7 +213,6 @@ class ProductService extends GenericService {
         })
       } else {
         console.log('subcatgeoyr id : ', subCatgeryName)
-        console.log('inside else')
         query = qs.stringify({
           populate: this.populate,
           filters: {
@@ -272,18 +270,16 @@ class ProductService extends GenericService {
     ad.rent = estimated_rent
     ad.duration = estimated_duration
     ad.categoryType = category_list
-
-    if (product_media) {
-      const { data } = product_media
+    const { data } = product_media
+    if (data) {
       for (let index = 0; index < data.length; index++) {
         const singleMedia = data[index]
         ad.image_urls.push(this.extractImage(singleMedia))
       }
     }
-
-    if (users_permissions_user) {
-      const { data } = users_permissions_user
-      ad.supplier = this.extractSupplier(data)
+    const { sup_data } = users_permissions_user
+    if (sup_data) {
+      ad.supplier = this.extractSupplier(sup_data)
     }
     return ad
   }
