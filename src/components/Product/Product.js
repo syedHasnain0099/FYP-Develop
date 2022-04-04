@@ -1,15 +1,27 @@
 import React, { useEffect, useState } from 'react'
+import productService from '../../services/ProductService'
 import { Link, useParams } from 'react-router-dom'
 function Product(props) {
   const [product, setProduct] = useState({})
   const [error, setError] = useState(false)
   let { productId } = useParams()
   const loadSingleProduct = (productId) => {
+    console.log("come on")
+    productService
+      .findOne(productId)
+      .then((response) => {
+        console.log("product: ",response)
+        setProduct(response)
+      })
+      .catch((err) => {
+        console.log("inside catch")
+        console.log(err)
+      })
     //api to fetch data of product
     //set response equals to setProduct(response)
   }
   useEffect(() => {
-    console.log(productId)
+    console.log("here",productId)
     loadSingleProduct(productId)
   }, [])
   return (

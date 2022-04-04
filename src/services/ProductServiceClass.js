@@ -177,7 +177,21 @@ class ProductService extends GenericService {
         .catch((err) => reject(err))
     })
   }
-
+  findOne = (productId) => {
+    const filteredProduct = []
+    const query = qs.stringify({
+        populate: this.populate,
+      })
+    return new Promise((resolve, reject) => {
+      this.get(`products/${productId}?${query}`)
+        .then((response) => {
+          const { data } = response
+          filteredProduct.push(this.extractProducts(data))
+          resolve(filteredProduct)
+        })
+        .catch((err) => reject(err))
+    })
+  }
   find = (productName) => {
     const filteredProducts = []
     return new Promise((resolve, reject) => {
