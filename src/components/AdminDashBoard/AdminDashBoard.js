@@ -7,16 +7,19 @@ function AdminDashBoard() {
   const [data, setData] = useState([])
   const { id, username, email } = userData()
   const showAdminInfo = () => {
-     userService
-    .getUser(id)
-    .then((data) => {
-      console.log('user data: ', data)
-      setData(data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    userService
+      .getUser(id)
+      .then((data) => {
+        console.log('user data: ', data)
+        setData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
+  useEffect(() => {
+    showAdminInfo()
+  }, [])
 
   const adminLinks = () => {
     return (
@@ -29,6 +32,11 @@ function AdminDashBoard() {
             </Link>
           </li>
           <li class='list-group-item'>
+            <Link className='nav-link' to='/delete/category'>
+              Delete Category
+            </Link>
+          </li>
+          <li class='list-group-item'>
             <Link className='nav-link' to='/approve/ad'>
               Approve Ad
             </Link>
@@ -38,7 +46,6 @@ function AdminDashBoard() {
     )
   }
   const adminInfo = () => {
-    showAdminInfo()
     return (
       <div className='card mb-5 mu-5'>
         <h3 className='card-header'> Admin Information</h3>
