@@ -28,6 +28,9 @@ class CategoryService extends GenericService {
       }
     })
   }
+  deleteSubCategory = (subcategoryId) => {
+    return this.delete(`category-lists/${subcategoryId}`)
+  }
   getCategoryList = (categoryName) => {
     const categoryList = []
     return new Promise((resolve, reject) => {
