@@ -1,38 +1,49 @@
-import React from 'react'
-import './Product.css'
-import { useStateValue } from '../StateProvider/StateProvider'
-function Product({ id, title, image, price, rating }) {
-  const [{ basket }, dispatch] = useStateValue()
-  const addToGetQuote = () => {
-    dispatch({
-      type: 'ADD_TO_GETQUOTE',
-      item: {
-        id: id,
-        title: title,
-        image: image,
-        price: price,
-        rating: rating,
-      },
-    })
+import React, { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+function Product(props) {
+  const [product, setProduct] = useState({})
+  const [error, setError] = useState(false)
+  let { productId } = useParams()
+  const loadSingleProduct = (productId) => {
+    //api to fetch data of product
+    //set response equals to setProduct(response)
   }
+  useEffect(() => {
+    console.log(productId)
+    loadSingleProduct(productId)
+  }, [])
   return (
-    <div className='product'>
-      <div className='prouct__info'>
-        <p>{title}</p>
-        <p className='product__price'>
-          <small>Rs</small>
-          <strong>{price}</strong>
-        </p>
-        <div className='product__rating'>
-          {Array(rating)
-            .fill()
-            .map((_, i) => (
-              <span>&#9733;</span>
-            ))}
+    <div className='container my-5 py-5'>
+      <div className='row'>
+        <div className='col-12 mb-5'>
+          <h1 className='display-6 fw-bolder text-center'>
+            Product Description
+          </h1>
+          <hr />
         </div>
       </div>
-      <img src={image} alt='' />
-      <button onClick={addToGetQuote}>Get Quote</button>
+      <div class='card h-100 text-center p-4' key={product.id}>
+        <img
+          class='card-img-top'
+          src={product.image_urls[0]}
+          alt={product.name}
+          height='250px'
+          //style={{ maxHeight: '100%', maxWidth: '100%' }}
+        />
+        <div class='card-body'>
+          <h5 class='card-title mb-1 lead fw-bold'>{product.name}</h5>
+          <p class='card-text'>{product.description}</p>
+          <p class='card-text'>
+            Rs {product.price} / {product.duration}
+          </p>
+
+          <Link to='/'>
+            <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+              Add to cart
+            </button>
+          </Link>
+        </div>
+      </div>
     </div>
   )
 }
