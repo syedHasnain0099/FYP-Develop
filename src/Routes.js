@@ -16,6 +16,8 @@ import AdminDashBoard from './components/AdminDashBoard/AdminDashBoard'
 import AddCategory from './admin/AddCategory'
 import ApproveAd from './admin/ApproveAd'
 import AddProduct from './components/AddProduct/AddProduct'
+import DeleteCategory from './admin/DeleteCategory'
+import Product from './components/Product/Product'
 function Routes() {
   return (
     <BrowserRouter>
@@ -29,6 +31,10 @@ function Routes() {
             <Header />
             <AddCategory />
           </AdminRoute>
+          <AdminRoute path='/delete/category'>
+            <Header />
+            <DeleteCategory />
+          </AdminRoute>
           <AdminRoute path='/approve/ad'>
             <Header />
             <ApproveAd />
@@ -41,6 +47,10 @@ function Routes() {
             <Header />
             <AddProduct />
           </PrivateRoute>
+          <Route path='/product/:productId'>
+            <Header />
+            <Product />
+          </Route>
           <Route path='/ForgotPasswordForm'>
             <Header />
             <ForgotPasswordForm></ForgotPasswordForm>
