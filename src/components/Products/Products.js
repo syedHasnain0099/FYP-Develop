@@ -71,7 +71,7 @@ function Products() {
                     >
                       {product.name}
                     </h5>
-                    <p class='card-text'>
+                    <p class='lead mt-2'>
                       {product.description.substring(0, 20)}...
                     </p>
                     <p class='card-text'>

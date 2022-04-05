@@ -60,7 +60,7 @@ function ApproveAd() {
                     >
                       {product.name}
                     </h5>
-                    <p class='card-text'>{product.description}...</p>
+                    <p class='lead mt-2'>{product.description}...</p>
                     <p class='card-text'>
                       Rs {product.rent} / {product.duration}
                     </p>
