@@ -284,6 +284,7 @@ class ProductService extends GenericService {
     ad.rent = estimated_rent
     ad.duration = estimated_duration
     ad.categoryType = category_list
+    console.log("product media: ",product_media)
     const { data } = product_media
     if (data) {
       for (let index = 0; index < data.length; index++) {
