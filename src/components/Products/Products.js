@@ -77,7 +77,7 @@ function Products() {
                     <p class='card-text'>
                       Rs {product.price} / {product.duration}
                     </p>
-                    <Link to={`/product/${product.id}`}>
+                    <Link to={`/products/${product.id}`}>
                       <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
                         View Product
                       </button>

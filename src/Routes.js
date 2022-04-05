@@ -47,7 +47,11 @@ function Routes() {
             <Header />
             <AddProduct />
           </PrivateRoute>
-          <Route path='/product/:productId'>
+          <Route path='/products/:productId'>
+            <Header />
+            <Product />
+          </Route>
+          <Route path='/approveAds/:productId'>
             <Header />
             <Product />
           </Route>

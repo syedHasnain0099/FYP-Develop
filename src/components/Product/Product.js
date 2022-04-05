@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
 function Product() {
+  let pName = window.location.pathname
+  let pageName = pName.split('/')
+  console.log(pageName[1])
   let { productId } = useParams()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
