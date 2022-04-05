@@ -291,9 +291,11 @@ class ProductService extends GenericService {
         ad.image_urls.push(this.extractImage(singleMedia))
       }
     }
-    const { sup_data } = users_permissions_user
-    if (sup_data) {
-      ad.supplier = this.extractSupplier(sup_data)
+    if(users_permissions_user){
+      const { data } = users_permissions_user
+      if (data) {
+        ad.supplier = this.extractSupplier(data)
+      }
     }
     return ad
   }
