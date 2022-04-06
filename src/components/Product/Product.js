@@ -3,6 +3,8 @@ import productService from '../../services/ProductService'
 import { useParams } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
+import './Product.css'
 function Product() {
   let pName = window.location.pathname
   let pageName = pName.split('/')
@@ -12,11 +14,12 @@ function Product() {
   const [loading, setLoading] = useState(false)
   const getRequestedAds = (productId) => {
     setLoading(true)
-    if(pageName[1] === "products"){
+    if (pageName[1] === 'products') {
       productService
         .findOneProduct(productId)
         .then((response) => {
           console.log('product: ', response)
+
           setData(response)
           setLoading(false)
         })
@@ -24,12 +27,11 @@ function Product() {
           console.log('inside catch')
           console.log(err)
         })
-    }
-    else if(pageName[1] === "approveAds"){
+    } else if (pageName[1] === 'approveAds') {
       productService
         .findOneRequestedAd(productId)
         .then((response) => {
-          console.log('product: ', response)
+          console.log('approve ad: ', response)
           setData(response)
           setLoading(false)
         })
@@ -58,6 +60,42 @@ function Product() {
       </>
     )
   }
+  const showGetQuoteButton = () => {
+    if (pageName[1] === 'products') {
+      return (
+        <Link to='/'>
+          <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+            Get Quote
+          </button>
+        </Link>
+      )
+    }
+  }
+  const showStock = (quantity) => {
+    return quantity > 0 ? (
+      <span className='badge badge-primary badge-pill'>In Stock</span>
+    ) : (
+      <span className='badge badge-primary badge-pill'>Out of Stock</span>
+    )
+  }
+  const showApproveButton = () => {
+    if (pageName[1] === 'approveAds') {
+      return (
+        <>
+          <Link to='/'>
+            <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+              Approve
+            </button>
+          </Link>
+          <Link to='/'>
+            <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+              Dis-Approve
+            </button>
+          </Link>
+        </>
+      )
+    }
+  }
   const ShowProducts = () => {
     return (
       <>
@@ -76,19 +114,29 @@ function Product() {
                   <div class='card-body'>
                     <h5
                       class='card-title mb-1
-                     lead fw-bold'
+                     lead fw-bold name'
                     >
                       {product.name}
                     </h5>
                     <p class='lead mt-2'>{product.description}...</p>
-                    <p class='card-text'>
+                    <p class='black-10'>
                       Rs {product.price} / {product.duration}
                     </p>
-                    <Link to={`/product/${product.id}`}>
-                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-                        View Product
-                      </button>
-                    </Link>
+                    <p className='black-9'>Category: {product.category}</p>
+                    <p className='black-8'>
+                      Added on {moment(product.createdAt).fromNow()}
+                    </p>
+
+                    <p class='lead mt-2'>Reviews and Ratings</p>
+
+                    <p class='card-text'>{product.reviews[0].content}</p>
+                    <p class='card-text'>
+                      Supplier information: {product.supplier.username}
+                    </p>
+                    {showStock(product.quantity)}
+                    <br />
+                    {showGetQuoteButton()}
+                    {showApproveButton()}
                   </div>
                 </div>
               </div>
