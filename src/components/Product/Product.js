@@ -78,6 +78,14 @@ function Product() {
       <span className='badge badge-primary badge-pill'>Out of Stock</span>
     )
   }
+  const showReviews = (reviews) => {
+    if (reviews.length > 0) {
+      ;<p class='lead mt-2'>Reviews and Ratings</p>
+      for (let i = 0; i < reviews.length; i++) {
+        ;<p class='card-text'>{reviews[i].content}</p>
+      }
+    }
+  }
   const showApproveButton = () => {
     if (pageName[1] === 'approveAds') {
       return (
@@ -124,12 +132,12 @@ function Product() {
                     </p>
                     <p className='black-9'>Category: {product.category}</p>
                     <p className='black-8'>
+                      {console.log(product.createdAt)}
                       Added on {moment(product.createdAt).fromNow()}
                     </p>
 
-                    <p class='lead mt-2'>Reviews and Ratings</p>
-
-                    <p class='card-text'>{product.reviews[0].content}</p>
+                    {/* <p class='card-text'>{product.reviews[0].content}</p> */}
+                    {showReviews(product.reviews)}
                     <p class='card-text'>
                       Supplier information: {product.supplier.username}
                     </p>
