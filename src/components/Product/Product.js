@@ -12,17 +12,32 @@ function Product() {
   const [loading, setLoading] = useState(false)
   const getRequestedAds = (productId) => {
     setLoading(true)
-    productService
-      .findOne(productId)
-      .then((response) => {
-        console.log('product: ', response)
-        setData(response)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.log('inside catch')
-        console.log(err)
-      })
+    if(pageName[1] === "products"){
+      productService
+        .findOneProduct(productId)
+        .then((response) => {
+          console.log('product: ', response)
+          setData(response)
+          setLoading(false)
+        })
+        .catch((err) => {
+          console.log('inside catch')
+          console.log(err)
+        })
+    }
+    else if(pageName[1] === "approveAds"){
+      productService
+        .findOneRequestedAd(productId)
+        .then((response) => {
+          console.log('product: ', response)
+          setData(response)
+          setLoading(false)
+        })
+        .catch((err) => {
+          console.log('inside catch')
+          console.log(err)
+        })
+    }
   }
 
   const Loading = () => {

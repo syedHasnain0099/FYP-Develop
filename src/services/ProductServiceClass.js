@@ -177,7 +177,7 @@ class ProductService extends GenericService {
         .catch((err) => reject(err))
     })
   }
-  findOne = (productId) => {
+  findOneProduct = (productId) => {
     const filteredProduct = []
     const query = qs.stringify({
         populate: this.populate,
@@ -187,6 +187,21 @@ class ProductService extends GenericService {
         .then((response) => {
           const { data } = response
           filteredProduct.push(this.extractProducts(data))
+          resolve(filteredProduct)
+        })
+        .catch((err) => reject(err))
+    })
+  }
+  findOneRequestedAd = (productId) => {
+    const filteredProduct = []
+    const query = qs.stringify({
+        populate: this.populate,
+      })
+    return new Promise((resolve, reject) => {
+      this.get(`products/${productId}?populate=product_media,users_permissions_user,category_list`)
+        .then((response) => {
+          const { data } = response
+          filteredProduct.push(this.extractAds(data))
           resolve(filteredProduct)
         })
         .catch((err) => reject(err))
