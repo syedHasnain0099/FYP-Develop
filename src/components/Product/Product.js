@@ -8,11 +8,11 @@ import './Product.css'
 function Product() {
   let pName = window.location.pathname
   let pageName = pName.split('/')
-  console.log(pageName[1])
+  // console.log(pageName[1])
   let { productId } = useParams()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const getRequestedAds = (productId) => {
+  const getProducts = (productId) => {
     setLoading(true)
     if (pageName[1] === 'products') {
       productService
@@ -27,16 +27,18 @@ function Product() {
           console.log('inside catch')
           console.log(err)
         })
-    } else if (pageName[1] === 'approveAds') {
+    } 
+    else if (pageName[1] === 'approveAds') {
+      console.log("isnide else condition of approve ads")
       productService
         .findOneRequestedAd(productId)
         .then((response) => {
-          console.log('approve ad: ', response)
+          console.log("requested ad details: ",response)
           setData(response)
           setLoading(false)
         })
         .catch((err) => {
-          console.log('inside catch')
+          console.log('inside else if catch')
           console.log(err)
         })
     }
@@ -130,7 +132,7 @@ function Product() {
                     <p class='black-10'>
                       Rs {product.price} / {product.duration}
                     </p>
-                    <p className='black-9'>Category: {product.category}</p>
+                    <p className='black-9'>Category: {product.subCategory}</p>
                     <p className='black-8'>
                       {console.log(product.createdAt)}
                       Added on {moment(product.createdAt).fromNow()}
@@ -156,7 +158,7 @@ function Product() {
   }
 
   useEffect(() => {
-    getRequestedAds(productId)
+    getProducts(productId)
   }, [])
   return (
     <div>

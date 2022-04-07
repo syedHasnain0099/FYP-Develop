@@ -11,7 +11,7 @@ function ApproveAd() {
     productService
       .getRequestedAds()
       .then((response) => {
-        console.log(response)
+        console.log("requested ads",response)
         setData(response)
         setLoading(false)
       })
