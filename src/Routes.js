@@ -18,6 +18,7 @@ import ApproveAd from './admin/ApproveAd'
 import AddProduct from './components/AddProduct/AddProduct'
 import DeleteCategory from './admin/DeleteCategory'
 import Product from './components/Product/Product'
+import SingleHomeProduct from './components/SingleHomeProduct/SingleHomeProduct'
 function Routes() {
   return (
     <BrowserRouter>
@@ -49,7 +50,7 @@ function Routes() {
           </PrivateRoute>
           <Route path='/products/:productId'>
             <Header />
-            <Product />
+            <SingleHomeProduct />
           </Route>
           <Route path='/approveAds/:productId'>
             <Header />
