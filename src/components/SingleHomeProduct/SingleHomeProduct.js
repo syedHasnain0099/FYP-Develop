@@ -24,8 +24,14 @@ function SingleHomeProduct() {
         console.log(err)
       })
   }
-
-  const getRelatedProducts = () => {}
+  useEffect(() => {
+    getProducts(productId)
+  }, [])
+  const getRealtedProducts = () => {
+    const { subCategory } = data[0]
+    console.log(subCategory)
+    //here to get related products
+  }
   const Loading = () => {
     return (
       <>
@@ -121,13 +127,11 @@ function SingleHomeProduct() {
             </>
           )
         })}
+        {getRealtedProducts()}
       </>
     )
   }
 
-  useEffect(() => {
-    getProducts(productId)
-  }, [])
   return (
     <div>
       <div className='container my-5 py-5'>
