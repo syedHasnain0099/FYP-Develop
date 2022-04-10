@@ -14,33 +14,50 @@ function Product() {
     productService
       .findOneRequestedAd(productId)
       .then((response) => {
-        console.log('requested ad details: ', response)
         setData(response)
-        console.log(data[0].id)
         setLoading(false)
+        //destructuringData()
       })
       .catch((err) => {
         console.log('inside else if catch')
         console.log(err)
       })
   }
-  const {
-    id,
-    categoryType,
-    createdAt,
-    description,
-    duration,
-    image_urls,
-    name,
-    quantity,
-    rent,
-    supplier,
-  } = data[0]
+  const destructuringData = () => {
+    const {
+      id,
+      categoryType,
+      createdAt,
+      description,
+      duration,
+      image_urls,
+      name,
+      quantity,
+      rent,
+      supplier,
+    } = data[0]
+    console.log('name of product', name)
+    console.log('id of product', id)
+  }
+
   const approveHandleChange = () => {
+    const {
+      id,
+      categoryType,
+      createdAt,
+      description,
+      duration,
+      image_urls,
+      name,
+      quantity,
+      rent,
+      supplier,
+    } = data[0]
     //here you will run for APPROVE
     console.log('name of product', name)
   }
   const disapproveHandleChange = () => {
+    const { id } = data[0]
     //here you will run for disAPPROVE
     console.log('id of product', id)
   }
