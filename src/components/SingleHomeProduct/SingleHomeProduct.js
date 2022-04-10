@@ -16,7 +16,6 @@ function SingleHomeProduct() {
       .findOneProduct(productId)
       .then((response) => {
         console.log('product: ', response)
-
         setData(response)
         setLoading(false)
       })
@@ -25,6 +24,8 @@ function SingleHomeProduct() {
         console.log(err)
       })
   }
+
+  const getRelatedProducts = () => {}
   const Loading = () => {
     return (
       <>
@@ -47,7 +48,7 @@ function SingleHomeProduct() {
     return (
       <Link to='/'>
         <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-          Get Quote
+          Add to cart
         </button>
       </Link>
     )
@@ -91,8 +92,9 @@ function SingleHomeProduct() {
                       {product.name}
                     </h5>
                     <p class='lead mt-2'>{product.description}...</p>
+                    <p class='black-10'>Rs {product.price} / per day</p>
                     <p class='black-10'>
-                      Rs {product.price} / {product.duration}
+                      Rent Maximum Duration: {product.duration}
                     </p>
                     <p className='black-9'>Category: {product.subCategory}</p>
                     <p className='black-8'>

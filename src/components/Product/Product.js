@@ -6,9 +6,6 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 import './Product.css'
 function Product() {
-  // let pName = window.location.pathname
-  // let pageName = pName.split('/')
-  //  console.log(pageName[1])
   let { productId } = useParams()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -19,12 +16,33 @@ function Product() {
       .then((response) => {
         console.log('requested ad details: ', response)
         setData(response)
+        console.log(data[0].id)
         setLoading(false)
       })
       .catch((err) => {
         console.log('inside else if catch')
         console.log(err)
       })
+  }
+  const {
+    id,
+    categoryType,
+    createdAt,
+    description,
+    duration,
+    image_urls,
+    name,
+    quantity,
+    rent,
+    supplier,
+  } = data[0]
+  const approveHandleChange = () => {
+    //here you will run for APPROVE
+    console.log('name of product', name)
+  }
+  const disapproveHandleChange = () => {
+    //here you will run for disAPPROVE
+    console.log('id of product', id)
   }
 
   const Loading = () => {
@@ -57,16 +75,19 @@ function Product() {
   const showApproveButton = () => {
     return (
       <>
-        <Link to='/'>
-          <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-            Approve
-          </button>
-        </Link>
-        <Link to='/'>
-          <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-            Dis-Approve
-          </button>
-        </Link>
+        <button
+          className='btn btn-outline-dark mt-2 mb-2 mr-2'
+          onClick={approveHandleChange}
+        >
+          Approve
+        </button>
+
+        <button
+          className='btn btn-outline-dark mt-2 mb-2 mr-2'
+          onClick={disapproveHandleChange}
+        >
+          Dis-Approve
+        </button>
       </>
     )
   }

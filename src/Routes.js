@@ -3,7 +3,7 @@ import Header from './components/Header/Header'
 import Home from './components/Home/Home'
 import React from 'react'
 import GetQuoteForm from './components/GetQuote/GetQuoteForm'
-import Checkout from './components/Cart/Checkout'
+
 import ForgotPasswordForm from './components/ForgotPassword/ForgotPasswordForm'
 import ResetPageForm from './components/ForgotPassword/ResetPageForm'
 import SignUp from './components/SignUp/SignUp'
@@ -72,10 +72,7 @@ function Routes() {
             <Header />
             <ResetPageForm></ResetPageForm>
           </Route>
-          <Route path='/checkout'>
-            <Header />
-            <Checkout />
-          </Route>
+
           <Route path='/getQuote'>
             <Header />
             <GetQuoteForm></GetQuoteForm>
