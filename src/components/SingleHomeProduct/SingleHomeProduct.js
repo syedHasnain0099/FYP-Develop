@@ -10,12 +10,15 @@ function SingleHomeProduct() {
   let { productId } = useParams()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [subCategory, setSubCategory] = useState('')
+  const [relatedProducts, setRelatedProducts] = useState([])
   const getProducts = (productId) => {
     setLoading(true)
     productService
       .findOneProduct(productId)
       .then((response) => {
-        console.log('product: ', response)
+        console.log('product: ', response[0].subCategory)
+        setSubCategory(response[0].subCategory)
         setData(response)
         setLoading(false)
       })
@@ -28,10 +31,13 @@ function SingleHomeProduct() {
     getProducts(productId)
   }, [])
   const getRealtedProducts = () => {
-    const { subCategory } = data[0]
     console.log(subCategory)
     //here to get related products
+    //set response equal to setRelatedProducts(response)
   }
+  useEffect(() => {
+    getRealtedProducts()
+  }, [data])
   const Loading = () => {
     return (
       <>
@@ -127,7 +133,6 @@ function SingleHomeProduct() {
             </>
           )
         })}
-        {getRealtedProducts()}
       </>
     )
   }
