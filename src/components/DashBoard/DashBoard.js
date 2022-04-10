@@ -32,7 +32,7 @@ function DashBoard() {
             </Link>
           </li>
           <li class='list-group-item'>
-            <Link className='nav-link' to='/profile/update'>
+            <Link className='nav-link' to={`/profile/${id}`}>
               Update Profile
             </Link>
           </li>

@@ -18,6 +18,7 @@ import DeleteCategory from './admin/DeleteCategory'
 import Product from './components/Product/Product'
 import SingleHomeProduct from './components/SingleHomeProduct/SingleHomeProduct'
 import GetQuote from './components/GetQuote/GetQuote'
+import Profile from './components/Profile/Profile'
 function Routes() {
   return (
     <BrowserRouter>
@@ -39,6 +40,14 @@ function Routes() {
             <Header />
             <ApproveAd />
           </AdminRoute>
+          <AdminRoute path='/approveAds/:productId'>
+            <Header />
+            <Product />
+          </AdminRoute>
+          <PrivateRoute path='/profile/:userId'>
+            <Header />
+            <Profile />
+          </PrivateRoute>
           <PrivateRoute path='/user/dashboard'>
             <Header />
             <DashBoard />
@@ -51,10 +60,7 @@ function Routes() {
             <Header />
             <SingleHomeProduct />
           </Route>
-          <Route path='/approveAds/:productId'>
-            <Header />
-            <Product />
-          </Route>
+
           <Route path='/ForgotPasswordForm'>
             <Header />
             <ForgotPasswordForm></ForgotPasswordForm>
