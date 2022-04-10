@@ -16,6 +16,7 @@ function GetQuote() {
     productService
       .findOneProduct(productId)
       .then((response) => {
+        console.log(response)
         setData(response)
         setLoading(false)
       })
@@ -47,8 +48,11 @@ function GetQuote() {
       location: enteredLocation,
       quantity: enteredQuantity,
     }
-
+    postQuote(getQuoteData)
     console.log(getQuoteData)
+  }
+  const postQuote = (getQuoteData) => {
+    // here to run or connect with backend
   }
   const Loading = () => {
     return (
@@ -85,13 +89,13 @@ function GetQuote() {
                 <small>Rs</small>
                 <strong>{product.price}</strong>
               </p>
-              {/* <div className='getquote-product__rating'>
-          {Array(rating)
-            .fill()
-            .map((_, i) => (
-              <span>&#9733;</span>
-            ))}
-        </div> */}
+              <div className='getquote-product__rating'>
+                {Array(product.reviews[0].rating)
+                  .fill()
+                  .map((_, i) => (
+                    <span>&#9733;</span>
+                  ))}
+              </div>
             </>
           )
         })}
