@@ -90,11 +90,10 @@ function GetQuote() {
                 <strong>{product.price}</strong>
               </p>
               <div className='getquote-product__rating'>
-                {Array(product.reviews[0].rating)
-                  .fill()
-                  .map((_, i) => (
-                    <span>&#9733;</span>
-                  ))}
+                {product.reviews.length > 1 &&
+                  Array(product.reviews[0].rating)
+                    .fill()
+                    .map((_, i) => <span>&#9733;</span>)}
               </div>
             </>
           )
