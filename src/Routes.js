@@ -2,8 +2,6 @@ import { BrowserRouter, Switch, Route, Router } from 'react-router-dom'
 import Header from './components/Header/Header'
 import Home from './components/Home/Home'
 import React from 'react'
-import GetQuoteForm from './components/GetQuote/GetQuoteForm'
-
 import ForgotPasswordForm from './components/ForgotPassword/ForgotPasswordForm'
 import ResetPageForm from './components/ForgotPassword/ResetPageForm'
 import SignUp from './components/SignUp/SignUp'
@@ -19,6 +17,7 @@ import AddProduct from './components/AddProduct/AddProduct'
 import DeleteCategory from './admin/DeleteCategory'
 import Product from './components/Product/Product'
 import SingleHomeProduct from './components/SingleHomeProduct/SingleHomeProduct'
+import GetQuote from './components/GetQuote/GetQuote'
 function Routes() {
   return (
     <BrowserRouter>
@@ -73,9 +72,9 @@ function Routes() {
             <ResetPageForm></ResetPageForm>
           </Route>
 
-          <Route path='/getQuote'>
+          <Route path='/getQuote/:productId'>
             <Header />
-            <GetQuoteForm></GetQuoteForm>
+            <GetQuote></GetQuote>
           </Route>
           <Route path='/SignUp'>
             <Header />

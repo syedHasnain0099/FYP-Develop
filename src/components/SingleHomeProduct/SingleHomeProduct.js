@@ -56,15 +56,7 @@ function SingleHomeProduct() {
       </>
     )
   }
-  const showGetQuoteButton = () => {
-    return (
-      <Link to='/'>
-        <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-          Add to cart
-        </button>
-      </Link>
-    )
-  }
+
   const showStock = (quantity) => {
     return quantity > 0 ? (
       <span className='badge badge-primary badge-pill'>In Stock</span>
@@ -126,7 +118,11 @@ function SingleHomeProduct() {
 
                     {showStock(product.quantity)}
                     <br />
-                    {showGetQuoteButton()}
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+                        Get Quote
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

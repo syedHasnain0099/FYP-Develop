@@ -82,9 +82,9 @@ function Products() {
                         View Product
                       </button>
                     </Link>
-                    <Link to='/'>
+                    <Link to={`/getQuote/${product.id}`}>
                       <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-                        Add to cart
+                        Get Quote
                       </button>
                     </Link>
                   </div>

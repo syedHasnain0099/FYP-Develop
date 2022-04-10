@@ -1,11 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { Skeleton } from '@mui/material'
+import productService from '../../services/ProductService'
 import './GetQuote.css'
-function GetQuote({ id, title, image, price, rating }) {
+function GetQuote() {
+  let { productId } = useParams()
   const [enteredStartDate, setEnteredStartDate] = useState('')
   const [enteredEndDate, setEnteredEndDate] = useState('')
   const [enteredLocation, setEnteredLocation] = useState('')
   const [enteredQuantity, setEnteredQuantity] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const getProducts = (productId) => {
+    setLoading(true)
+    productService
+      .findOneProduct(productId)
+      .then((response) => {
+        setData(response)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log('inside catch')
+        console.log(err)
+      })
+  }
+  useEffect(() => {
+    getProducts(productId)
+  }, [])
   const startDateChangeHandler = (event) => {
     setEnteredStartDate(event.target.value)
   }
@@ -26,27 +47,63 @@ function GetQuote({ id, title, image, price, rating }) {
       location: enteredLocation,
       quantity: enteredQuantity,
     }
-    setIsSubmitting(true)
+
     console.log(getQuoteData)
+  }
+  const Loading = () => {
+    return (
+      <>
+        <div className='col-md-3'>
+          <Skeleton height={350} />
+        </div>
+        <div className='col-md-3'>
+          <Skeleton height={350} />
+        </div>
+        <div className='col-md-3'>
+          <Skeleton height={350} />
+        </div>
+        <div className='col-md-3'>
+          <Skeleton height={350} />
+        </div>
+      </>
+    )
+  }
+  const ShowProducts = () => {
+    return (
+      <>
+        {data.map((product) => {
+          return (
+            <>
+              {console.log('running')}
+              <img
+                className='getquote-form-img'
+                src={product.image_urls[0]}
+                alt='spaceship'
+              />
+              <p className='getquote-checkoutProduct__title'>{product.name}</p>
+              <p className='getquote-product__price'>
+                <small>Rs</small>
+                <strong>{product.price}</strong>
+              </p>
+              {/* <div className='getquote-product__rating'>
+          {Array(rating)
+            .fill()
+            .map((_, i) => (
+              <span>&#9733;</span>
+            ))}
+        </div> */}
+            </>
+          )
+        })}
+      </>
+    )
   }
 
   return (
     <div className='getquote-form-container'>
       <span className='getquote-close-btn'>×</span>
       <div className='getquote-form-content-left'>
-        <img className='getquote-form-img' src={image} alt='spaceship' />
-        <p className='getquote-checkoutProduct__title'>{title}</p>
-        <p className='getquote-product__price'>
-          <small>Rs</small>
-          <strong>{price}</strong>
-        </p>
-        <div className='getquote-product__rating'>
-          {Array(rating)
-            .fill()
-            .map((_, i) => (
-              <span>&#9733;</span>
-            ))}
-        </div>
+        {loading ? <Loading /> : <ShowProducts />}
       </div>
       <div className='getquote-form-content-right'>
         <form className='getquote-form' onSubmit={submitHandler}>
