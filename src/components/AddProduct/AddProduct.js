@@ -276,19 +276,57 @@ function AddProduct() {
         <h2>Loading...</h2>
       </div>
     )
-
+  const userLinks = () => {
+    return (
+      <div className='card'>
+        <h4 className='card-header'>User Links</h4>
+        <ul class='list-group list-group-flush'>
+          <li class='list-group-item'>
+            <Link className='nav-link' to='/cart'>
+              My Cart
+            </Link>
+          </li>
+          <li class='list-group-item'>
+            <Link className='nav-link' to={`/profile/${id}`}>
+              Update Profile
+            </Link>
+          </li>
+          <li class='list-group-item'>
+            <Link className='nav-link' to='/create/product'>
+              Post an ad
+            </Link>
+          </li>
+        </ul>
+      </div>
+    )
+  }
   return (
-    <div className='container mt-4'>
+    <div className='container-fluid mt-4'>
       <div className='row'>
-        <h3 className='card-header'>Post an ad</h3>
-        <div className='col-md-8 offset-md-2'>
+        <div className='col-3'>{userLinks()}</div>
+        <div className='col-9'>
+          <h3 className='card-header mb-3'>Post an ad</h3>
+          {/* <div className='col-md-8 offset-md-2'> */}
           {showLoading()}
           {showSuccess()}
           {showError()}
           {newPostForm()}
+          {/* </div> */}
         </div>
       </div>
     </div>
+
+    // <div className='container mt-4'>
+    //   <div className='row'>
+    //     <h3 className='card-header'>Post an ad</h3>
+    //     <div className='col-md-8 offset-md-2'>
+    //       {showLoading()}
+    //       {showSuccess()}
+    //       {showError()}
+    //       {newPostForm()}
+    //     </div>
+    //   </div>
+    // </div>
   )
 }
 
