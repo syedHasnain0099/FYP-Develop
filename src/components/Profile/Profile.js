@@ -72,12 +72,30 @@ function Profile() {
   }
   const clickSubmit = (e) => {
     e.preventDefault()
+    //updateProfile()
   }
   const updateProfile = () => {
+    //setValues({ ...values, success: true })
     //here implement backend processing
     //need any kind of data just enter name for example need first name
     //console.log(first_name)
   }
+  const showError = () => (
+    <div
+      className='alert alert-danger'
+      style={{ display: error ? '' : 'none' }}
+    >
+      <h2>Error. Try Again !!!</h2>
+    </div>
+  )
+  const showSuccess = () => (
+    <div
+      className='alert alert-info'
+      style={{ display: success ? '' : 'none' }}
+    >
+      <h2>Profile has been updated!</h2>
+    </div>
+  )
   const profileUpdate = () => (
     <form>
       <div className='form-group'>
@@ -144,7 +162,9 @@ function Profile() {
       <div className='row'>
         <div className='col-3'>{userLinks()}</div>
         <div className='col-9'>
-          {/* {userInfo()} */}
+          {showSuccess()}
+          {showError()}
+          <h3 className='card-header mb-3'>Update Profile</h3>
           {profileUpdate()}
         </div>
       </div>
