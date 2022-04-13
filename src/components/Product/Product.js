@@ -27,7 +27,6 @@ function Product() {
     const {
       id,
       categoryType,
-      createdAt,
       description,
       duration,
       image_urls,
@@ -36,12 +35,31 @@ function Product() {
       rent,
       supplier,
     } = data[0]
-    //here you will run for APPROVE
-    console.log('name of product', name)
+    console.log("supplier id: ",supplier.id)
+    //add that to products
+    productService
+      .uploadPost(
+        name,
+        description,
+        rent,
+        duration,
+        categoryType,
+        quantity,
+        data[0].supplier.id,
+        image_urls
+      )
+      .then(data => console.log('congratulations your post is added ', data))
+      .catch(err => console.log(err))
+    //delete request from requested ads
+      // productService
+      //   .deleteRequestedAd(id)
+      //   .then(data => console.log(`the requested ad: ${data} has been deleted`))
+      //   .catch(err => console.log(err))
   }
   const disapproveHandleChange = () => {
     const { id } = data[0]
-    //here you will run for disAPPROVE
+    //send user notification
+    //delete request from requested ads
     console.log('id of product', id)
   }
 

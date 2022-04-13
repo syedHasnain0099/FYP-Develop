@@ -7,7 +7,6 @@ class ProductService extends GenericService {
     super()
     this.populate = [
       'reviews',
-      'estimated_price',
       'image',
       'users_permissions_user',
       'category_list',
@@ -56,24 +55,18 @@ class ProductService extends GenericService {
     categoryId,
     quantity,
     id,
-    mediaIds,
-    videoMediaId
+    mediaIds
   ) => {
-    // mediaIds.push(videoMediaId)
-    const Id = [mediaIds, videoMediaId]
-    console.log(mediaIds)
-    // console.log(Id[0])
-    // console.log(Id[1])
     return this.post(`requested-ads`, {
-      data: {
-        product_name: name,
-        product_decription: description,
-        product_media: Id,
-        product_quantity: quantity,
-        estimated_rent: rent,
-        estimated_duration: duration,
-        users_permissions_user: id,
-        category_list: categoryId,
+      "data": {
+        "product_name": name,
+        "product_description": description,
+        "product_media": mediaIds,
+        "product_quantity": quantity,
+        "estimated_rent": rent,
+        "estimated_duration": duration,
+        "users_permissions_user": id,
+        "category_list": categoryId,
       },
     })
   }
@@ -81,21 +74,20 @@ class ProductService extends GenericService {
     return this.delete(`requested-ads/${id}`)
   }
 
-  uploadPost = (post) => {
-        const Id = [post.mediaIds, post.videoMediaId]
-    console.log("post media ids",post.mediaIds)
+  uploadPost = (name, description, price, duration, categoryType, quantity, supplierId, image_urls) => 
+  {
     return this.post(`products`, {
       data: {
-        name: post.name,
-        description: post.description,
-        image: Id,
+        name: name,
+        description: description,
+        image: image_urls,
         estimated_price:{
-          price: post.rent,
-          duration: post.duration
+          price,
+          duration
         },
-        quantity: post.quantity,
-        users_permissions_user: post.id,
-        category_list: post.categoryId,
+        quantity: quantity,
+        users_permissions_user: supplierId,
+        category_list: categoryType,
       },
     })
   }
@@ -358,7 +350,8 @@ class ProductService extends GenericService {
     const {
       name,
       description,
-      estimated_price,
+      rent,
+      duration,
       reviews,
       image,
       users_permissions_user,
@@ -366,12 +359,12 @@ class ProductService extends GenericService {
       category_list,
       createdAt
     } = attributes
-    const { price, duration } = estimated_price
+    // const { price, duration } = estimated_price
     var product = {
       id: '',
       name: '',
       description: '',
-      price: '',
+      rent: '',
       duration: '',
       quantity: '',
       reviews: [],
@@ -383,10 +376,10 @@ class ProductService extends GenericService {
     product.id = id
     product.name = name
     product.description = description
-    product.price = price
     product.duration = duration
     product.createdAt = createdAt.slice(0,10)
     product.quantity = quantity;
+    product.rent=rent;
 
     if (reviews) {
       const { data } = reviews

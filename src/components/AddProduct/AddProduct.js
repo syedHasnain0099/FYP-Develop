@@ -98,15 +98,18 @@ function AddProduct() {
   const clickSubmit = (event) => {
     event.preventDefault()
     setValues({ ...values, error: '', loading: true })
-    console.log(mediaIds)
+    const mIds = [];
+    mIds.push(mediaIds);
+    if(videoMediaId!=""){
+      mIds.push(videoMediaId)
+    }
+
     postAd(
       { productname, description, rent, duration, subcategory, quantity, id },
-      mediaIds,
-      videoMediaId
+      mIds
     )
   }
-  const postAd = (props, mediaIds, videoMediaId) => {
-    console.log('image ids: ', mediaIds)
+  const postAd = (props, mediaIds) => {
     productService
       .postAd(
         props.productname,
@@ -116,8 +119,7 @@ function AddProduct() {
         props.subcategory,
         props.quantity,
         props.id,
-        mediaIds,
-        videoMediaId
+        mediaIds
       )
       .then((data) => {
         console.log('congratulations your post is added ', data)

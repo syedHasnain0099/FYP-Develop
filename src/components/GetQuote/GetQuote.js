@@ -48,6 +48,7 @@ function GetQuote() {
       location: enteredLocation,
       quantity: enteredQuantity,
     }
+    console.log("get quote data: ",getQuoteData)
     postQuote(getQuoteData)
     console.log(getQuoteData)
   }
