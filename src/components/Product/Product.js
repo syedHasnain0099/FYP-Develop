@@ -51,16 +51,19 @@ function Product() {
       .then(data => console.log('congratulations your post is added ', data))
       .catch(err => console.log(err))
     //delete request from requested ads
-      // productService
-      //   .deleteRequestedAd(id)
-      //   .then(data => console.log(`the requested ad: ${data} has been deleted`))
-      //   .catch(err => console.log(err))
+      productService
+        .deleteRequestedAd(id)
+        .then(data => console.log(`the requested ad: ${data} has been deleted`))
+        .catch(err => console.log(err))
   }
   const disapproveHandleChange = () => {
     const { id } = data[0]
     //send user notification
     //delete request from requested ads
-    console.log('id of product', id)
+    productService
+        .deleteRequestedAd(id)
+        .then(data => console.log(`the requested ad: ${data} has been deleted`))
+        .catch(err => console.log(err))
   }
 
   const Loading = () => {

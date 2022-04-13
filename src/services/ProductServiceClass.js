@@ -74,20 +74,21 @@ class ProductService extends GenericService {
     return this.delete(`requested-ads/${id}`)
   }
 
-  uploadPost = (name, description, price, duration, categoryType, quantity, supplierId, image_urls) => 
+  uploadPost = (name, description, rent, duration, categoryType, quantity, supplierId, image_urls) => 
   {
+    console.log("supplierId: ",supplierId)
+    console.log("imageurls: ",image_urls)
+    console.log("category: ",categoryType)
     return this.post(`products`, {
       data: {
         name: name,
         description: description,
-        image: image_urls,
-        estimated_price:{
-          price,
-          duration
-        },
+        image: 84,
+        rent:rent,
+        duration:duration,
         quantity: quantity,
         users_permissions_user: supplierId,
-        category_list: categoryType,
+        category_list: '1',
       },
     })
   }
