@@ -72,9 +72,19 @@ function Profile() {
   }
   const clickSubmit = (e) => {
     e.preventDefault()
-    //updateProfile()
+    updateProfile()
   }
   const updateProfile = () => {
+    userService
+      .updateProfile(id,first_name,last_name,username,email,contact_number,password)
+      .then((data) => {
+        console.log('first name: ', data.first_name)
+        setValues({ ...values, success: true })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
     //setValues({ ...values, success: true })
     //here implement backend processing
     //need any kind of data just enter name for example need first name

@@ -30,13 +30,26 @@ function SingleHomeProduct() {
   useEffect(() => {
     getProducts(productId)
   }, [])
-  const getRealtedProducts = () => {
+  const getRelatedProducts = () => {
     console.log(subCategory)
     //here to get related products
     //set response equal to setRelatedProducts(response)
+    const {
+      name
+    } = data[0]
+    console.log("name: ",name)
+    productService
+      .getRelatedProducts(subCategory,name)
+      .then((response) => {
+        console.log("related products: ",response)
+        setRelatedProducts(response)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   useEffect(() => {
-    getRealtedProducts()
+    getRelatedProducts()
   }, [data])
   const Loading = () => {
     return (

@@ -269,6 +269,35 @@ class ProductService extends GenericService {
     })
   }
 
+  getRelatedProducts = (subCategory,existingProductName) => {
+    const filteredProducts = []
+    let query
+    return new Promise((resolve, reject) => {
+        query = qs.stringify({
+          populate: this.populate,
+          filters: {
+            category_list: {
+              name: {
+                $eq: subCategory,
+              },
+            },
+            name: {
+              $notContains: existingProductName,
+            }
+          },
+        })
+      this.get(`products?${query}`)
+        .then((response) => {
+          const { data } = response
+          for (let ad of data) {
+            filteredProducts.push(this.extractProducts(ad))
+          }
+          resolve(filteredProducts)
+        })
+        .catch((err) => reject(err))
+    })
+  }
+
   extractAds = (ad) => {
     
     const { id, attributes } = ad
@@ -333,6 +362,7 @@ class ProductService extends GenericService {
       reviews,
       image,
       users_permissions_user,
+      quantity,
       category_list,
       createdAt
     } = attributes
@@ -343,6 +373,7 @@ class ProductService extends GenericService {
       description: '',
       price: '',
       duration: '',
+      quantity: '',
       reviews: [],
       image_urls: [],
       supplier: {},
@@ -355,6 +386,7 @@ class ProductService extends GenericService {
     product.price = price
     product.duration = duration
     product.createdAt = createdAt.slice(0,10)
+    product.quantity = quantity;
 
     if (reviews) {
       const { data } = reviews

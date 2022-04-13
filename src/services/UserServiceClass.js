@@ -88,7 +88,21 @@ class UserService extends GenericService {
       }
     })
   }
-
+  updateProfile = (id,first_name,
+      last_name,
+      username,
+      email,
+      contact_number,
+      password) => {
+    return this.put(`users/${id}`, {
+      first_name,
+      last_name,
+      username,
+      email,
+      contact_number,
+      password
+    })
+  }
   getUser = (ID) =>
     new Promise((resolve, reject) => {
       this.get(`users/${ID}`, {})
