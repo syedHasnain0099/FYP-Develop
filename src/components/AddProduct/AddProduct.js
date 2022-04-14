@@ -134,6 +134,7 @@ function AddProduct() {
           subcategory: '',
           duration: '',
           quantity: '',
+          error:false,
           loading: false,
           createdProduct: data.data.attributes.product_name,
         })

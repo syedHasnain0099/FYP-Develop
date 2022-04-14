@@ -20,6 +20,7 @@ function Products() {
     productService
       .getAllAds()
       .then((response) => {
+        console.log("ads: ",response)
         setData(response)
         setLoading(false)
       })
@@ -75,7 +76,7 @@ function Products() {
                       {product.description.substring(0, 20)}...
                     </p>
                     <p class='card-text'>
-                      Rs {product.price} / {product.duration}
+                      Rs {product.rent} / {product.duration}
                     </p>
                     <Link to={`/products/${product.id}`}>
                       <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>

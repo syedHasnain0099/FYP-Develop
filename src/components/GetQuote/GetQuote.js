@@ -88,14 +88,15 @@ function GetQuote() {
               <p className='getquote-checkoutProduct__title'>{product.name}</p>
               <p className='getquote-product__price'>
                 <small>Rs</small>
-                <strong>{product.price}</strong>
+                <strong>{product.rent}</strong>
               </p>
               <div className='getquote-product__rating'>
-                {product.reviews.length > 1 &&
+              
+                {product.reviews[0].length > 1 &&
                   Array(product.reviews[0].rating)
                     .fill()
                     .map((_, i) => <span>&#9733;</span>)}
-              </div>
+              </div>  
             </>
           )
         })}
