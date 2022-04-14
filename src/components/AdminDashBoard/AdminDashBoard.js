@@ -51,11 +51,16 @@ function AdminDashBoard() {
         <h3 className='card-header'> Admin Information</h3>
         <div class='card-body'>
           <ul class='list-group list-group-flush'>
+            <label className='text-muted'>First Name</label>
             <li class='list-group-item'>{data.first_name}</li>
+            <label className='text-muted'>Last Name</label>
             <li class='list-group-item'>{data.last_name}</li>
+            <label className='text-muted'>UserName</label>
             <li class='list-group-item'>{data.username}</li>
+            <label className='text-muted'>Email</label>
             <li class='list-group-item'>{data.email}</li>
-            <li class='list-group-item'>{data.contact_number}</li>
+            <label className='text-muted'>Contact Number</label>
+            <li class='list-group-item'>+92 {data.contact_number}</li>
           </ul>
         </div>
       </div>
