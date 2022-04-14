@@ -11,14 +11,17 @@ function SingleHomeProduct() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [subCategory, setSubCategory] = useState('')
+  const [productName, setProductName] = useState('')
   const [relatedProducts, setRelatedProducts] = useState([])
+  const [searched, setSearched] = useState(false)
   const getProducts = (productId) => {
     setLoading(true)
     productService
       .findOneProduct(productId)
       .then((response) => {
-        console.log('product: ', response[0].subCategory)
+        console.log('product: ', response)
         setSubCategory(response[0].subCategory)
+        setProductName(response[0].name)
         setData(response)
         setLoading(false)
       })
@@ -31,18 +34,14 @@ function SingleHomeProduct() {
     getProducts(productId)
   }, [])
   const getRelatedProducts = () => {
-    console.log(subCategory)
-    //here to get related products
-    //set response equal to setRelatedProducts(response)
-    const {
-      name
-    } = data[0]
-    console.log("name: ",name)
+    console.log('subcategory', subCategory)
+    console.log('productname', productName)
     productService
-      .getRelatedProducts(subCategory,name)
+      .getRelatedProducts(subCategory, productName)
       .then((response) => {
-        console.log("related products: ",response)
+        console.log('related products: ', response)
         setRelatedProducts(response)
+        setSearched(true)
       })
       .catch((err) => {
         console.log(err)
@@ -50,7 +49,7 @@ function SingleHomeProduct() {
   }
   useEffect(() => {
     getRelatedProducts()
-  }, [data])
+  }, [productName])
   const Loading = () => {
     return (
       <>
@@ -70,6 +69,15 @@ function SingleHomeProduct() {
     )
   }
 
+  const searchMessage = (searched, relatedProducts) => {
+    if (searched && relatedProducts.length > 0) {
+      return `Found ${relatedProducts.length} related product`
+    }
+    if (searched && relatedProducts.length < 1) {
+      return `No related products found`
+    }
+  }
+
   const showStock = (quantity) => {
     return quantity > 0 ? (
       <span className='badge badge-primary badge-pill'>In Stock</span>
@@ -86,7 +94,7 @@ function SingleHomeProduct() {
       return <p class='card-text'>No reviews and rating on this product</p>
     }
   }
-  const ShowProducts = () => {
+  const ShowProduct = () => {
     return (
       <>
         {data.map((product) => {
@@ -145,7 +153,53 @@ function SingleHomeProduct() {
       </>
     )
   }
-
+  const ShowProducts = () => {
+    return (
+      <>
+        {relatedProducts.map((product) => {
+          return (
+            <>
+              <div className='col-4 mb-3'>
+                <div class='card h-100 text-center p-4' key={product.id}>
+                  <img
+                    class='card-img-top'
+                    src={product.image_urls[0]}
+                    alt={product.name}
+                    height='250px'
+                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
+                  />
+                  <div class='card-body'>
+                    <h5
+                      class='card-title mb-1
+                     lead fw-bold'
+                    >
+                      {product.name}
+                    </h5>
+                    <p class='lead mt-2'>
+                      {product.description.substring(0, 20)}...
+                    </p>
+                    <p class='card-text'>
+                      Rs {product.price} / {product.duration}
+                    </p>
+                    <Link to={`/products/${product.id}`}>
+                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+                        View Product
+                      </button>
+                    </Link>
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+                        Get Quote
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        })}
+      </>
+    )
+  }
   return (
     <div>
       <div className='container my-5 py-5'>
@@ -157,7 +211,22 @@ function SingleHomeProduct() {
             <hr />
           </div>
         </div>
-
+        <div className='row justify-content-center'>
+          {loading ? <Loading /> : <ShowProduct />}
+        </div>
+      </div>
+      <div className='container my-5 py-5'>
+        <div className='row'>
+          <div className='col-12 mb-5'>
+            <h1 className='display-6 fw-bolder text-center'>
+              Related Products
+            </h1>
+            <hr />
+          </div>
+        </div>
+        <h2 className='mt-4 mb-4'>
+          {searchMessage(searched, relatedProducts)}
+        </h2>
         <div className='row justify-content-center'>
           {loading ? <Loading /> : <ShowProducts />}
         </div>
