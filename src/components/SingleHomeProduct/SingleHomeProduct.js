@@ -5,6 +5,10 @@ import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import './SingleHomeProduct.css'
+import ProductImagesSlider from './ProductImagesSlider'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/thumbs'
 
 function SingleHomeProduct() {
   let { productId } = useParams()
@@ -96,61 +100,72 @@ function SingleHomeProduct() {
   }
   const ShowProduct = () => {
     return (
-      <>
-        {data.map((product) => {
-          return (
-            <>
-              <div className='col-5 mb-3' key={product.id}>
-                <div class='card h-100 text-center p-4'>
-                  <img
-                    class='card-img-top'
-                    src={product.image_urls[0]}
-                    alt={product.name}
-                    height='250px'
-                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
-                  />
-                  <div class='card-body'>
-                    <h5
-                      class='card-title mb-1
-                     lead fw-bold name'
-                    >
-                      {product.name}
-                    </h5>
-                    <p class='lead mt-2'>{product.description}...</p>
-                    <p class='black-10'>Rs {product.price} / per day</p>
-                    <p class='black-10'>
-                      Rent Maximum Duration: {product.duration}
-                    </p>
-                    <p className='black-9'>Category: {product.subCategory}</p>
-                    <p className='black-8'>
-                      {console.log(product.createdAt)}
-                      Added on {moment(product.createdAt).fromNow()}
-                    </p>
-
-                    {/* <p class='card-text'>{product.reviews[0].content}</p> */}
-                    <p class='lead mt-2'>Reviews and Ratings</p>
-                    {showReviews(product.reviews)}
-                    <p class='lead mt-2'>Supplier information</p>
-                    <p class='card-text'>Name: {product.supplier.username}</p>
-                    <p class='card-text'>Email: {product.supplier.email}</p>
-                    <p class='card-text'>
-                      Contact number: 0{product.supplier.contact_number}
-                    </p>
-
-                    {showStock(product.quantity)}
-                    <br />
-                    <Link to={`/getQuote/${product.id}`}>
-                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-                        Get Quote
-                      </button>
-                    </Link>
-                  </div>
-                </div>
+      <div className='show'>
+        {data.map((item) => (
+          <div className='details' key={item.id}>
+            <div
+              style={{
+                // height: '100vh',
+                display: 'flex',
+                // alignItems: 'center',
+                // justifyContent: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '500px',
+                  backgroundColor: '#fff',
+                  padding: '20px',
+                }}
+              >
+                <ProductImagesSlider images={item.image_urls} />
               </div>
-            </>
-          )
-        })}
-      </>
+            </div>
+            {/* <div className='big-img'>
+              <ProductImagesSlider images={item.image_urls} />
+              <img src={item.image_urls[0]} alt='' />
+            </div> */}
+
+            <div className='box'>
+              <div className='row'>
+                <h2>{item.name}</h2>
+                <span>Rs{item.rent}/ per day</span>
+              </div>
+              <p>{item.description}</p>
+              <p>Availability of Product for rent: {item.duration} days</p>
+              <p>Product Category: {item.subCategory}</p>
+              <br />
+              <p class='lead mt-2'>Reviews and Ratings</p>
+              {showReviews(item.reviews)}
+              <div className='description-product__rating'>
+                {item.reviews.length > 0 &&
+                  Array(item.reviews[0].rating)
+                    .fill()
+                    .map((_, i) => <span>&#9733;</span>)}
+              </div>
+              <br />
+              <p class='lead mt-2'>Supplier information</p>
+              <p class='card-text'>Name: {item.supplier.username}</p>
+              <p class='card-text'>Email: {item.supplier.email}</p>
+              <p class='card-text'>
+                Contact number: 0{item.supplier.contact_number}
+              </p>
+              {/* <Colors colors={item.colors} /> */}
+
+              {/* <p>{item.content}</p> */}
+
+              {/* <Details
+              Thumb images={item.src} tab={this.handleTab} myRef={this.myRef} /> */}
+              <br />
+              <Link to={`/getQuote/${item.id}`}>
+                <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+                  Get Quote
+                </button>
+              </Link>
+            </div>
+          </div>
+        ))}
+      </div>
     )
   }
   const ShowProducts = () => {

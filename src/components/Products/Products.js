@@ -20,7 +20,7 @@ function Products() {
     productService
       .getAllAds()
       .then((response) => {
-        console.log("ads: ",response)
+        console.log('ads: ', response)
         setData(response)
         setLoading(false)
       })
