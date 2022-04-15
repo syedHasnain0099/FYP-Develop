@@ -1,0 +1,53 @@
+ {data.map((product) => {
+          return (
+            <>
+              <div className='col-5 mb-3' key={product.id}>
+                <div class='card h-100 text-center p-4'>
+                  <img
+                    class='card-img-top'
+                    src={product.image_urls[0]}
+                    alt={product.name}
+                    height='250px'
+                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
+                  />
+                  <div class='card-body'>
+                    <h5
+                      class='card-title mb-1
+                     lead fw-bold name'
+                    >
+                      {product.name}
+                    </h5>
+                    <p class='lead mt-2'>{product.description}...</p>
+                    <p class='black-10'>Rs {product.price} / per day</p>
+                    <p class='black-10'>
+                      Rent Maximum Duration: {product.duration}
+                    </p>
+                    <p className='black-9'>Category: {product.subCategory}</p>
+                    <p className='black-8'>
+                      {console.log(product.createdAt)}
+                      Added on {moment(product.createdAt).fromNow()}
+                    </p>
+
+                    {/* <p class='card-text'>{product.reviews[0].content}</p> */}
+                    <p class='lead mt-2'>Reviews and Ratings</p>
+                    {showReviews(product.reviews)}
+                    <p class='lead mt-2'>Supplier information</p>
+                    <p class='card-text'>Name: {product.supplier.username}</p>
+                    <p class='card-text'>Email: {product.supplier.email}</p>
+                    <p class='card-text'>
+                      Contact number: 0{product.supplier.contact_number}
+                    </p>
+
+                    {showStock(product.quantity)}
+                    <br />
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+                        Get Quote
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        })}
