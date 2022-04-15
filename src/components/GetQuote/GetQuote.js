@@ -48,7 +48,7 @@ function GetQuote() {
       location: enteredLocation,
       quantity: enteredQuantity,
     }
-    console.log("get quote data: ",getQuoteData)
+    console.log('get quote data: ', getQuoteData)
     postQuote(getQuoteData)
     console.log(getQuoteData)
   }
@@ -91,12 +91,11 @@ function GetQuote() {
                 <strong>{product.rent}</strong>
               </p>
               <div className='getquote-product__rating'>
-              
-                {product.reviews[0].length > 1 &&
+                {product.reviews.length > 0 &&
                   Array(product.reviews[0].rating)
                     .fill()
                     .map((_, i) => <span>&#9733;</span>)}
-              </div>  
+              </div>
             </>
           )
         })}
