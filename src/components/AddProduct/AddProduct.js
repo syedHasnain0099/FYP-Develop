@@ -11,6 +11,7 @@ function AddProduct() {
   const [mediaIds, setMediaIds] = useState('')
   const [videoMediaId, setVideoMediaId] = useState('')
   const [subCategories, setSubCategories] = useState([])
+
   const init = () => {
     categoryService
       .getCategories()
@@ -72,7 +73,9 @@ function AddProduct() {
         console.log('id of uploaded image', res)
         setMediaIds(res)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+      })
   }
   const videoMediaHandleChange = (event) => {
     productService
@@ -98,9 +101,9 @@ function AddProduct() {
   const clickSubmit = (event) => {
     event.preventDefault()
     setValues({ ...values, error: '', loading: true })
-    const mIds = [];
-    mIds.push(mediaIds);
-    if(videoMediaId!=""){
+    const mIds = []
+    mIds.push(mediaIds)
+    if (videoMediaId != '') {
       mIds.push(videoMediaId)
     }
 
@@ -134,7 +137,7 @@ function AddProduct() {
           subcategory: '',
           duration: '',
           quantity: '',
-          error:false,
+          error: false,
           loading: false,
           createdProduct: data.data.attributes.product_name,
         })
@@ -152,7 +155,7 @@ function AddProduct() {
   const newPostForm = () => (
     <form className='mb-3' onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
-      <div className='form-group'>
+      <div className='form-group mb-4'>
         <label className='btn btn-secondary'>
           <input
             onChange={mediaHandleChange}
@@ -163,7 +166,7 @@ function AddProduct() {
         </label>
       </div>
       <h4>Post Video</h4>
-      <div className='form-group'>
+      <div className='form-group mb-4'>
         <label className='btn btn-secondary'>
           <input
             onChange={videoMediaHandleChange}

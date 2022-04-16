@@ -58,15 +58,15 @@ class ProductService extends GenericService {
     mediaIds
   ) => {
     return this.post(`requested-ads`, {
-      "data": {
-        "product_name": name,
-        "product_description": description,
-        "product_media": mediaIds,
-        "product_quantity": quantity,
-        "estimated_rent": rent,
-        "estimated_duration": duration,
-        "users_permissions_user": id,
-        "category_list": categoryId,
+      data: {
+        product_name: name,
+        product_description: description,
+        product_media: mediaIds,
+        product_quantity: quantity,
+        estimated_rent: rent,
+        estimated_duration: duration,
+        users_permissions_user: id,
+        category_list: categoryId,
       },
     })
   }
@@ -74,18 +74,26 @@ class ProductService extends GenericService {
     return this.delete(`requested-ads/${id}`)
   }
 
-  uploadPost = (name, description, rent, duration, categoryType, quantity, supplierId, image_urls) => 
-  {
-    console.log("supplierId: ",supplierId)
-    console.log("imageurls: ",image_urls)
-    console.log("category: ",categoryType)
+  uploadPost = (
+    name,
+    description,
+    rent,
+    duration,
+    categoryType,
+    quantity,
+    supplierId,
+    image_urls
+  ) => {
+    console.log('supplierId: ', supplierId)
+    console.log('imageurls: ', image_urls)
+    console.log('category: ', categoryType)
     return this.post(`products`, {
       data: {
         name: name,
         description: description,
         image: 84,
-        rent:rent,
-        duration:duration,
+        rent: rent,
+        duration: duration,
         quantity: quantity,
         users_permissions_user: supplierId,
         category_list: '1',
@@ -93,15 +101,15 @@ class ProductService extends GenericService {
     })
   }
 
-  getUserAds = (userId) =>{
+  getUserAds = (userId) => {
     const allAds = []
     return new Promise((resolve, reject) => {
       const query = qs.stringify({
         filters: {
           users_permissions_user: {
-            id: userId
-          }
-        }
+            id: userId,
+          },
+        },
       })
       this.get(`products?populate=users_permissions_user&${query}`, {})
         .then((response) => {
@@ -174,8 +182,8 @@ class ProductService extends GenericService {
   findOneProduct = (productId) => {
     const filteredProduct = []
     const query = qs.stringify({
-        populate: this.populate,
-      })
+      populate: this.populate,
+    })
     return new Promise((resolve, reject) => {
       this.get(`products/${productId}?${query}`)
         .then((response) => {
@@ -189,10 +197,12 @@ class ProductService extends GenericService {
   findOneRequestedAd = (productId) => {
     const filteredProduct = []
     const query = qs.stringify({
-        populate: this.populate,
-      })
+      populate: this.populate,
+    })
     return new Promise((resolve, reject) => {
-      this.get(`requested-ads/${productId}?populate=product_media,users_permissions_user,category_list`)
+      this.get(
+        `requested-ads/${productId}?populate=product_media,users_permissions_user,category_list`
+      )
         .then((response) => {
           const { data } = response
           filteredProduct.push(this.extractAds(data))
@@ -262,23 +272,23 @@ class ProductService extends GenericService {
     })
   }
 
-  getRelatedProducts = (subCategory,existingProductName) => {
+  getRelatedProducts = (subCategory, existingProductName) => {
     const filteredProducts = []
     let query
     return new Promise((resolve, reject) => {
-        query = qs.stringify({
-          populate: this.populate,
-          filters: {
-            category_list: {
-              name: {
-                $eq: subCategory,
-              },
-            },
+      query = qs.stringify({
+        populate: this.populate,
+        filters: {
+          category_list: {
             name: {
-              $notContains: existingProductName,
-            }
+              $eq: subCategory,
+            },
           },
-        })
+          name: {
+            $notContains: existingProductName,
+          },
+        },
+      })
       this.get(`products?${query}`)
         .then((response) => {
           const { data } = response
@@ -292,7 +302,6 @@ class ProductService extends GenericService {
   }
 
   extractAds = (ad) => {
-    
     const { id, attributes } = ad
     const {
       product_name,
@@ -303,7 +312,7 @@ class ProductService extends GenericService {
       product_media,
       users_permissions_user,
       category_list,
-      createdAt
+      createdAt,
     } = attributes
 
     var ad = {
@@ -316,7 +325,7 @@ class ProductService extends GenericService {
       image_urls: [],
       supplier: {},
       categoryType: '',
-      createdAt: ''
+      createdAt: '',
     }
     ad.id = id
     ad.name = product_name
@@ -324,7 +333,7 @@ class ProductService extends GenericService {
     ad.quantity = product_quantity
     ad.rent = estimated_rent
     ad.duration = estimated_duration
-    ad.createdAt = createdAt.slice(0,10)
+    ad.createdAt = createdAt.slice(0, 10)
     const { data } = product_media
     if (data) {
       for (let index = 0; index < data.length; index++) {
@@ -332,18 +341,18 @@ class ProductService extends GenericService {
         ad.image_urls.push(this.extractImage(singleMedia))
       }
     }
-    if(users_permissions_user){
+    if (users_permissions_user) {
       const { data } = users_permissions_user
       if (data) {
         ad.supplier = this.extractSupplier(data)
       }
     }
-    if(category_list) {
+    if (category_list) {
       const { data } = category_list
-      if(data){
-        ad.categoryType = this.extractSubcategoryName(data);
+      if (data) {
+        ad.categoryType = this.extractSubcategoryName(data)
       }
-      }
+    }
     return ad
   }
   extractProducts = (ad) => {
@@ -358,7 +367,7 @@ class ProductService extends GenericService {
       users_permissions_user,
       quantity,
       category_list,
-      createdAt
+      createdAt,
     } = attributes
     // const { price, duration } = estimated_price
     var product = {
@@ -372,15 +381,15 @@ class ProductService extends GenericService {
       image_urls: [],
       supplier: {},
       subCategory: '',
-      createdAt: ''
+      createdAt: '',
     }
     product.id = id
     product.name = name
     product.description = description
     product.duration = duration
-    product.createdAt = createdAt.slice(0,10)
-    product.quantity = quantity;
-    product.rent=rent;
+    product.createdAt = createdAt.slice(0, 10)
+    product.quantity = quantity
+    product.rent = rent
 
     if (reviews) {
       const { data } = reviews
@@ -389,9 +398,9 @@ class ProductService extends GenericService {
         product.reviews.push(this.extractReviews(singleReview))
       }
     }
-    if(category_list) {
-      const {data} = category_list
-      product.subCategory = this.extractSubcategoryName(data);
+    if (category_list) {
+      const { data } = category_list
+      product.subCategory = this.extractSubcategoryName(data)
     }
 
     if (image) {
@@ -422,7 +431,7 @@ class ProductService extends GenericService {
   extractSupplier = (data) => {
     const { id, attributes } = data
     const { username, email, contact_number } = attributes
-    return { id, username, email, contact_number}
+    return { id, username, email, contact_number }
   }
   extractImage = (data) => {
     const { attributes } = data
