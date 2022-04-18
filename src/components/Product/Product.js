@@ -98,14 +98,14 @@ function Product() {
     return (
       <>
         <button
-          className='btn btn-outline-dark mt-2 mb-2 mr-2'
+          className='btn btn-outline-success mt-2 mb-2 mr-2'
           onClick={approveHandleChange}
         >
           Approve
         </button>
 
         <button
-          className='btn btn-outline-dark mt-2 mb-2 mr-2'
+          className='btn btn-outline-danger mt-2 mb-2 mr-2'
           onClick={disapproveHandleChange}
         >
           Dis-Approve

@@ -164,7 +164,7 @@ function SingleHomeProduct() {
               Thumb images={item.src} tab={this.handleTab} myRef={this.myRef} /> */}
               <br />
               <Link to={`/getQuote/${item.id}`}>
-                <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+                <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
                   Get Quote
                 </button>
               </Link>

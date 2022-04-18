@@ -11,7 +11,7 @@ function ApproveAd() {
     productService
       .getRequestedAds()
       .then((response) => {
-        console.log("requested ads",response)
+        console.log('requested ads', response)
         setData(response)
         setLoading(false)
       })
@@ -61,11 +61,9 @@ function ApproveAd() {
                       {product.name}
                     </h5>
                     <p class='lead mt-2'>{product.description}...</p>
-                    <p class='card-text'>
-                      Rs {product.rent} / {product.duration}
-                    </p>
+                    <p class='card-text'>Rs {product.rent} / per day</p>
                     <Link to={`/approveAds/${product.id}`}>
-                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
+                      <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
                         View Product
                       </button>
                     </Link>
