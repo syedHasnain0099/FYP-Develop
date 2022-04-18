@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import productService from '../../services/ProductService'
-import { useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
@@ -134,6 +134,12 @@ function Product() {
                 }}
               >
                 <ProductImagesSlider images={item.image_urls} />
+                <br />
+                <span className='description-form-input-login'>
+                  <NavLink to='/product/video' state={{ from: 'occupation' }}>
+                    Watch video of product
+                  </NavLink>
+                </span>
               </div>
             </div>
             {/* <div className='big-img'>

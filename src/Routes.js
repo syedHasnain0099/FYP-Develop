@@ -19,11 +19,16 @@ import Product from './components/Product/Product'
 import SingleHomeProduct from './components/SingleHomeProduct/SingleHomeProduct'
 import GetQuote from './components/GetQuote/GetQuote'
 import Profile from './components/Profile/Profile'
+import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 function Routes() {
   return (
     <BrowserRouter>
       <div className='app'>
         <Switch>
+          <AdminRoute path='/product/video'>
+            <Header />
+            <VideoPlayer />
+          </AdminRoute>
           <AdminRoute path='/admin/dashboard'>
             <Header />
             <AdminDashBoard />
@@ -60,7 +65,6 @@ function Routes() {
             <Header />
             <SingleHomeProduct />
           </Route>
-
           <Route path='/ForgotPasswordForm'>
             <Header />
             <ForgotPasswordForm></ForgotPasswordForm>
@@ -77,7 +81,6 @@ function Routes() {
             <Header />
             <ResetPageForm></ResetPageForm>
           </Route>
-
           <Route path='/getQuote/:productId'>
             <Header />
             <GetQuote></GetQuote>
