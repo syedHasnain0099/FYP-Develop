@@ -289,7 +289,7 @@ function AddProduct() {
         <ul class='list-group list-group-flush'>
           <li class='list-group-item'>
             <Link className='nav-link' to='/cart'>
-              My Cart
+              My Ads
             </Link>
           </li>
           <li class='list-group-item'>

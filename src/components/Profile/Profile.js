@@ -50,7 +50,7 @@ function Profile() {
         <ul class='list-group list-group-flush'>
           <li class='list-group-item'>
             <Link className='nav-link' to='/cart'>
-              My Cart
+              My Ads
             </Link>
           </li>
           <li class='list-group-item'>
@@ -76,7 +76,15 @@ function Profile() {
   }
   const updateProfile = () => {
     userService
-      .updateProfile(id,first_name,last_name,username,email,contact_number,password)
+      .updateProfile(
+        id,
+        first_name,
+        last_name,
+        username,
+        email,
+        contact_number,
+        password
+      )
       .then((data) => {
         console.log('first name: ', data.first_name)
         setValues({ ...values, success: true })
