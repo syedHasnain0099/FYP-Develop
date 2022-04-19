@@ -25,7 +25,14 @@ function DashBoard() {
     productService
       .getUserAds(id)
       .then((data) => {
-        console.log('user ads: ', data)
+        console.log('user accepted ads: ', data)
+        let mediaType=productService.checkMediaType(data[11].image_urls[1]);
+        if(mediaType == "image"){
+          console.log("it's an image")
+        }
+        else if(mediaType == "video"){
+          console.log("it's a video")
+        }
         // setData(data)
       })
       .catch((err) => {
@@ -44,10 +51,23 @@ function DashBoard() {
         console.log(err)
       })
   }
+  const showRejectedAds = () => {
+     console.log("user id: ",id)
+    productService
+      .getRejectedAds(id)
+      .then((data) => {
+        console.log('user rejected ads: ', data)
+        // setData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   useEffect(() => {
     showUserInfo()
     showUserAds()
     showRequests()
+    showRejectedAds()
   }, [])
   const userLinks = () => {
     return (

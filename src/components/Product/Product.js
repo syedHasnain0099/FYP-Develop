@@ -52,18 +52,22 @@ function Product() {
       .catch((err) => console.log(err))
     //delete request from requested ads
     productService
-      .deleteRequestedAd(id)
-      .then((data) => console.log(`the requested ad: ${data} has been deleted`))
-      .catch((err) => console.log(err))
+    .deleteRequestedAd(id)
+    .then((data) => console.log(`the requested ad: ${data} has been deleted`))
+    .catch((err) => console.log(err))
   }
   const disapproveHandleChange = () => {
-    const { id } = data[0]
+    const {id} = data[0]
     //send user notification
-    //delete request from requested ads
     productService
-      .deleteRequestedAd(id)
-      .then((data) => console.log(`the requested ad: ${data} has been deleted`))
+      .addRejectedAd(data[0],data[0].supplier.id)
+      .then((data) => console.log(`the rejected ad: ${data}`))
       .catch((err) => console.log(err))
+    //delete request from requested ads
+    // productService
+    //   .deleteRequestedAd(id)
+    //   .then((data) => console.log(`the requested ad: ${data} has been deleted`))
+    //   .catch((err) => console.log(err))
   }
 
   const Loading = () => {

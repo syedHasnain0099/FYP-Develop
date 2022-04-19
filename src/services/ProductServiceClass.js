@@ -70,6 +70,30 @@ class ProductService extends GenericService {
       },
     })
   }
+  addRejectedAd = (
+    {name,
+    description,
+    rent,
+    duration,
+    categoryTypeId,
+    quantity,
+    image_ids},
+    supplierId
+  ) => {
+    console.log("supplier id: ",supplierId)
+    return this.post(`rejected-ads`, {
+      data: {
+        product_name: name,
+        product_description: description,
+        media_files: image_ids,
+        rent: rent,
+        duration: duration,
+        quantity: quantity,
+        users_permissions_user: supplierId,
+        category_list: categoryTypeId,
+      },
+    })
+  }
   deleteRequestedAd = (id) => {
     return this.delete(`requested-ads/${id}`)
   }
@@ -84,10 +108,6 @@ class ProductService extends GenericService {
     supplierId,
     image_ids
   ) => {
-    console.log('supplierId: ', supplierId)
-    console.log('imageurls: ',  image_ids)
-
-    console.log('category: ', categoryTypeId)
     return this.post(`products`, {
       data: {
         name: name,
@@ -101,7 +121,31 @@ class ProductService extends GenericService {
       },
     })
   }
-
+  getRejectedAds = (userId) => {
+    const allAds = []
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
+          users_permissions_user: {
+            id: {
+              $eq: userId,
+            }
+          },
+        },
+      })
+      this.get(`rejected-ads?populate=users_permissions_user,media_files&${query}`, {})
+        .then((response) => {
+          const { data } = response
+          for (let ad of data) {
+            allAds.push(this.extractRejectedAds(ad))
+          }
+          resolve(allAds)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
   getUserAds = (userId) => {
     const allAds = []
     return new Promise((resolve, reject) => {
@@ -114,7 +158,7 @@ class ProductService extends GenericService {
           },
         },
       })
-      this.get(`products?populate=users_permissions_user&${query}`, {})
+      this.get(`products?populate=users_permissions_user,image&${query}`, {})
         .then((response) => {
           const { data } = response
           for (let ad of data) {
@@ -160,7 +204,30 @@ class ProductService extends GenericService {
     const { id } = data
     return id
   }
-
+  splitImageVideo = (file) => {
+    const videos = [];
+    const images = [];
+    var match = file.match(/^data:([^/]+)\/([^;]+);/) || [];
+    var type = match[1];
+    var format = match[2];
+    if (type == "video")
+    {
+      videos.push(file);
+    }
+    else if(type == "image")
+    {
+      images.push(file)
+    }
+  }
+  checkMediaType = (media_url) => {
+    let result = media_url.slice(-3);
+    if(result == "jpg"){
+      return "image"
+    }
+    else if(result == "mp4") {
+      return "video"
+    }
+  }
   getProductsByCategory = (categoryListName) => {
     const filteredProducts = []
     return new Promise((resolve, reject) => {
@@ -304,7 +371,64 @@ class ProductService extends GenericService {
         .catch((err) => reject(err))
     })
   }
+  extractRejectedAds = (ad) => {
+    const { id, attributes } = ad
+    const {
+      product_name,
+      product_description,
+      quantity,
+      rent,
+      duration,
+      media_files,
+      users_permissions_user,
+      category_list
+    } = attributes
 
+    var ad = {
+      id: '',
+      name: '',
+      description: '',
+      quantity: '',
+      rent: '',
+      duration: '',
+      image_urls: [],
+      image_ids: [],
+      supplier: {},
+      categoryType: '',
+      categoryTypeId: '',
+      createdAt: '',
+    }
+    ad.id = id
+    ad.name = product_name
+    ad.description = product_description
+    ad.quantity = quantity
+    ad.rent = rent
+    ad.duration = duration
+    const { data } = media_files
+    if (data) {
+      for (let index = 0; index < data.length; index++) {
+        const singleMedia = data[index]
+        const extractedData = this.extractImage(singleMedia);
+        ad.image_urls.push(extractedData.url);
+        ad.image_ids.push(extractedData.id);
+      }
+    }
+    if (users_permissions_user) {
+      const { data } = users_permissions_user
+      if (data) {
+        ad.supplier = this.extractSupplier(data)
+      }
+    }
+    if (category_list) {
+      const { data } = category_list
+      if (data) {
+        const extractedData= this.extractSubcategoryName(data);
+        ad.categoryType = extractedData.name;
+        ad.categoryTypeId = extractedData.id;
+      }
+    }
+    return ad
+  }
   extractAds = (ad) => {
     const { id, attributes } = ad
     const {

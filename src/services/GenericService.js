@@ -4,7 +4,6 @@ import axios from 'axios'
 axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 axios.defaults.headers['Content-Type'] = 'application/json; charset=utf-8' || 'application/json;';
 
-
 class GenericService {
   tokenUpdate = () => {
     const token = localStorage.getItem('token');
@@ -44,7 +43,6 @@ class GenericService {
         })
     })
   }
-
   delete = (url) =>
     new Promise((resolve, reject) => {
       axios
