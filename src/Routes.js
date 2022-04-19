@@ -20,6 +20,7 @@ import SingleHomeProduct from './components/SingleHomeProduct/SingleHomeProduct'
 import GetQuote from './components/GetQuote/GetQuote'
 import Profile from './components/Profile/Profile'
 import VideoPlayer from './components/VideoPlayer/VideoPlayer'
+import MyAds from './components/MyAds/MyAds'
 function Routes() {
   return (
     <BrowserRouter>
@@ -49,6 +50,10 @@ function Routes() {
             <Header />
             <Product />
           </AdminRoute>
+          <PrivateRoute path='/myAds'>
+            <Header />
+            <MyAds />
+          </PrivateRoute>
           <PrivateRoute path='/profile/:userId'>
             <Header />
             <Profile />
