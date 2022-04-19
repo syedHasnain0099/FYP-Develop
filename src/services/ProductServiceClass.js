@@ -79,24 +79,25 @@ class ProductService extends GenericService {
     description,
     rent,
     duration,
-    categoryType,
+    categoryTypeId,
     quantity,
     supplierId,
-    image_urls
+    image_ids
   ) => {
     console.log('supplierId: ', supplierId)
-    console.log('imageurls: ', image_urls)
-    console.log('category: ', categoryType)
+    console.log('imageurls: ',  image_ids)
+
+    console.log('category: ', categoryTypeId)
     return this.post(`products`, {
       data: {
         name: name,
         description: description,
-        image: 84,
+        image: image_ids,
         rent: rent,
         duration: duration,
         quantity: quantity,
         users_permissions_user: supplierId,
-        category_list: '1',
+        category_list: categoryTypeId,
       },
     })
   }
@@ -107,7 +108,9 @@ class ProductService extends GenericService {
       const query = qs.stringify({
         filters: {
           users_permissions_user: {
-            id: userId,
+            id: {
+              $eq: userId,
+            }
           },
         },
       })
@@ -157,6 +160,7 @@ class ProductService extends GenericService {
     const { id } = data
     return id
   }
+
   getProductsByCategory = (categoryListName) => {
     const filteredProducts = []
     return new Promise((resolve, reject) => {
@@ -323,8 +327,10 @@ class ProductService extends GenericService {
       rent: '',
       duration: '',
       image_urls: [],
+      image_ids: [],
       supplier: {},
       categoryType: '',
+      categoryTypeId: '',
       createdAt: '',
     }
     ad.id = id
@@ -338,7 +344,9 @@ class ProductService extends GenericService {
     if (data) {
       for (let index = 0; index < data.length; index++) {
         const singleMedia = data[index]
-        ad.image_urls.push(this.extractImage(singleMedia))
+        const extractedData = this.extractImage(singleMedia);
+        ad.image_urls.push(extractedData.url);
+        ad.image_ids.push(extractedData.id);
       }
     }
     if (users_permissions_user) {
@@ -350,7 +358,9 @@ class ProductService extends GenericService {
     if (category_list) {
       const { data } = category_list
       if (data) {
-        ad.categoryType = this.extractSubcategoryName(data)
+        const extractedData= this.extractSubcategoryName(data);
+        ad.categoryType = extractedData.name;
+        ad.categoryTypeId = extractedData.id;
       }
     }
     return ad
@@ -381,6 +391,7 @@ class ProductService extends GenericService {
       image_urls: [],
       supplier: {},
       subCategory: '',
+      subCategoryId: '',
       createdAt: '',
     }
     product.id = id
@@ -400,14 +411,17 @@ class ProductService extends GenericService {
     }
     if (category_list) {
       const { data } = category_list
-      product.subCategory = this.extractSubcategoryName(data)
+      const extractedData = this.extractSubcategoryName(data);
+      product.subCategory = extractedData.name;
+      product.subCategoryId = extractedData.id;
     }
 
     if (image) {
       const { data } = image
       for (let index = 0; index < data.length; index++) {
         const singleImage = data[index]
-        product.image_urls.push(this.extractImage(singleImage))
+        const extractedData = this.extractImage(singleImage);
+        product.image_urls.push(extractedData.url)
       }
     }
 
@@ -419,9 +433,9 @@ class ProductService extends GenericService {
   }
 
   extractSubcategoryName = (data) => {
-    const { attributes } = data
+    const { id, attributes } = data
     const { name } = attributes
-    return name
+    return {id, name}
   }
   extractReviews = (data) => {
     const { id, attributes } = data
@@ -434,9 +448,9 @@ class ProductService extends GenericService {
     return { id, username, email, contact_number }
   }
   extractImage = (data) => {
-    const { attributes } = data
+    const { id,attributes } = data
     const { url } = attributes
-    return url
+    return {id, url}
   }
 }
 export default ProductService

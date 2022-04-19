@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
 import userService from '../../services/UserService'
+import productService from '../../services/ProductService'
+import quoteService from '../../services/QuoteService'
 function DashBoard() {
   const [data, setData] = useState([])
 
@@ -18,8 +20,34 @@ function DashBoard() {
         console.log(err)
       })
   }
+   const showUserAds = () => {
+     console.log("user id: ",id)
+    productService
+      .getUserAds(id)
+      .then((data) => {
+        console.log('user ads: ', data)
+        // setData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+  const showRequests = () => {
+     console.log("user id: ",id)
+    quoteService
+      .getRequestQuotes(id)
+      .then((data) => {
+        console.log('user requests: ', data)
+        // setData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   useEffect(() => {
     showUserInfo()
+    showUserAds()
+    showRequests()
   }, [])
   const userLinks = () => {
     return (

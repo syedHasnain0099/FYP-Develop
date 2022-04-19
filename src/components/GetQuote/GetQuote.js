@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import productService from '../../services/ProductService'
+import quoteService from '../../services/QuoteService'
+import { userData } from '../../auth'
 import './GetQuote.css'
 function GetQuote() {
   let { productId } = useParams()
+  const { id, username, email } = userData()
   const [enteredStartDate, setEnteredStartDate] = useState('')
   const [enteredEndDate, setEnteredEndDate] = useState('')
   const [enteredLocation, setEnteredLocation] = useState('')
@@ -54,6 +57,17 @@ function GetQuote() {
   }
   const postQuote = (getQuoteData) => {
     // here to run or connect with backend
+    quoteService
+      .sendRequestQuote(
+        getQuoteData.startDate,
+        getQuoteData.endDate,
+        getQuoteData.quantity,
+        getQuoteData.location,
+        id,
+        productId
+      )
+      .then((data) => console.log('congratulations your post is added ', data))
+      .catch((err) => console.log(err))
   }
   const Loading = () => {
     return (

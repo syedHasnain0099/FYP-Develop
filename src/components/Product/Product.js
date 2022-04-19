@@ -27,27 +27,26 @@ function Product() {
   const approveHandleChange = () => {
     const {
       id,
-      categoryType,
+      categoryTypeId,
       description,
       duration,
-      image_urls,
+      image_ids,
       name,
       quantity,
       rent,
       supplier,
     } = data[0]
     console.log('supplier id: ', supplier.id)
-    //add that to products
     productService
       .uploadPost(
         name,
         description,
         rent,
         duration,
-        categoryType,
+        categoryTypeId,
         quantity,
         data[0].supplier.id,
-        image_urls
+        image_ids
       )
       .then((data) => console.log('congratulations your post is added ', data))
       .catch((err) => console.log(err))
