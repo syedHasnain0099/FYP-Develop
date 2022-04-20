@@ -21,6 +21,7 @@ import GetQuote from './components/GetQuote/GetQuote'
 import Profile from './components/Profile/Profile'
 import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 import MyAds from './components/MyAds/MyAds'
+import PendingRequest from './components/PendingRequests/PendingRequest'
 function Routes() {
   return (
     <BrowserRouter>
@@ -50,6 +51,10 @@ function Routes() {
             <Header />
             <Product />
           </AdminRoute>
+          <PrivateRoute path='/pending/requests'>
+            <Header />
+            <PendingRequest />
+          </PrivateRoute>
           <PrivateRoute path='/myAds'>
             <Header />
             <MyAds />

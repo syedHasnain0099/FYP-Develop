@@ -63,6 +63,11 @@ function Profile() {
               Post an ad
             </Link>
           </li>
+          <li class='list-group-item'>
+            <Link className='nav-link' to='/pending/requests'>
+              Pending Requests
+            </Link>
+          </li>
         </ul>
       </div>
     )

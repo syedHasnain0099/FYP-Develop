@@ -1,23 +1,66 @@
 import React, { useEffect, useState } from 'react'
 import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
+import { Skeleton } from '@mui/material'
+import productService from '../../services/ProductService'
 function MyAds() {
   const [approvedData, setApprovedData] = useState([])
   const [disapprovedData, setDisApprovedData] = useState([])
-
+  const [loading, setLoading] = useState(false)
   const { id, username, email } = userData()
   const showUserApprovedAds = () => {
-    //get approved ads
+    productService
+      .getUserAds(id)
+      .then((data) => {
+        console.log('user accepted ads: ', data)
+        setApprovedData(data)
+        //chechking media file type by passing it's url
+        let mediaType = productService.checkMediaType(data[11].image_urls[1])
+        if (mediaType == 'image') {
+          console.log("it's an image")
+        } else if (mediaType == 'video') {
+          console.log("it's a video")
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   useEffect(() => {
     showUserApprovedAds()
   }, [])
   const showUserDisApprovedAds = () => {
-    //get disApproved ads
+    productService
+      .getRejectedAds(id)
+      .then((data) => {
+        console.log('user rejected ads: ', data)
+        setDisApprovedData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   useEffect(() => {
     showUserDisApprovedAds()
   }, [])
+  const Loading = () => {
+    return (
+      <>
+        <div className='col-md-3'>
+          <Skeleton height={350} />
+        </div>
+        <div className='col-md-3'>
+          <Skeleton height={350} />
+        </div>
+        <div className='col-md-3'>
+          <Skeleton height={350} />
+        </div>
+        <div className='col-md-3'>
+          <Skeleton height={350} />
+        </div>
+      </>
+    )
+  }
   const userLinks = () => {
     return (
       <div className='card'>
@@ -38,104 +81,103 @@ function MyAds() {
               Post an ad
             </Link>
           </li>
+          <li class='list-group-item'>
+            <Link className='nav-link' to='/pending/requests'>
+              Pending Requests
+            </Link>
+          </li>
         </ul>
       </div>
     )
   }
-  const approveAds = () => {
+  const ApproveAds = () => {
     return (
-      <div className='card mb-5 mu-5'>
-        <h3 className='card-header'> Approved ads</h3>
-        <div class='card-body'>
-          {approvedData.map((product) => {
-            return (
-              <>
-                <div className='col-4 mb-3'>
-                  <div class='card h-100 text-center p-4' key={product.id}>
-                    <img
-                      class='card-img-top'
-                      src={product.image_urls[0]}
-                      alt={product.name}
-                      height='250px'
-                      //style={{ maxHeight: '100%', maxWidth: '100%' }}
-                    />
-                    <div class='card-body'>
-                      <h5
-                        class='card-title mb-1
+      <>
+        {approvedData.map((product) => {
+          return (
+            <>
+              <div className='col-4 mb-3'>
+                <div class='card h-100 text-center p-4' key={product.id}>
+                  <img
+                    class='card-img-top'
+                    src={product.image_urls[0]}
+                    alt={product.name}
+                    height='250px'
+                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
+                  />
+                  <div class='card-body'>
+                    <h5
+                      class='card-title mb-1
                      lead fw-bold'
-                      >
-                        {product.name}
-                      </h5>
-                      <p class='lead mt-2'>
-                        {product.description.substring(0, 20)}...
-                      </p>
-                      <p class='card-text'>Rs {product.rent} / per day</p>
-                      <Link to={`/products/${product.id}`}>
-                        <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
-                          View Product
-                        </button>
-                      </Link>
-                      <Link to={`/getQuote/${product.id}`}>
-                        <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
-                          Get Quote
-                        </button>
-                      </Link>
-                    </div>
+                    >
+                      {product.name}
+                    </h5>
+                    <p class='lead mt-2'>
+                      {product.description.substring(0, 20)}...
+                    </p>
+                    <p class='card-text'>Rs {product.rent} / per day</p>
+                    <Link to={`/products/${product.id}`}>
+                      <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
+                        View Product
+                      </button>
+                    </Link>
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
+                        Edit Product
+                      </button>
+                    </Link>
                   </div>
                 </div>
-              </>
-            )
-          })}
-        </div>
-      </div>
+              </div>
+            </>
+          )
+        })}
+      </>
     )
   }
-  const rentedHistory = () => {
+  const DisApproveAds = () => {
     return (
-      <div className='card mb-5'>
-        <h3 className='card-header'>Dis-Approved Ads</h3>
-        <div class='card-body'>
-          {disapprovedData.map((product) => {
-            return (
-              <>
-                <div className='col-4 mb-3'>
-                  <div class='card h-100 text-center p-4' key={product.id}>
-                    <img
-                      class='card-img-top'
-                      src={product.image_urls[0]}
-                      alt={product.name}
-                      height='250px'
-                      //style={{ maxHeight: '100%', maxWidth: '100%' }}
-                    />
-                    <div class='card-body'>
-                      <h5
-                        class='card-title mb-1
+      <>
+        {disapprovedData.map((product) => {
+          return (
+            <>
+              <div className='col-4 mb-3'>
+                <div class='card h-100 text-center p-4' key={product.id}>
+                  <img
+                    class='card-img-top'
+                    src={product.image_urls[0]}
+                    alt={product.name}
+                    height='250px'
+                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
+                  />
+                  <div class='card-body'>
+                    <h5
+                      class='card-title mb-1
                      lead fw-bold'
-                      >
-                        {product.name}
-                      </h5>
-                      <p class='lead mt-2'>
-                        {product.description.substring(0, 20)}...
-                      </p>
-                      <p class='card-text'>Rs {product.rent} / per day</p>
-                      <Link to={`/products/${product.id}`}>
-                        <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
-                          View Product
-                        </button>
-                      </Link>
-                      <Link to={`/getQuote/${product.id}`}>
-                        <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
-                          Get Quote
-                        </button>
-                      </Link>
-                    </div>
+                    >
+                      {product.name}
+                    </h5>
+                    <p class='lead mt-2'>
+                      {product.description.substring(0, 20)}...
+                    </p>
+                    <p class='card-text'>Rs {product.rent} / per day</p>
+                    <Link to={`/products/${product.id}`}>
+                      <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
+                        View Product
+                      </button>
+                    </Link>
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
+                        Edit Product
+                      </button>
+                    </Link>
                   </div>
                 </div>
-              </>
-            )
-          })}
-        </div>
-      </div>
+              </div>
+            </>
+          )
+        })}
+      </>
     )
   }
   return (
@@ -143,8 +185,22 @@ function MyAds() {
       <div className='row'>
         <div className='col-3'>{userLinks()}</div>
         <div className='col-9'>
-          {approveAds()}
-          {rentedHistory()}
+          <h3 className='card-header'>Approve Ads</h3>
+          <div className='container my-2 py-2'>
+            <div className='row justify-content-center'>
+              {loading ? <Loading /> : <ApproveAds />}
+            </div>
+            {/* {approveAds()}
+            {rentedHistory()} */}
+          </div>
+          <h3 className='card-header'>Dis-Approve Ads</h3>
+          <div className='container my-2 py-2'>
+            <div className='row justify-content-center'>
+              {loading ? <Loading /> : <DisApproveAds />}
+            </div>
+            {/* {approveAds()}
+            {rentedHistory()} */}
+          </div>
         </div>
       </div>
     </div>

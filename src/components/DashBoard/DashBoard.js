@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
 import userService from '../../services/UserService'
-import productService from '../../services/ProductService'
-import quoteService from '../../services/QuoteService'
+
 function DashBoard() {
   const [data, setData] = useState([])
 
@@ -20,56 +19,9 @@ function DashBoard() {
         console.log(err)
       })
   }
-   const showUserAds = () => {
-     console.log("user id: ",id)
-    productService
-      .getUserAds(id)
-      .then((data) => {
-        console.log('user accepted ads: ', data)
 
-        //chechking media file type by passing it's url
-        let mediaType=productService.checkMediaType(data[11].image_urls[1]);
-        if(mediaType == "image"){
-          console.log("it's an image")
-        }
-        else if(mediaType == "video"){
-          console.log("it's a video")
-        }
-        // setData(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-  const showRequests = () => {
-     console.log("user id: ",id)
-    quoteService
-      .getRequestQuotes(id)
-      .then((data) => {
-        console.log('user requests: ', data)
-        // setData(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-  const showRejectedAds = () => {
-     console.log("user id: ",id)
-    productService
-      .getRejectedAds(id)
-      .then((data) => {
-        console.log('user rejected ads: ', data)
-        // setData(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
   useEffect(() => {
     showUserInfo()
-    showUserAds()
-    showRequests()
-    showRejectedAds()
   }, [])
   const userLinks = () => {
     return (
@@ -89,6 +41,11 @@ function DashBoard() {
           <li class='list-group-item'>
             <Link className='nav-link' to='/create/product'>
               Post an ad
+            </Link>
+          </li>
+          <li class='list-group-item'>
+            <Link className='nav-link' to='/pending/requests'>
+              Pending Requests
             </Link>
           </li>
         </ul>
