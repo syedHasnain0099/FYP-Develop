@@ -12,11 +12,18 @@ class ProductService extends GenericService {
       'category_list',
     ]
   }
-  getAllAds = () => {
+  getAllAds = (userId) => {
     const allProducts = []
     return new Promise((resolve, reject) => {
       const query = qs.stringify({
         populate: this.populate,
+        filters: {
+          users_permissions_user: {
+            id: {
+              $ne: userId,
+            }
+          },
+        }
       })
       this.get(`products?${query}`, {})
         .then((response) => {

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useStateValue } from '../StateProvider/StateProvider'
+import { userData } from '../../auth'
 import productService from '../../services/ProductService'
 import categoryService from '../../services/CategoryService'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
 import Search from '../Search/Search'
 function Products() {
+  const { id, username, email } = userData()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   // categoryService.getCategories()
@@ -18,7 +20,7 @@ function Products() {
     console.log('running in getData')
     setLoading(true)
     productService
-      .getAllAds()
+      .getAllAds(id)
       .then((response) => {
         console.log('ads: ', response)
         setData(response)
