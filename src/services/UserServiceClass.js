@@ -3,7 +3,7 @@ import qs from 'qs'
 import GenericService from './GenericService'
 import axios from 'axios'
 axios.defaults.baseURL =
-  'http://erental14-env.eba-smiuwvwp.ap-south-1.elasticbeanstalk.com/api/'
+  'http://erental-env.eba-wphbuc4y.ap-south-1.elasticbeanstalk.com/api/'
 const herokuLink = 'https://strapi-project-deployement.herokuapp.com/api/'
 class UserService extends GenericService {
   

@@ -26,6 +26,8 @@ function DashBoard() {
       .getUserAds(id)
       .then((data) => {
         console.log('user accepted ads: ', data)
+
+        //chechking media file type by passing it's url
         let mediaType=productService.checkMediaType(data[11].image_urls[1]);
         if(mediaType == "image"){
           console.log("it's an image")
