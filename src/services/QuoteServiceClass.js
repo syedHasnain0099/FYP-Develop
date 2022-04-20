@@ -31,7 +31,7 @@ class QuoteService extends GenericService {
                     }
                 },
             })
-            this.get(`request-quotes?populate=product.users_permissions_user&${query}`, {})
+            this.get(`request-quotes?populate=product.users_permissions_user,product.image&${query}`, {})
                 .then((response) => {
                 const { data } = response
                 for (let req of data) {
