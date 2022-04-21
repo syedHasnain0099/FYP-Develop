@@ -200,7 +200,7 @@ function SingleHomeProduct() {
                       {product.description.substring(0, 20)}...
                     </p>
                     <p class='card-text'>
-                      Rs {product.price} / {product.duration}
+                      Rs.{product.price} / {product.duration}
                     </p>
                     <Link to={`/products/${product.id}`}>
                       <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>

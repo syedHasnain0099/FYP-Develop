@@ -15,7 +15,7 @@ function MyAds() {
         console.log('user accepted ads: ', data)
         setApprovedData(data)
         //chechking media file type by passing it's url
-        let mediaType = productService.checkMediaType(data[5].image_urls[1])
+        let mediaType = productService.checkMediaType(data[0].image_urls[0])
         if (mediaType == 'image') {
           console.log("it's an image")
         } else if (mediaType == 'video') {
@@ -185,7 +185,7 @@ function MyAds() {
       <div className='row'>
         <div className='col-3'>{userLinks()}</div>
         <div className='col-9'>
-          <h3 className='card-header'>Approve Ads</h3>
+          <h3 className='card-header'>Approved Ads</h3>
           <div className='container my-2 py-2'>
             <div className='row justify-content-center'>
               {loading ? <Loading /> : <ApproveAds />}
@@ -193,7 +193,7 @@ function MyAds() {
             {/* {approveAds()}
             {rentedHistory()} */}
           </div>
-          <h3 className='card-header'>Dis-Approve Ads</h3>
+          <h3 className='card-header'>Disapproved Ads</h3>
           <div className='container my-2 py-2'>
             <div className='row justify-content-center'>
               {loading ? <Loading /> : <DisApproveAds />}

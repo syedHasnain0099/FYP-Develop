@@ -423,7 +423,7 @@ class ProductService extends GenericService {
     if (users_permissions_user) {
       const { data } = users_permissions_user
       if (data) {
-        ad.supplier = this.extractSupplier(data)
+        ad.supplier = this.extractUser(data)
       }
     }
     if (category_list) {
@@ -483,7 +483,7 @@ class ProductService extends GenericService {
     if (users_permissions_user) {
       const { data } = users_permissions_user
       if (data) {
-        ad.supplier = this.extractSupplier(data)
+        ad.supplier = this.extractUser(data)
       }
     }
     if (category_list) {
@@ -558,7 +558,7 @@ class ProductService extends GenericService {
 
     if (users_permissions_user) {
       const { data } = users_permissions_user
-      product.supplier = this.extractSupplier(data)
+      product.supplier = this.extractUser(data)
     }
     return product
   }
@@ -573,7 +573,7 @@ class ProductService extends GenericService {
     const { content, rating } = attributes
     return { content, rating }
   }
-  extractSupplier = (data) => {
+  extractUser = (data) => {
     const { id, attributes } = data
     const { username, email, contact_number } = attributes
     return { id, username, email, contact_number }

@@ -14,7 +14,6 @@ function DashBoard() {
     userService
       .getUser(id)
       .then((data) => {
-        console.log("data: ",data)
         setData(data)
       })
       .catch((err) => {
@@ -57,7 +56,7 @@ function DashBoard() {
         .catch((err) => {
           console.log(err)
         })
-        //again fetching user data to refresh "data" use state
+        //again fetching user data to refresh "data" use state and get added image
         getUserInfo();
       })
       .catch((err) => {

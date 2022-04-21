@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { userData } from '../../auth'
 import quoteService from '../../services/QuoteService'
+import moment from 'moment'
 function PendingRequest() {
   const [pendingRequestsData, setPendingRequestsData] = useState([])
   const { id, username, email } = userData()
@@ -17,8 +18,41 @@ function PendingRequest() {
         console.log(err)
       })
   }
+  const onAccept = (prodId, requestingUserId) => {
+    //as mentioned by ma'am we will not show issue quote form
+    //calculating price
+    // console.log("the date: ",pendingRequestsData)
+    var start = moment(pendingRequestsData[0].startDate, "YYYY-MM-DD");
+    var end = moment(pendingRequestsData[0].endDate, "YYYY-MM-DD");
+    var current = moment().startOf('day');
+
+    // Duration in days
+    const duration= moment.duration(end.diff(start)).asDays()
+    const price = pendingRequestsData[0].product.rent
+
+    // calculating price per duration
+    const quote = price*duration
+    console.log("quote", quote);
+
+    console.log('supplier id: ', id)
+    console.log('product id: ',prodId)
+    console.log('requesting user id: ',pendingRequestsData[0].requestingUser.id)
+    // delete from request quotes table
+    // show the requesting user on accepted requests table
+    
+    // quoteService
+    //   .addAcceptedRequest(id)
+    //   .then((data) => {
+    //     console.log('user requests: ', data)
+    //     setPendingRequestsData(data)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //   })
+  }
   useEffect(() => {
     PendingRequests()
+    onAccept()
   }, [])
   const userLinks = () => {
     return (
@@ -76,7 +110,7 @@ function PendingRequest() {
                       <p class='lead mt-2'>
                         {item.product.description.substring(0, 20)}...
                       </p>
-                      <p class='card-text'>Rs {item.product.rent} / day</p>
+                      <p class='card-text'>Rs.{item.product.rent} / day</p>
                       <p class='lead mt-2'>City: {item.city}</p>
                       <p class='lead mt-2'>Quantity: {item.quantity}</p>
                       <p class='lead mt-2'>Duration</p>

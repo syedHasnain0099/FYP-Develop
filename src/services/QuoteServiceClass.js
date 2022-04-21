@@ -17,6 +17,33 @@ class QuoteService extends GenericService {
         })
     }
 
+    // addAcceptedRequest = (currentUserId) => {
+    //     const allRequests = []
+    //     return new Promise((resolve, reject) => {
+    //         const query = qs.stringify({
+    //             filters: {
+    //                 product: {
+    //                     users_permissions_user: {
+    //                     id: {
+    //                         $eq: currentUserId,
+    //                     }
+    //                     },
+    //                 } 
+    //             },
+    //         })
+    //         this.get(`request-quotes?populate=product.users_permissions_user,product.image,users_permissions_user&${query}`, {})
+    //             .then((response) => {
+    //             const { data } = response
+    //             for (let req of data) {
+    //                 allRequests.push(this.extractRequests(req))
+    //             }
+    //             resolve(allRequests)
+    //             })
+    //             .catch((err) => {
+    //             reject(err)
+    //             })
+    //     })
+    // }
     getRequestQuotes = (currentUserId) => {
         const allRequests = []
         return new Promise((resolve, reject) => {
@@ -28,10 +55,10 @@ class QuoteService extends GenericService {
                             $eq: currentUserId,
                         }
                         },
-                    }
+                    } 
                 },
             })
-            this.get(`request-quotes?populate=product.users_permissions_user,product.image&${query}`, {})
+            this.get(`request-quotes?populate=product.users_permissions_user,product.image,users_permissions_user&${query}`, {})
                 .then((response) => {
                 const { data } = response
                 for (let req of data) {
@@ -47,7 +74,7 @@ class QuoteService extends GenericService {
 
     extractRequests = (req) => {
         const { id, attributes } = req
-        const { start_date, end_date, quantity, city, createdAt, product } = attributes
+        const { start_date, end_date, quantity, city, createdAt, product,users_permissions_user } = attributes
 
         var request = {
         id: '',
@@ -56,7 +83,8 @@ class QuoteService extends GenericService {
         quantity: '',
         city: '',
         createdAt: '',
-        product: {}
+        product: {},
+        requestingUser :{}
         }
         request.id = id
         request.startDate = start_date
@@ -69,6 +97,11 @@ class QuoteService extends GenericService {
             const { data } = product
             request.product = productService.extractProducts(data);
         }
+        if (users_permissions_user) {
+            const { data } = users_permissions_user
+            request.requestingUser = productService.extractUser(data);
+        }
+        
         return request
     }
 
