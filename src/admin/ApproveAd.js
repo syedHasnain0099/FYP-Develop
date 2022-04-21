@@ -61,7 +61,7 @@ function ApproveAd() {
                       {product.name}
                     </h5>
                     <p class='lead mt-2'>{product.description}...</p>
-                    <p class='card-text'>Rs {product.rent} / per day</p>
+                    <p class='card-text'>Rs {product.rent} / day</p>
                     <Link to={`/approveAds/${product.id}`}>
                       <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
                         View Product
