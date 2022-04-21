@@ -77,7 +77,7 @@ function Products() {
                     <p class='lead mt-2'>
                       {product.description.substring(0, 20)}...
                     </p>
-                    <p class='card-text'>Rs {product.rent} / per day</p>
+                    <p class='card-text'>Rs {product.rent} / day</p>
                     <Link to={`/products/${product.id}`}>
                       <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
                         View Product

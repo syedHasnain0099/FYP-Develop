@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import userService from '../../services/UserService'
 import { useParams } from 'react-router-dom'
-import { updateProfile, userData } from '../../auth'
-
+import { userData } from '../../auth'
+import validateInfo from './validateInfoProfile'
+import './Profile.css'
 function Profile() {
   let { userId } = useParams()
   const { id } = userData()
-
+  const [passwordButton, setPasswordButton] = useState(false)
+  const [errors, setErrors] = useState({})
   const [values, setValues] = useState({
     first_name: '',
     last_name: '',
@@ -15,6 +17,7 @@ function Profile() {
     email: '',
     contact_number: '',
     password: '',
+    password2: '',
     image: '',
     error: '',
     success: false,
@@ -26,16 +29,19 @@ function Profile() {
     email,
     contact_number,
     password,
+    password2,
     image,
     error,
     success,
   } = values
 
   const showUserInfo = () => {
+    setPasswordButton(true)
     userService
       .getUser(userId)
       .then((data) => {
-        console.log('user data: ', data.first_name)
+        console.log('user data: ', data)
+
         setValues(data)
       })
       .catch((err) => {
@@ -77,9 +83,23 @@ function Profile() {
   const handleChange = (name) => (e) => {
     setValues({ ...values, error: false, [name]: e.target.value })
   }
+  const clearErrorFields = () => {
+    setErrors('')
+    setValues({ ...values, success: '' })
+  }
   const clickSubmit = (e) => {
+    clearErrorFields()
     e.preventDefault()
-    updateProfile()
+    setErrors(validateInfo(values))
+
+    var errors = validateInfo(values)
+    if (Object.keys(errors).length === 0) {
+      console.log('it is working')
+      updateProfile()
+    }
+  }
+  const ChangePassword = () => {
+    setPasswordButton(false)
   }
   const updateProfile = () => {
     if (password === '') {
@@ -141,13 +161,15 @@ function Profile() {
   const profileUpdate = () => (
     <form>
       <div className='form-group'>
-        <label className='text-muted'>UserName</label>
+        <label className='text-muted'>User Name</label>
+
         <input
           type='text'
           onChange={handleChange('username')}
           className='form-control'
           value={username}
         />
+        {errors.username && <p className='profile-p'>{errors.username}</p>}
       </div>
       <div className='form-group'>
         <label className='text-muted'>First Name</label>
@@ -157,6 +179,7 @@ function Profile() {
           className='form-control'
           value={first_name}
         />
+        {errors.firstname && <p className='profile-p'>{errors.firstname}</p>}
       </div>
       <div className='form-group'>
         <label className='text-muted'>Last Name</label>
@@ -166,6 +189,7 @@ function Profile() {
           className='form-control'
           value={last_name}
         />
+        {errors.lastname && <p className='profile-p'>{errors.lastname}</p>}
       </div>
       <div className='form-group'>
         <label className='text-muted'>Email</label>
@@ -175,25 +199,60 @@ function Profile() {
           className='form-control'
           value={email}
         />
+        {errors.email && <p className='profile-p'>{errors.email}</p>}
       </div>
+
       <div className='form-group'>
-        <label className='text-muted'>Contact No</label>
+        <label className='text-muted'>Contact No (Format : 01234567890)</label>
         <input
           type='tel'
           onChange={handleChange('contact_number')}
           className='form-control'
-          value={contact_number}
+          value={`+92 ${contact_number}`}
+          pattern='[0-9]{11}'
         />
       </div>
-      <div className='form-group'>
-        <label className='text-muted'>Password</label>
-        <input
-          type='password'
-          onChange={handleChange('password')}
-          className='form-control'
-          value={password}
-        />
-      </div>
+
+      {passwordButton && (
+        <div>
+          <button
+            type='button'
+            class='btn btn-outline-secondary'
+            onClick={ChangePassword}
+          >
+            Click Here To Change Password
+          </button>
+        </div>
+      )}
+
+      {!passwordButton && (
+        <>
+          <div className='form-group'>
+            <label className='text-muted'>New Password</label>
+            <input
+              type='password'
+              onChange={handleChange('password')}
+              className='form-control'
+              value={password}
+            />
+            {errors.password && <p className='profile-p'>{errors.password}</p>}
+          </div>
+          <div className='form-group'>
+            <label className='text-muted'>Confirm Password</label>
+            <input
+              type='password'
+              onChange={handleChange('password')}
+              className='form-control'
+              value={password2}
+            />
+            {errors.password2 && (
+              <p className='profile-p'>{errors.password2}</p>
+            )}
+          </div>
+        </>
+      )}
+
+      <br />
       <button onClick={clickSubmit} className='btn btn-outline-primary'>
         Submit
       </button>

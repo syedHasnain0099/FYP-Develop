@@ -76,7 +76,12 @@ function PendingRequest() {
                       <p class='lead mt-2'>
                         {item.product.description.substring(0, 20)}...
                       </p>
-                      <p class='card-text'>Rs {item.product.rent} / per day</p>
+                      <p class='card-text'>Rs {item.product.rent} / day</p>
+                      <p class='lead mt-2'>City: {item.city}</p>
+                      <p class='lead mt-2'>Quantity: {item.quantity}</p>
+                      <p class='lead mt-2'>Duration</p>
+                      <p class='card-text'>Start Date:{item.startDate}</p>
+                      <p class='card-text'>End Date:{item.endDate}</p>
                       <Link to={`/products/${item.id}`}>
                         <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
                           Accept

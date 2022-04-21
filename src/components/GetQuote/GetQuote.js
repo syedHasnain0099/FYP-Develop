@@ -100,7 +100,11 @@ function GetQuote() {
                 alt='spaceship'
               />
               <p className='getquote-checkoutProduct__title'>{product.name}</p>
+              {/* <p className='getquote-product__price'>{product.description}</p> */}
               <p className='getquote-product__price'>
+                <div>Product Description:</div>
+                <br />
+                <div>{product.description}</div>
                 <small>Rs</small>
                 <strong>{product.rent}</strong>
               </p>
