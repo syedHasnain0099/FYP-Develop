@@ -19,6 +19,8 @@ class UserService extends GenericService {
           this.tokenUpdate()
           localStorage.setItem('user', JSON.stringify(data.user))
           console.log("data of user",JSON.stringify(data.user))
+          localStorage.setItem('user_password', JSON.stringify(Password))
+          // console.log("password: ",JSON.stringify(Password))
           resolve(data.user)
         })
         .catch((err) => {

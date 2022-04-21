@@ -20,6 +20,17 @@ export const userData = () => {
     return false
   }
 }
+export const userPassword = () => {
+  if (typeof window == 'undefined') {
+    console.log('window is undefined')
+    return false
+  }
+  if (localStorage.getItem('user_password')) {
+    return JSON.parse(localStorage.getItem('user_password'))
+  } else {
+    return false
+  }
+}
 export const updateProfile = (user, next) => {
   if (typeof window == 'undefined') {
     console.log('window is undefined')

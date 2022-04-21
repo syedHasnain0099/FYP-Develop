@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { userData } from '../../auth'
+import { userPassword } from '../../auth'
 import { Link } from 'react-router-dom'
 import userService from '../../services/UserService'
 import productService from '../../services/ProductService'
 
 function DashBoard() {
   const [data, setData] = useState([])
-  const { id } = userData()
+  const { id,image } = userData()
+  const pass = userPassword()
 
   const getUserInfo = () => {
     userService
       .getUser(id)
       .then((data) => {
+        console.log("data: ",data)
         setData(data)
       })
       .catch((err) => {
@@ -20,7 +23,7 @@ function DashBoard() {
   }
   const showUserDP = () => {
     userService
-      .getUserDP(data.image)
+      .getUserDP(image)
       .then((url) => {
         console.log('user image url: ', url)
       })
@@ -28,6 +31,7 @@ function DashBoard() {
         console.log(err)
       })
   }
+  
   const addDP = (event) => {
     productService
       .uploadMedia(event.target.files)
@@ -43,7 +47,7 @@ function DashBoard() {
           data.username,
           data.email,
           data.contact_number,
-          data.password,
+          pass,
           res[0]
         )
         .then((data) => {
@@ -61,9 +65,9 @@ function DashBoard() {
       })
   }
   useEffect(() => {
-    showUserDP()
     getUserInfo()
-    addDP()
+    showUserDP()
+    // addDP()
   }, [])
   const userLinks = () => {
     return (

@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom'
 import userService from '../../services/UserService'
 import { useParams } from 'react-router-dom'
 import { userData } from '../../auth'
+import { userPassword } from '../../auth'
 import validateInfo from './validateInfoProfile'
 import './Profile.css'
 function Profile() {
   let { userId } = useParams()
   const { id } = userData()
+  const pass = userPassword()
   const [passwordButton, setPasswordButton] = useState(false)
   const [errors, setErrors] = useState({})
   const [values, setValues] = useState({
