@@ -6,10 +6,10 @@ import moment from 'moment'
 function PendingRequest() {
   const [pendingRequestsData, setPendingRequestsData] = useState([])
   const { id, username, email } = userData()
-  const PendingRequests = () => {
+  const getPendingRequests = () => {
     console.log('user id: ', id)
     quoteService
-      .getRequestQuotes(id)
+      .getRequestQuotes(id,"pending")
       .then((data) => {
         console.log('user requests: ', data)
         setPendingRequestsData(data)
@@ -21,12 +21,12 @@ function PendingRequest() {
   const onAccept = (prodId, requestingUserId) => {
     //as mentioned by ma'am we will not show issue quote form
     //calculating price
-    // console.log("the date: ",pendingRequestsData)
+    console.log("the date: ",pendingRequestsData[0])
     var start = moment(pendingRequestsData[0].startDate, "YYYY-MM-DD");
     var end = moment(pendingRequestsData[0].endDate, "YYYY-MM-DD");
-    var current = moment().startOf('day');
+    // var current = moment().startOf('day');
 
-    // Duration in days
+    // // Duration in days
     const duration= moment.duration(end.diff(start)).asDays()
     const price = pendingRequestsData[0].product.rent
 
@@ -37,21 +37,31 @@ function PendingRequest() {
     console.log('supplier id: ', id)
     console.log('product id: ',prodId)
     console.log('requesting user id: ',pendingRequestsData[0].requestingUser.id)
-    // delete from request quotes table
-    // show the requesting user on accepted requests table
     
-    // quoteService
-    //   .addAcceptedRequest(id)
-    //   .then((data) => {
-    //     console.log('user requests: ', data)
-    //     setPendingRequestsData(data)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
+    // updating quote price and status
+    quoteService
+      .updateQuote(quote,"accepted",pendingRequestsData[0].id)
+      .then((res) => {
+        console.log("accepted request: ",res);
+      })
+      .catch(err => console.log(err))
+    getPendingRequests()
+  }
+
+  const acceptedRequests =() => {
+    quoteService
+      .getRequestQuotes(id,"accepted")
+      .then((data) => {
+        console.log('user requests: ', data)
+        setPendingRequestsData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   useEffect(() => {
-    PendingRequests()
+    getPendingRequests()
+    acceptedRequests()
     onAccept()
   }, [])
   const userLinks = () => {

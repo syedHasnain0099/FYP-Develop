@@ -44,18 +44,29 @@ class QuoteService extends GenericService {
     //             })
     //     })
     // }
-    getRequestQuotes = (currentUserId) => {
+    updateQuote = (quote,status,id) => {
+        return this.put(`request-quotes/${id}`, {
+            data: {
+              quote,
+              status
+            }
+    })
+    }
+    getRequestQuotes = (currentUserId,status) => {
         const allRequests = []
         return new Promise((resolve, reject) => {
             const query = qs.stringify({
                 filters: {
                     product: {
                         users_permissions_user: {
-                        id: {
-                            $eq: currentUserId,
-                        }
+                            id: {
+                                $eq: currentUserId,
+                            }
                         },
-                    } 
+                    },
+                    status: {
+                        $eq: status
+                    }
                 },
             })
             this.get(`request-quotes?populate=product.users_permissions_user,product.image,users_permissions_user&${query}`, {})
@@ -74,7 +85,7 @@ class QuoteService extends GenericService {
 
     extractRequests = (req) => {
         const { id, attributes } = req
-        const { start_date, end_date, quantity, city, createdAt, product,users_permissions_user } = attributes
+        const { start_date, end_date, quantity, city, createdAt, status, quote, product,users_permissions_user } = attributes
 
         var request = {
         id: '',
@@ -83,6 +94,8 @@ class QuoteService extends GenericService {
         quantity: '',
         city: '',
         createdAt: '',
+        status: '',
+        quote: '',
         product: {},
         requestingUser :{}
         }
@@ -91,6 +104,8 @@ class QuoteService extends GenericService {
         request.endDate = end_date
         request.quantity = quantity
         request.city = city
+        request.status = status
+        request.quote = quote
         request.createdAt = createdAt.slice(0, 10)
 
         if (product) {
