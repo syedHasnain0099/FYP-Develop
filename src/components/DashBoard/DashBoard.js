@@ -2,26 +2,68 @@ import React, { useEffect, useState } from 'react'
 import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
 import userService from '../../services/UserService'
+import productService from '../../services/ProductService'
 
 function DashBoard() {
   const [data, setData] = useState([])
+  const { id } = userData()
 
-  const { id, username, email } = userData()
-  console.log(id)
-  const showUserInfo = () => {
+  const getUserInfo = () => {
     userService
       .getUser(id)
       .then((data) => {
-        console.log('user data: ', data.first_name)
         setData(data)
       })
       .catch((err) => {
         console.log(err)
       })
   }
-
+  const showUserDP = () => {
+    userService
+      .getUserDP(data.image)
+      .then((url) => {
+        console.log('user image url: ', url)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+  const addDP = (event) => {
+    productService
+      .uploadMedia(event.target.files)
+      .then((res) => {
+        console.log(res)
+        console.log('id of uploaded image', res)
+        //updating image in user profile
+        userService
+        .updateProfile(
+          id,
+          data.first_name,
+          data.last_name,
+          data.username,
+          data.email,
+          data.contact_number,
+          data.password,
+          res[0]
+        )
+        .then((data) => {
+          console.log('updated image: ', data.image)
+          // setValues({ ...values, success: true })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+        //again fetching user data to refresh "data" use state
+        getUserInfo();
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   useEffect(() => {
-    showUserInfo()
+    showUserDP()
+    getUserInfo()
+    addDP()
   }, [])
   const userLinks = () => {
     return (

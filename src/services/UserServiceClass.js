@@ -2,8 +2,9 @@
 import qs from 'qs'
 import GenericService from './GenericService'
 import axios from 'axios'
-axios.defaults.baseURL =
-  'http://erental-env.eba-wphbuc4y.ap-south-1.elasticbeanstalk.com/api/'
+axios.defaults.baseURL ='http://localhost:1337/api/'
+// axios.defaults.baseURL =
+//   'http://erental-env.eba-wphbuc4y.ap-south-1.elasticbeanstalk.com/api/'
 const herokuLink = 'https://strapi-project-deployement.herokuapp.com/api/'
 class UserService extends GenericService {
   
@@ -17,7 +18,7 @@ class UserService extends GenericService {
           localStorage.setItem('token', data.jwt)
           this.tokenUpdate()
           localStorage.setItem('user', JSON.stringify(data.user))
-          console.log(JSON.stringify(data.user))
+          console.log("data of user",JSON.stringify(data.user))
           resolve(data.user)
         })
         .catch((err) => {
@@ -113,7 +114,16 @@ class UserService extends GenericService {
           reject(err)
         })
     })
-  
+  getUserDP = (imageID) =>
+    new Promise((resolve, reject) => {
+      this.get(`upload/files/${imageID}`, {})
+        .then((data) => {
+          resolve(data.url)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
   
   addUser = (
     username,

@@ -5,8 +5,10 @@ import './Login.css'
 import axios from 'axios'
 import userService from '../../services/UserService'
 import { useStateValue } from '../StateProvider/StateProvider'
-axios.defaults.baseURL =
-  'http://erental-env.eba-wphbuc4y.ap-south-1.elasticbeanstalk.com/api/'
+axios.defaults.baseURL ='http://localhost:1337/api/'
+
+// axios.defaults.baseURL =
+//   'http://erental-env.eba-wphbuc4y.ap-south-1.elasticbeanstalk.com/api/'
 // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
 function Login(callback) {

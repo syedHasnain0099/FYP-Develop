@@ -15,7 +15,7 @@ function MyAds() {
         console.log('user accepted ads: ', data)
         setApprovedData(data)
         //chechking media file type by passing it's url
-        let mediaType = productService.checkMediaType(data[11].image_urls[1])
+        let mediaType = productService.checkMediaType(data[5].image_urls[1])
         if (mediaType == 'image') {
           console.log("it's an image")
         } else if (mediaType == 'video') {

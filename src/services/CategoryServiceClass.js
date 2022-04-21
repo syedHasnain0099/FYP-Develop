@@ -8,7 +8,7 @@ class CategoryService extends GenericService {
       const query = qs.stringify({
         fields: 'name',
       })
-      this.get(`${axios.defaults.baseURL}categories?${query}`)
+      this.get(`categories?${query}`)
         .then((response) => {
           const { data } = response
           for (let category of data) {
@@ -42,7 +42,7 @@ class CategoryService extends GenericService {
           },
         },
       })
-      this.get(`${axios.defaults.baseURL}category-lists?${query}`)
+      this.get(`category-lists?${query}`)
         .then((response) => {
           const { data } = response
           for (let categoryType of data) {

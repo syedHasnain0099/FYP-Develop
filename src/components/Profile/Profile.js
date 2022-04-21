@@ -15,6 +15,7 @@ function Profile() {
     email: '',
     contact_number: '',
     password: '',
+    image: '',
     error: '',
     success: false,
   })
@@ -25,6 +26,7 @@ function Profile() {
     email,
     contact_number,
     password,
+    image,
     error,
     success,
   } = values
@@ -89,7 +91,8 @@ function Profile() {
           username,
           email,
           contact_number,
-          password
+          password,
+          image
         )
         .then((data) => {
           console.log('first name: ', data.first_name)
@@ -107,7 +110,8 @@ function Profile() {
           username,
           email,
           contact_number,
-          password
+          password,
+          image
         )
         .then((data) => {
           console.log('first name: ', data.first_name)
