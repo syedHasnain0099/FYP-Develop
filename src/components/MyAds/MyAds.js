@@ -119,7 +119,7 @@ function MyAds() {
                         View Product
                       </button>
                     </Link>
-                    <Link to={`/getQuote/${product.id}`}>
+                    <Link to={`/productEdit/${product.id}`}>
                       <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
                         Edit Product
                       </button>

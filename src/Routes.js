@@ -22,6 +22,7 @@ import Profile from './components/Profile/Profile'
 import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 import MyAds from './components/MyAds/MyAds'
 import PendingRequest from './components/PendingRequests/PendingRequest'
+import ProductEdit from './components/ProductEdit/ProductEdit'
 function Routes() {
   return (
     <BrowserRouter>
@@ -51,6 +52,10 @@ function Routes() {
             <Header />
             <Product />
           </AdminRoute>
+          <PrivateRoute path='/productEdit/:productId'>
+            <Header />
+            <ProductEdit />
+          </PrivateRoute>
           <PrivateRoute path='/pending/requests'>
             <Header />
             <PendingRequest />
