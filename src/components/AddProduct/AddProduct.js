@@ -155,6 +155,7 @@ function AddProduct() {
   const newPostForm = () => (
     <form className='mb-3' onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
+
       <div className='form-group mb-4'>
         <label className='btn btn-secondary'>
           <input
@@ -162,6 +163,8 @@ function AddProduct() {
             type='file'
             name='photo'
             accept='image/*'
+            required
+            multiple
           />
         </label>
       </div>
@@ -173,6 +176,7 @@ function AddProduct() {
             type='file'
             name='video'
             accept='.mov,.mp4'
+            required
           />
         </label>
       </div>

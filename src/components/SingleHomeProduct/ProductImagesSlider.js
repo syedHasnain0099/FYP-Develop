@@ -28,7 +28,7 @@ const ProductImagesSlider = (props) => {
         onSwiper={setActiveThumb}
         loop={true}
         spaceBetween={10}
-        slidesPerView={4}
+        slidesPerView={3}
         modules={[Navigation, Thumbs]}
         className='product-images-slider-thumbs'
       >

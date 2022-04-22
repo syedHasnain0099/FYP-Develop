@@ -112,9 +112,7 @@ function MyAds() {
                     >
                       {product.name}
                     </h5>
-                    <p class='lead mt-2'>
-                      {product.description.substring(0, 20)}...
-                    </p>
+                    <p class='lead mt-2'>{product.description}...</p>
                     <p class='card-text'>Rs {product.rent} / per day</p>
                     <Link to={`/products/${product.id}`}>
                       <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
@@ -167,8 +165,8 @@ function MyAds() {
                       </button>
                     </Link>
                     <Link to={`/getQuote/${product.id}`}>
-                      <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
-                        Edit Product
+                      <button className='btn btn-outline-danger mt-2 mb-2 mr-2'>
+                        Delete Product
                       </button>
                     </Link>
                   </div>

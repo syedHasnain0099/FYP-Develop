@@ -113,7 +113,6 @@ function Profile() {
           username,
           email,
           contact_number,
-          password,
           image
         )
         .then((data) => {
