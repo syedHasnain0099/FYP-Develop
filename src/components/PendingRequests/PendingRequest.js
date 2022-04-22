@@ -5,6 +5,7 @@ import quoteService from '../../services/QuoteService'
 import moment from 'moment'
 function PendingRequest() {
   const [pendingRequestsData, setPendingRequestsData] = useState([])
+  const [acceptedRequestsData, setAcceptedRequestsData] = useState([])
   const { id, username, email } = userData()
   const getPendingRequests = () => {
     console.log('user id: ', id)
@@ -18,7 +19,18 @@ function PendingRequest() {
         console.log(err)
       })
   }
-
+  const getAcceptedRequests = () => {
+    console.log('user id: ', id)
+    quoteService
+      .getRequestQuotes(id, 'accepted')
+      .then((data) => {
+        console.log('user requests: ', data)
+        setAcceptedRequestsData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   const AcceptHandleChange = () => {
     const { startDate, endDate, requestQuoteId = id } = pendingRequestsData[0]
     const { rent } = pendingRequestsData[0].product
@@ -28,7 +40,7 @@ function PendingRequest() {
 
     var start = moment(startDate, 'YYYY-MM-DD')
     var end = moment(endDate, 'YYYY-MM-DD')
-    var current = moment().startOf('day')
+    // var current = moment().startOf('day')
 
     const duration = moment.duration(end.diff(start)).asDays()
     const price = rent
@@ -53,27 +65,16 @@ function PendingRequest() {
     quoteService
       .updateQuote(quote, 'rejected', requestQuoteId)
       .then((res) => {
-        console.log('accepted request: ', res)
+        console.log('rejected requests: ', res)
       })
       .catch((err) => console.log(err))
     getPendingRequests()
+    getAcceptedRequests()
   }
 
-  const acceptedRequests = () => {
-    quoteService
-      .getRequestQuotes(id, 'accepted')
-      .then((data) => {
-        console.log('user requests: ', data)
-        setPendingRequestsData(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
   useEffect(() => {
     getPendingRequests()
-    // acceptedRequests()
-    // onAccept()
+    getAcceptedRequests()
   }, [])
   const userLinks = () => {
     return (
