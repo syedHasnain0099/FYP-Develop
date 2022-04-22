@@ -7,7 +7,7 @@ import productService from '../../services/ProductService'
 
 function DashBoard() {
   const [data, setData] = useState([])
-  const { id,image } = userData()
+  const { id, image } = userData()
   const pass = userPassword()
 
   const getUserInfo = () => {
@@ -30,7 +30,7 @@ function DashBoard() {
         console.log(err)
       })
   }
-  
+
   const addDP = (event) => {
     productService
       .uploadMedia(event.target.files)
@@ -39,25 +39,25 @@ function DashBoard() {
         console.log('id of uploaded image', res)
         //updating image in user profile
         userService
-        .updateProfile(
-          id,
-          data.first_name,
-          data.last_name,
-          data.username,
-          data.email,
-          data.contact_number,
-          pass,
-          res[0]
-        )
-        .then((data) => {
-          console.log('updated image: ', data.image)
-          // setValues({ ...values, success: true })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+          .updateProfile(
+            id,
+            data.first_name,
+            data.last_name,
+            data.username,
+            data.email,
+            data.contact_number,
+            pass,
+            res[0]
+          )
+          .then((data) => {
+            console.log('updated image: ', data.image)
+            // setValues({ ...values, success: true })
+          })
+          .catch((err) => {
+            console.log(err)
+          })
         //again fetching user data to refresh "data" use state and get added image
-        getUserInfo();
+        getUserInfo()
       })
       .catch((err) => {
         console.log(err)
@@ -90,7 +90,7 @@ function DashBoard() {
           </li>
           <li class='list-group-item'>
             <Link className='nav-link' to='/pending/requests'>
-              Pending Requests
+              Recieved Requests
             </Link>
           </li>
         </ul>

@@ -98,7 +98,7 @@ function PendingRequest() {
           </li>
           <li class='list-group-item'>
             <Link className='nav-link' to='/pending/requests'>
-              Pending Requests
+              Recieved Requests
             </Link>
           </li>
         </ul>
@@ -107,66 +107,114 @@ function PendingRequest() {
   }
   const requestedQuotes = () => {
     return (
-      <div className='card mb-5 mu-5'>
-        <h3 className='card-header'> Pending Requests</h3>
-        <div class='card-body'>
-          {pendingRequestsData.map((item) => {
-            return (
-              <>
-                <div className='col-4 mb-3'>
-                  <div class='card h-100 text-center p-4' key={item.id}>
-                    <img
-                      class='card-img-top'
-                      src={item.product.image_urls[0]}
-                      alt={item.product.name}
-                      height='250px'
-                      //style={{ maxHeight: '100%', maxWidth: '100%' }}
-                    />
-                    <div class='card-body'>
-                      <h5
-                        class='card-title mb-1
+      <>
+        {pendingRequestsData.map((item) => {
+          return (
+            <>
+              <div className='col-4 mb-3'>
+                <div class='card h-100 text-center p-4' key={item.id}>
+                  <img
+                    class='card-img-top'
+                    src={item.product.image_urls[0]}
+                    alt={item.product.name}
+                    height='250px'
+                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
+                  />
+                  <div class='card-body'>
+                    <h5
+                      class='card-title mb-1
                      lead fw-bold'
-                      >
-                        {item.product.name}
-                      </h5>
-                      <p class='lead mt-2'>
-                        {item.product.description.substring(0, 20)}...
-                      </p>
-                      <p class='card-text'>Rs.{item.product.rent} / day</p>
-                      <p class='lead mt-2'>City: {item.city}</p>
-                      <p class='lead mt-2'>Quantity: {item.quantity}</p>
-                      <p class='lead mt-2'>Duration</p>
-                      <p class='card-text'>Start Date:{item.startDate}</p>
-                      <p class='card-text'>End Date:{item.endDate}</p>
+                    >
+                      {item.product.name}
+                    </h5>
+                    <p class='lead mt-2'>
+                      {item.product.description.substring(0, 20)}...
+                    </p>
+                    <p class='card-text'>Rs.{item.product.rent} / day</p>
+                    <p class='lead mt-2'>City: {item.city}</p>
+                    <p class='lead mt-2'>Quantity: {item.quantity}</p>
+                    <p class='lead mt-2'>Duration</p>
+                    <p class='card-text'>Start Date:{item.startDate}</p>
+                    <p class='card-text'>End Date:{item.endDate}</p>
 
-                      <button
-                        className='btn btn-outline-primary mt-2 mb-2 mr-2'
-                        onClick={AcceptHandleChange}
-                      >
-                        Accept
-                      </button>
+                    <button
+                      className='btn btn-outline-primary mt-2 mb-2 mr-2'
+                      onClick={AcceptHandleChange}
+                    >
+                      Accept
+                    </button>
 
-                      <button
-                        className='btn btn-outline-danger mt-2 mb-2 mr-2'
-                        onClick={RejectHandleChange}
-                      >
-                        Reject
-                      </button>
-                    </div>
+                    <button
+                      className='btn btn-outline-danger mt-2 mb-2 mr-2'
+                      onClick={RejectHandleChange}
+                    >
+                      Reject
+                    </button>
                   </div>
                 </div>
-              </>
-            )
-          })}
-        </div>
-      </div>
+              </div>
+            </>
+          )
+        })}
+      </>
+    )
+  }
+  const AcceptedQuotes = () => {
+    return (
+      <>
+        {acceptedRequestsData.map((item) => {
+          return (
+            <>
+              <div className='col-4 mb-3'>
+                <div class='card h-100 text-center p-4' key={item.id}>
+                  <img
+                    class='card-img-top'
+                    src={item.product.image_urls[0]}
+                    alt={item.product.name}
+                    height='250px'
+                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
+                  />
+                  <div class='card-body'>
+                    <h5
+                      class='card-title mb-1
+                     lead fw-bold'
+                    >
+                      {item.product.name}
+                    </h5>
+                    <p class='lead mt-2'>
+                      {item.product.description.substring(0, 20)}...
+                    </p>
+                    <p class='card-text'>Rs.{item.product.rent} / day</p>
+                    <p class='lead mt-2'>City: {item.city}</p>
+                    <p class='lead mt-2'>Quantity: {item.quantity}</p>
+                    <p class='lead mt-2'>Duration</p>
+                    <p class='card-text'>Start Date:{item.startDate}</p>
+                    <p class='card-text'>End Date:{item.endDate}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        })}
+      </>
     )
   }
   return (
     <div className='container-fluid mt-4'>
       <div className='row'>
         <div className='col-3'>{userLinks()}</div>
-        <div className='col-9'>{requestedQuotes()}</div>
+        <div className='col-9'>
+          <h3 className='card-header'>Pending Requests</h3>
+          <div className='container my-2 py-2'>
+            <div className='row justify-content-center'>
+              {requestedQuotes()}
+            </div>
+          </div>
+          <h3 className='card-header'>Accepted Requests</h3>
+          <div className='container my-2 py-2'>
+            <div className='row justify-content-center'>{AcceptedQuotes()}</div>
+          </div>
+        </div>
       </div>
     </div>
   )

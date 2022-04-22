@@ -83,7 +83,7 @@ function MyAds() {
           </li>
           <li class='list-group-item'>
             <Link className='nav-link' to='/pending/requests'>
-              Pending Requests
+              Recieved Requests
             </Link>
           </li>
         </ul>
@@ -188,16 +188,12 @@ function MyAds() {
             <div className='row justify-content-center'>
               {loading ? <Loading /> : <ApproveAds />}
             </div>
-            {/* {approveAds()}
-            {rentedHistory()} */}
           </div>
           <h3 className='card-header'>Disapproved Ads</h3>
           <div className='container my-2 py-2'>
             <div className='row justify-content-center'>
               {loading ? <Loading /> : <DisApproveAds />}
             </div>
-            {/* {approveAds()}
-            {rentedHistory()} */}
           </div>
         </div>
       </div>

@@ -308,7 +308,7 @@ function AddProduct() {
           </li>
           <li class='list-group-item'>
             <Link className='nav-link' to='/pending/requests'>
-              Pending Requests
+              Recieved Requests
             </Link>
           </li>
         </ul>
