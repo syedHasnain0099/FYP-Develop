@@ -18,32 +18,40 @@ function PendingRequest() {
         console.log(err)
       })
   }
-  const onAccept = (prodId, requestingUserId) => {
-    //as mentioned by ma'am we will not show issue quote form
-    //calculating price
-    console.log('the date: ', pendingRequestsData[0])
-    var start = moment(pendingRequestsData[0].startDate, 'YYYY-MM-DD')
-    var end = moment(pendingRequestsData[0].endDate, 'YYYY-MM-DD')
-    // var current = moment().startOf('day');
 
-    // // Duration in days
+  const AcceptHandleChange = () => {
+    const { startDate, endDate, requestQuoteId = id } = pendingRequestsData[0]
+    const { rent } = pendingRequestsData[0].product
+    const productId = pendingRequestsData[0].product.id
+    const { supplierId = id } = pendingRequestsData[0].product.supplier
+    const { requestingUserId = id } = pendingRequestsData[0].requestingUser
+
+    var start = moment(startDate, 'YYYY-MM-DD')
+    var end = moment(endDate, 'YYYY-MM-DD')
+    var current = moment().startOf('day')
+
     const duration = moment.duration(end.diff(start)).asDays()
-    const price = pendingRequestsData[0].product.rent
+    const price = rent
 
-    // calculating price per duration
     const quote = price * duration
     console.log('quote', quote)
+    console.log('supplier id: ', supplierId)
+    console.log('product id: ', productId)
+    console.log('requesting user id: ', requestingUserId)
+    console.log('request Quote id: ', requestQuoteId)
 
-    console.log('supplier id: ', id)
-    console.log('product id: ', prodId)
-    console.log(
-      'requesting user id: ',
-      pendingRequestsData[0].requestingUser.id
-    )
-
-    // updating quote price and status
     quoteService
-      .updateQuote(quote, 'accepted', pendingRequestsData[0].id)
+      .updateQuote(quote, 'accepted', requestQuoteId)
+      .then((res) => {
+        console.log('accepted request: ', res)
+      })
+      .catch((err) => console.log(err))
+    getPendingRequests()
+  }
+  const RejectHandleChange = () => {
+    const { quote, requestQuoteId = id } = pendingRequestsData[0]
+    quoteService
+      .updateQuote(quote, 'rejected', requestQuoteId)
       .then((res) => {
         console.log('accepted request: ', res)
       })
@@ -129,16 +137,20 @@ function PendingRequest() {
                       <p class='lead mt-2'>Duration</p>
                       <p class='card-text'>Start Date:{item.startDate}</p>
                       <p class='card-text'>End Date:{item.endDate}</p>
-                      <Link to={`/products/${item.id}`}>
-                        <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
-                          Accept
-                        </button>
-                      </Link>
-                      <Link to={`/getQuote/${item.id}`}>
-                        <button className='btn btn-outline-danger mt-2 mb-2 mr-2'>
-                          Reject
-                        </button>
-                      </Link>
+
+                      <button
+                        className='btn btn-outline-primary mt-2 mb-2 mr-2'
+                        onClick={AcceptHandleChange}
+                      >
+                        Accept
+                      </button>
+
+                      <button
+                        className='btn btn-outline-danger mt-2 mb-2 mr-2'
+                        onClick={RejectHandleChange}
+                      >
+                        Reject
+                      </button>
                     </div>
                   </div>
                 </div>
