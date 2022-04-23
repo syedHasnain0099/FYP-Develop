@@ -274,9 +274,6 @@ class ProductService extends GenericService {
   }
   findOneRequestedAd = (productId) => {
     const filteredProduct = []
-    const query = qs.stringify({
-      populate: this.populate,
-    })
     return new Promise((resolve, reject) => {
       this.get(
         `requested-ads/${productId}?populate=product_media,users_permissions_user,category_list`
