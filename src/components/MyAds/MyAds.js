@@ -54,36 +54,202 @@ function MyAds() {
       </>
     )
   }
+  const userLinks1 = () => {
+    return (
+      <div class='row'>
+        <div class='col-4'>
+          <div class='list-group' id='list-tab' role='tablist'>
+            <h4 className='card-header'>User Links</h4>
+            <Link
+              class='list-group-item list-group-item-action'
+              id='list-MyAds-list'
+              data-toggle='list'
+              to='/myAds'
+              role='tab'
+              aria-controls='MyAds'
+            >
+              My Ads
+            </Link>
+            <Link
+              class='list-group-item list-group-item-action'
+              id='list-UpdateProfile-list'
+              data-toggle='list'
+              to={`/profile/${id}`}
+              role='tab'
+              aria-controls='UpdateProfile'
+            >
+              Update Profile
+            </Link>
+            <Link
+              class='list-group-item list-group-item-action'
+              id='list-PostanAd-list'
+              data-toggle='list'
+              to='/create/product'
+              role='tab'
+              aria-controls='PostanAd'
+            >
+              Post an Ad
+            </Link>
+            <Link
+              class='list-group-item list-group-item-action'
+              id='list-RecievedRequests-list'
+              data-toggle='list'
+              to='/pending/requests'
+              role='tab'
+              aria-controls='RecievedRequests'
+            >
+              Recieved Requests
+            </Link>
+            <Link
+              class='list-group-item list-group-item-action'
+              id='list-RecievedResponses-list'
+              data-toggle='list'
+              to='/acceptedRequests'
+              role='tab'
+              aria-controls='RecievedResponses'
+            >
+              Recieved Responses
+            </Link>
+          </div>
+        </div>
+        <div class='col-9'>
+          <div class='tab-content' id='nav-tabContent'>
+            <div
+              class='tab-pane fade show active'
+              id='list-MyAds'
+              role='tabpanel'
+              aria-labelledby='list-MyAds-list'
+            >
+              <h3 className='card-header'>Approved Ads</h3>
+            </div>
+
+            <div
+              class='tab-pane fade'
+              id='list-UpdateProfile'
+              role='tabpanel'
+              aria-labelledby='list-UpdateProfile-list'
+            >
+              ...
+            </div>
+            <div
+              class='tab-pane fade'
+              id='list-PostanAd'
+              role='tabpanel'
+              aria-labelledby='list-PostanAd-list'
+            >
+              ...
+            </div>
+            <div
+              class='tab-pane fade'
+              id='list-Recieved Requests'
+              role='tabpanel'
+              aria-labelledby='list-RecievedRequests-list'
+            >
+              ...
+            </div>
+            <div
+              class='tab-pane fade'
+              id='list-Recieved Responses'
+              role='tabpanel'
+              aria-labelledby='list-RecievedResponses-list'
+            >
+              ...
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
   const userLinks = () => {
     return (
       <div className='card'>
         <h4 className='card-header'>User Links</h4>
         <ul class='list-group list-group-flush'>
-          <li class='list-group-item'>
+          {/* <li class='list-group-item list-group-item-action active'>
             <Link className='nav-link' to='/myAds'>
+              My Ads
+            </Link>
+          </li> */}
+          <li class='list-group-item'>
+            <Link
+              class='list-group-item list-group-item-action active'
+              id='list-home-list'
+              data-toggle='list'
+              to='/myAds'
+              role='tab'
+              aria-controls='home'
+            >
               My Ads
             </Link>
           </li>
           <li class='list-group-item'>
-            <Link className='nav-link' to={`/profile/${id}`}>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to={`/profile/${id}`}
+              role='tab'
+              aria-controls='home'
+            >
               Update Profile
             </Link>
           </li>
+          {/* <li class='list-group-item'>
+            <Link className='nav-link' to={`/profile/${id}`}>
+              Update Profile
+            </Link>
+          </li> */}
           <li class='list-group-item'>
-            <Link className='nav-link' to='/create/product'>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to='/create/product'
+              role='tab'
+              aria-controls='home'
+            >
               Post an ad
             </Link>
           </li>
+          {/* <li class='list-group-item'>
+            <Link className='nav-link' to='/create/product'>
+              Post an ad
+            </Link>
+          </li> */}
           <li class='list-group-item'>
-            <Link className='nav-link' to='/pending/requests'>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to='/pending/requests'
+              role='tab'
+              aria-controls='home'
+            >
               Recieved Requests
             </Link>
           </li>
+          {/* <li class='list-group-item'>
+            <Link className='nav-link' to='/pending/requests'>
+              Recieved Requests
+            </Link>
+          </li> */}
           <li class='list-group-item'>
-            <Link className='nav-link' to='/acceptedRequests'>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to='/acceptedRequests'
+              role='tab'
+              aria-controls='home'
+            >
               Recieved Responses
             </Link>
           </li>
+          {/* <li class='list-group-item'>
+            <Link className='nav-link' to='/acceptedRequests'>
+              Recieved Responses
+            </Link>
+          </li> */}
         </ul>
       </div>
     )

@@ -68,31 +68,91 @@ function MyAds() {
       <div className='card'>
         <h4 className='card-header'>User Links</h4>
         <ul class='list-group list-group-flush'>
-          <li class='list-group-item'>
+          {/* <li class='list-group-item list-group-item-action active'>
             <Link className='nav-link' to='/myAds'>
+              My Ads
+            </Link>
+          </li> */}
+          <li class='list-group-item'>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to='/myAds'
+              role='tab'
+              aria-controls='home'
+            >
               My Ads
             </Link>
           </li>
           <li class='list-group-item'>
-            <Link className='nav-link' to={`/profile/${id}`}>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to={`/profile/${id}`}
+              role='tab'
+              aria-controls='home'
+            >
               Update Profile
             </Link>
           </li>
+          {/* <li class='list-group-item'>
+            <Link className='nav-link' to={`/profile/${id}`}>
+              Update Profile
+            </Link>
+          </li> */}
           <li class='list-group-item'>
-            <Link className='nav-link' to='/create/product'>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to='/create/product'
+              role='tab'
+              aria-controls='home'
+            >
               Post an ad
             </Link>
           </li>
+          {/* <li class='list-group-item'>
+            <Link className='nav-link' to='/create/product'>
+              Post an ad
+            </Link>
+          </li> */}
           <li class='list-group-item'>
-            <Link className='nav-link' to='/pending/requests'>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to='/pending/requests'
+              role='tab'
+              aria-controls='home'
+            >
               Recieved Requests
             </Link>
           </li>
+          {/* <li class='list-group-item'>
+            <Link className='nav-link' to='/pending/requests'>
+              Recieved Requests
+            </Link>
+          </li> */}
           <li class='list-group-item'>
-            <Link className='nav-link' to='/acceptedRequests'>
+            <Link
+              class='list-group-item list-group-item-action active'
+              id='list-home-list'
+              data-toggle='list'
+              to='/acceptedRequests'
+              role='tab'
+              aria-controls='home'
+            >
               Recieved Responses
             </Link>
           </li>
+          {/* <li class='list-group-item'>
+            <Link className='nav-link' to='/acceptedRequests'>
+              Recieved Responses
+            </Link>
+          </li> */}
         </ul>
       </div>
     )
@@ -130,7 +190,7 @@ function MyAds() {
                     <p class='card-text'>End Date:{item.endDate}</p>
 
                     <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
-                      Accept
+                      Proceed to Payment
                     </button>
 
                     <button className='btn btn-outline-danger mt-2 mb-2 mr-2'>
