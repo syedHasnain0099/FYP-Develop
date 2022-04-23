@@ -12,31 +12,6 @@ function ProductEdit() {
   const [mediaIds, setMediaIds] = useState('')
   const [videoMediaId, setVideoMediaId] = useState('')
   const [subCategories, setSubCategories] = useState([])
-  const [values, setValues] = useState({
-    name: '',
-    description: '',
-    rent: '',
-    duration: '',
-    subCategory: '',
-    category: '',
-    quantity: '',
-    loading: false,
-    error: '',
-    createdProduct: '',
-  })
-
-  const {
-    name,
-    description,
-    rent,
-    duration,
-    category,
-    quantity,
-    subCategory,
-    loading,
-    error,
-    createdProduct,
-  } = values
   const getProducts = (productId) => {
     productService
       .findOneProduct(productId)
@@ -52,27 +27,52 @@ function ProductEdit() {
   useEffect(() => {
     getProducts(productId)
   }, [])
-  // const init = () => {
-  //   categoryService
-  //     .getCategories()
-  //     .then((response) => {
-  //       setCategories(response)
-  //     })
-  //     .catch((err) => {
-  //       setValues({ ...values, error: err })
-  //     })
-  // }
-  // const init1 = () => {
-  //   categoryService
-  //     .getCategoryList(category)
-  //     .then((resolve) => {
-  //       setSubCategories(resolve)
-  //     })
-  //     .catch((err) => {
-  //       setValues({ ...values, error: err })
-  //     })
-  // }
+  const init = () => {
+    categoryService
+      .getCategories()
+      .then((response) => {
+        setCategories(response)
+      })
+      .catch((err) => {
+        setValues({ ...values, error: err })
+      })
+  }
+  const init1 = () => {
+    categoryService
+      .getCategoryList(category)
+      .then((resolve) => {
+        setSubCategories(resolve)
+      })
+      .catch((err) => {
+        setValues({ ...values, error: err })
+      })
+  }
 
+  const [values, setValues] = useState({
+    productname: '',
+    description: '',
+    rent: '',
+    duration: '',
+    subcategory: '',
+    category: '',
+    quantity: '',
+    loading: false,
+    error: '',
+    createdProduct: '',
+  })
+
+  const {
+    productname,
+    description,
+    rent,
+    duration,
+    category,
+    quantity,
+    subcategory,
+    loading,
+    error,
+    createdProduct,
+  } = values
   // useEffect(() => {
   //   init()
   // }, [])
@@ -122,10 +122,10 @@ function ProductEdit() {
       mIds.push(videoMediaId)
     }
 
-    // postAd(
-    //   { productname, description, rent, duration, subcategory, quantity, id },
-    //   mIds
-    // )
+    postAd(
+      { productname, description, rent, duration, subcategory, quantity, id },
+      mIds
+    )
   }
   const postAd = (props, mediaIds) => {
     productService
@@ -170,7 +170,6 @@ function ProductEdit() {
   const newPostForm = () => (
     <form className='mb-3' onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
-      {console.log(values[0].name)}
       <div className='form-group mb-4'>
         <label className='btn btn-secondary'>
           <input
@@ -200,7 +199,7 @@ function ProductEdit() {
         <input
           onChange={handleChange('productname')}
           type='text'
-          value={values[0].name}
+          value={productname}
           className='form-control'
         />
       </div>
@@ -254,7 +253,7 @@ function ProductEdit() {
         <label className='text-muted'>Sub Category</label>
         <select
           onChange={subCategoryHandleChange}
-          value={subCategory}
+          value={subcategory}
           className='form-control'
         >
           <option>Please Select</option>

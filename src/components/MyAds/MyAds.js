@@ -79,6 +79,11 @@ function MyAds() {
               Recieved Requests
             </Link>
           </li>
+          <li class='list-group-item'>
+            <Link className='nav-link' to='/acceptedRequests'>
+              Recieved Responses
+            </Link>
+          </li>
         </ul>
       </div>
     )

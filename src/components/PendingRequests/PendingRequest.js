@@ -99,8 +99,8 @@ function PendingRequest() {
   useEffect(() => {
     getPendingRequests()
     getAcceptedRequests()
-    showAcceptedRequests()
-    showRejectedRequests()
+    // showAcceptedRequests()
+    // showRejectedRequests()
   }, [])
   const userLinks = () => {
     return (
@@ -125,6 +125,11 @@ function PendingRequest() {
           <li class='list-group-item'>
             <Link className='nav-link' to='/pending/requests'>
               Recieved Requests
+            </Link>
+          </li>
+          <li class='list-group-item'>
+            <Link className='nav-link' to='/acceptedRequests'>
+              Recieved Responses
             </Link>
           </li>
         </ul>
