@@ -4,6 +4,14 @@ import productService from './ProductService'
 // import productService from './ProductService'
 import axios from 'axios'
 class QuoteService extends GenericService {
+    constructor() {
+        super()
+        this.populate = [
+          'product.users_permissions_user',
+          'product.image',
+          'users_permissions_user',
+        ]
+    }
     sendRequestQuote = (startDate, endDate, quantity, city, userId, productId) => {
         return this.post(`request-quotes`, {
             data: {
@@ -16,34 +24,6 @@ class QuoteService extends GenericService {
             }
         })
     }
-
-    // addAcceptedRequest = (currentUserId) => {
-    //     const allRequests = []
-    //     return new Promise((resolve, reject) => {
-    //         const query = qs.stringify({
-    //             filters: {
-    //                 product: {
-    //                     users_permissions_user: {
-    //                     id: {
-    //                         $eq: currentUserId,
-    //                     }
-    //                     },
-    //                 } 
-    //             },
-    //         })
-    //         this.get(`request-quotes?populate=product.users_permissions_user,product.image,users_permissions_user&${query}`, {})
-    //             .then((response) => {
-    //             const { data } = response
-    //             for (let req of data) {
-    //                 allRequests.push(this.extractRequests(req))
-    //             }
-    //             resolve(allRequests)
-    //             })
-    //             .catch((err) => {
-    //             reject(err)
-    //             })
-    //     })
-    // }
     updateQuote = (quote,status,id) => {
         return this.put(`request-quotes/${id}`, {
             data: {
@@ -56,6 +36,7 @@ class QuoteService extends GenericService {
         const allRequests = []
         return new Promise((resolve, reject) => {
             const query = qs.stringify({
+                populate: this.populate,
                 filters: {
                     product: {
                         users_permissions_user: {
@@ -69,17 +50,42 @@ class QuoteService extends GenericService {
                     }
                 },
             })
-            this.get(`request-quotes?populate=product.users_permissions_user,product.image,users_permissions_user&${query}`, {})
-                .then((response) => {
+            this.get(`request-quotes?${query}`, {})
+            .then((response) => {
                 const { data } = response
                 for (let req of data) {
                     allRequests.push(this.extractRequests(req))
                 }
                 resolve(allRequests)
-                })
-                .catch((err) => {
-                reject(err)
-                })
+            })
+            .catch(err => reject(err))
+        })
+    }
+    getQuoteRequestResponse = (currentUserId,status) => {
+        const allRequests = []
+        return new Promise((resolve, reject) => {
+            const query = qs.stringify({
+                populate: this.populate,
+                filters: {
+                    users_permissions_user: {
+                        id: {
+                            $eq: currentUserId,
+                        }
+                    },
+                    status: {
+                        $eq: status
+                    }
+                },
+            })
+            this.get(`request-quotes?${query}`, {})
+            .then((response) => {
+                const { data } = response
+                for (let req of data) {
+                    allRequests.push(this.extractRequests(req))
+                }
+                resolve(allRequests)
+            })
+            .catch(err => reject(err))
         })
     }
 

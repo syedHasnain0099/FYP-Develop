@@ -31,6 +31,30 @@ function PendingRequest() {
         console.log(err)
       })
   }
+  const showAcceptedRequests = () => {
+    console.log('supplier id: ', id)
+    quoteService
+      .getQuoteRequestResponse(id, 'accepted')
+      .then((data) => {
+        console.log('my accepted requests: ', data)
+        // setAcceptedRequestsData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+  const showRejectedRequests = () => {
+    console.log('supplier id: ', id)
+    quoteService
+      .getQuoteRequestResponse(id, 'rejected')
+      .then((data) => {
+        console.log('my rejected requests: ', data)
+        // setAcceptedRequestsData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   const AcceptHandleChange = () => {
     const { startDate, endDate, requestQuoteId = id } = pendingRequestsData[0]
     const { rent } = pendingRequestsData[0].product
@@ -75,6 +99,8 @@ function PendingRequest() {
   useEffect(() => {
     getPendingRequests()
     getAcceptedRequests()
+    showAcceptedRequests()
+    showRejectedRequests()
   }, [])
   const userLinks = () => {
     return (
