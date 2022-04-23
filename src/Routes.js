@@ -21,6 +21,7 @@ import GetQuote from './components/GetQuote/GetQuote'
 import Profile from './components/Profile/Profile'
 import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 import MyAds from './components/MyAds/MyAds'
+import AcceptedRequests from './components/RequestResponses/AcceptedRequests'
 import PendingRequest from './components/PendingRequests/PendingRequest'
 import ProductEdit from './components/ProductEdit/ProductEdit'
 function Routes() {
@@ -63,6 +64,10 @@ function Routes() {
           <PrivateRoute path='/myAds'>
             <Header />
             <MyAds />
+          </PrivateRoute>
+          <PrivateRoute path='/acceptedRequests'>
+            <Header />
+            <AcceptedRequests />
           </PrivateRoute>
           <PrivateRoute path='/profile/:userId'>
             <Header />
