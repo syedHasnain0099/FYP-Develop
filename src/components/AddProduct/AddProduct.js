@@ -1,11 +1,34 @@
-import React, { useEffect, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { isAuthenticated } from '../../auth'
 import { userData } from '../../auth'
 import categoryService from '../../services/CategoryService'
 import productService from '../../services/ProductService'
-import axios from 'axios'
+import ReactPlayer from 'react-player'
+import { fileObj, fileArray, videofileObj, videofileArray } from '../../auth'
+import './AddProduct.css'
 function AddProduct() {
+  const [imageFile, setImageFile] = useState({
+    file: [null],
+  })
+  const uploadMultipleFiles = (e) => {
+    fileObj.push(e.target.files)
+    for (let i = 0; i < fileObj[0].length; i++) {
+      fileArray.push(URL.createObjectURL(fileObj[0][i]))
+    }
+    setImageFile({ file: fileArray })
+  }
+  const [videoFile, setVideoFile] = useState({
+    videofile: [null],
+  })
+  const uploadVideoMultipleFiles = (e) => {
+    videofileObj.push(e.target.files)
+    for (let i = 0; i < videofileObj[0].length; i++) {
+      videofileArray.push(URL.createObjectURL(videofileObj[0][i]))
+    }
+    setVideoFile({ videofile: videofileArray })
+  }
+
   const { id } = userData()
   const [categories, setCategories] = useState([])
   const [mediaIds, setMediaIds] = useState('')
@@ -157,7 +180,25 @@ function AddProduct() {
       <h4>Post Photo</h4>
 
       <div className='form-group mb-4'>
-        <label className='btn btn-secondary'>
+        <div className='form-group multi-preview '>
+          {console.log(fileArray)}
+          {(fileArray || []).map((url) => (
+            <img className='img' src={url} alt='...' />
+          ))}
+        </div>
+
+        <div className='form-group'>
+          <input
+            type='file'
+            className='form-control'
+            onChange={uploadMultipleFiles}
+            multiple
+            accept='image/*'
+            required
+          />
+        </div>
+
+        {/* <label className='btn btn-secondary'>
           <input
             onChange={mediaHandleChange}
             type='file'
@@ -166,11 +207,36 @@ function AddProduct() {
             required
             multiple
           />
-        </label>
+        </label> */}
       </div>
       <h4>Post Video</h4>
+
       <div className='form-group mb-4'>
-        <label className='btn btn-secondary'>
+        <div className='form-group multi-preview '>
+          {(videofileArray || []).map((url) => (
+            <ReactPlayer
+              url={url}
+              controls
+              onReady={() => console.log('onReady callback')}
+              onStart={() => console.log('onStart callback')}
+              onPause={() => console.log('onPause callback')}
+              onEnded={() => console.log('onEnded callback')}
+              onError={() => console.log('onError callback')}
+            />
+          ))}
+        </div>
+
+        <div className='form-group'>
+          <input
+            type='file'
+            className='form-control'
+            onChange={uploadVideoMultipleFiles}
+            multiple
+            accept='.mov,.mp4'
+            required
+          />
+        </div>
+        {/* <label className='btn btn-secondary'>
           <input
             onChange={videoMediaHandleChange}
             type='file'
@@ -178,7 +244,7 @@ function AddProduct() {
             accept='.mov,.mp4'
             required
           />
-        </label>
+        </label> */}
       </div>
       <div className='form-group'>
         <label className='text-muted'>Product Name</label>
@@ -388,6 +454,7 @@ function AddProduct() {
           <h3 className='card-header mb-3'>Post an ad</h3>
           {/* <div className='col-md-8 offset-md-2'> */}
           {showLoading()}
+          {console.log(imageFile)}
           {showSuccess()}
           {showError()}
           {newPostForm()}

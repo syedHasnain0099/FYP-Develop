@@ -46,3 +46,7 @@ export const updateProfile = (user, next) => {
   }
   next()
 }
+export const fileObj = []
+export const fileArray = []
+export const videofileObj = []
+export const videofileArray = []
