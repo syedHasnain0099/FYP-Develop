@@ -4,8 +4,9 @@ import { userPassword } from '../../auth'
 import { Link } from 'react-router-dom'
 import userService from '../../services/UserService'
 import productService from '../../services/ProductService'
-
+import Avatar from '@material-ui/core/Avatar'
 function DashBoard() {
+  const [imageurl, setImageurl] = useState('')
   const [data, setData] = useState([])
   const { id, image } = userData()
   const pass = userPassword()
@@ -25,6 +26,7 @@ function DashBoard() {
       .getUserDP(image)
       .then((url) => {
         console.log('user image url: ', url)
+        setImageurl(url)
       })
       .catch((err) => {
         console.log(err)
@@ -65,7 +67,7 @@ function DashBoard() {
   }
   useEffect(() => {
     getUserInfo()
-    //showUserDP()
+    showUserDP()
     // addDP()
   }, [])
   const userLinks = () => {
@@ -168,6 +170,12 @@ function DashBoard() {
         <h3 className='card-header'> User Information</h3>
         <div class='card-body'>
           <ul class='list-group list-group-flush'>
+            <Avatar
+              alt='Remy Sharp'
+              src={imageurl}
+              style={{ width: 100, height: 100 }}
+            />
+            <br />
             <label className='text-muted'>First Name</label>
             <li class='list-group-item'>{data.first_name}</li>
             <label className='text-muted'>Last Name</label>

@@ -5,12 +5,14 @@ import { useParams } from 'react-router-dom'
 import { userData } from '../../auth'
 import { userPassword } from '../../auth'
 import validateInfo from './validateInfoProfile'
+import Avatar from '@material-ui/core/Avatar'
 import './Profile.css'
 function Profile() {
   let { userId } = useParams()
   const { id } = userData()
   const pass = userPassword()
   const [passwordButton, setPasswordButton] = useState(false)
+  const [imageurl, setImageurl] = useState('')
   const [errors, setErrors] = useState({})
   const [values, setValues] = useState({
     first_name: '',
@@ -53,6 +55,7 @@ function Profile() {
   useEffect(() => {
     showUserInfo()
   }, [])
+
   const userLinks = () => {
     return (
       <div className='card'>

@@ -23,6 +23,7 @@ function AddProduct() {
         console.log(err)
       })
     fileObj.push(e.target.files)
+
     for (let i = 0; i < fileObj[0].length; i++) {
       fileArray.push(URL.createObjectURL(fileObj[0][i]))
     }
