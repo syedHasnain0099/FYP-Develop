@@ -12,6 +12,16 @@ function AddProduct() {
     file: [null],
   })
   const uploadMultipleFiles = (e) => {
+    productService
+      .uploadMedia(e.target.files)
+      .then((res) => {
+        console.log(res)
+        console.log('id of uploaded image', res)
+        setMediaIds(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     fileObj.push(e.target.files)
     for (let i = 0; i < fileObj[0].length; i++) {
       fileArray.push(URL.createObjectURL(fileObj[0][i]))
@@ -22,6 +32,13 @@ function AddProduct() {
     videofile: [null],
   })
   const uploadVideoMultipleFiles = (e) => {
+    productService
+      .uploadMedia(e.target.files)
+      .then((res) => {
+        console.log('id of uploaded video', res)
+        setVideoMediaId(res)
+      })
+      .catch((err) => console.log(err))
     videofileObj.push(e.target.files)
     for (let i = 0; i < videofileObj[0].length; i++) {
       videofileArray.push(URL.createObjectURL(videofileObj[0][i]))
@@ -181,9 +198,8 @@ function AddProduct() {
 
       <div className='form-group mb-4'>
         <div className='form-group multi-preview '>
-          {console.log(fileArray)}
-          {(fileArray || []).map((url) => (
-            <img className='img' src={url} alt='...' />
+          {(fileArray || []).map((url, i) => (
+            <img className='img' src={url} alt='...' key={i} />
           ))}
         </div>
 
@@ -198,7 +214,7 @@ function AddProduct() {
           />
         </div>
 
-        {/* <label className='btn btn-secondary'>
+        <label className='btn btn-secondary'>
           <input
             onChange={mediaHandleChange}
             type='file'
@@ -207,7 +223,7 @@ function AddProduct() {
             required
             multiple
           />
-        </label> */}
+        </label>
       </div>
       <h4>Post Video</h4>
 
@@ -236,7 +252,7 @@ function AddProduct() {
             required
           />
         </div>
-        {/* <label className='btn btn-secondary'>
+        <label className='btn btn-secondary'>
           <input
             onChange={videoMediaHandleChange}
             type='file'
@@ -244,7 +260,7 @@ function AddProduct() {
             accept='.mov,.mp4'
             required
           />
-        </label> */}
+        </label>
       </div>
       <div className='form-group'>
         <label className='text-muted'>Product Name</label>
