@@ -7,8 +7,15 @@ import { useStateValue } from '../StateProvider/StateProvider'
 import userService from '../../services/UserService'
 import { NavLink } from 'react-router-dom'
 import { isAuthenticated, userData } from '../../auth'
-
-function Header() {
+import { withRouter } from 'react-router-dom'
+const isActive = (history, path) => {
+  if (history.location.pathname === path) {
+    return { color: '#ffffff' }
+  } else {
+    return { color: '#082567' }
+  }
+}
+function Header({ history }) {
   const { type } = userData()
   const [redirectToReferrer, setRedirectToReferrer] = useState(false)
   const [{ basket, user }, dispatch] = useStateValue()
@@ -51,22 +58,34 @@ function Header() {
       <div class='collapse navbar-collapse' id='navbarSupportedContent'>
         <ul class='navbar-nav mx-auto mb-2 mb-lg-0'>
           <li class='nav-item '>
-            <Link class='nav-link' to='/'>
+            <Link class='nav-link' to='/' style={isActive(history, '/')}>
               Home
             </Link>
           </li>
           <li class='nav-item'>
-            <Link class='nav-link' to='/products'>
+            <Link
+              class='nav-link'
+              to='/products'
+              style={isActive(history, '/products')}
+            >
               Products
             </Link>
           </li>
           <li class='nav-item'>
-            <Link class='nav-link' to='/about'>
+            <Link
+              class='nav-link'
+              to='/about'
+              style={isActive(history, '/about')}
+            >
               About
             </Link>
           </li>
           <li class='nav-item'>
-            <Link class='nav-link' to='/contact'>
+            <Link
+              class='nav-link'
+              to='/contact'
+              style={isActive(history, '/contact')}
+            >
               Contact
             </Link>
           </li>
@@ -113,4 +132,4 @@ function Header() {
   )
 }
 
-export default Header
+export default withRouter(Header)
