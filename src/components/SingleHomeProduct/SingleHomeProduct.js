@@ -18,7 +18,7 @@ function SingleHomeProduct() {
   const [productName, setProductName] = useState('')
   const [relatedProducts, setRelatedProducts] = useState([])
   const [searched, setSearched] = useState(false)
-  let mediaType=''
+  let mediaType = ''
   const getProducts = (productId) => {
     setLoading(true)
     productService
@@ -27,15 +27,15 @@ function SingleHomeProduct() {
         console.log('product: ', response[0])
         setSubCategory(response[0].subCategory)
         setProductName(response[0].name)
-         //chechking media file type by passing it's url
-         response[0].image_urls.map((img) => {
-           mediaType= productService.checkMediaType(img)
-           if (mediaType == 'image') {
-             console.log("it's an image")
-           } else if (mediaType == 'video') {
-             console.log("it's a video")
-           }
-         })
+        //  //chechking media file type by passing it's url
+        //  response[0].image_urls.map((img) => {
+        //    mediaType= productService.checkMediaType(img)
+        //    if (mediaType == 'image') {
+        //      console.log("it's an image")
+        //    } else if (mediaType == 'video') {
+        //      console.log("it's a video")
+        //    }
+        //  })
         setData(response)
         setLoading(false)
       })

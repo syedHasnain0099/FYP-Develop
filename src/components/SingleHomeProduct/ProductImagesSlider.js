@@ -3,8 +3,10 @@ import PropTypes from 'prop-types'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Thumbs } from 'swiper'
 import { useState } from 'react'
-
+import productService from '../../services/ProductService'
 const ProductImagesSlider = (props) => {
+  let mediaType = ''
+  console.log(props)
   const [activeThumb, setActiveThumb] = useState()
 
   return (
@@ -18,11 +20,16 @@ const ProductImagesSlider = (props) => {
         thumbs={{ swiper: activeThumb }}
         className='product-images-slider'
       >
-        {props.images.map((item, index) => (
-          <SwiperSlide key={index}>
-            <img src={item} alt='product images' />
-          </SwiperSlide>
-        ))}
+        {props.images.map((item, index) => {
+          mediaType = productService.checkMediaType(item)
+          if (mediaType == 'image') {
+            return (
+              <SwiperSlide key={index}>
+                <img src={item} alt='product images' />
+              </SwiperSlide>
+            )
+          }
+        })}
       </Swiper>
       <Swiper
         onSwiper={setActiveThumb}
@@ -32,13 +39,18 @@ const ProductImagesSlider = (props) => {
         modules={[Navigation, Thumbs]}
         className='product-images-slider-thumbs'
       >
-        {props.images.map((item, index) => (
-          <SwiperSlide key={index}>
-            <div className='product-images-slider-thumbs-wrapper'>
-              <img src={item} alt='product images' />
-            </div>
-          </SwiperSlide>
-        ))}
+        {props.images.map((item, index) => {
+          mediaType = productService.checkMediaType(item)
+          if (mediaType == 'image') {
+            return (
+              <SwiperSlide key={index}>
+                <div className='product-images-slider-thumbs-wrapper'>
+                  <img src={item} alt='product images' />
+                </div>
+              </SwiperSlide>
+            )
+          }
+        })}
       </Swiper>
     </>
   )
