@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar'
 import './Profile.css'
 function Profile() {
   let { userId } = useParams()
-  const { id } = userData()
+  const { id, image } = userData()
   const pass = userPassword()
   const [passwordButton, setPasswordButton] = useState(false)
   const [imageurl, setImageurl] = useState('')
@@ -22,7 +22,7 @@ function Profile() {
     contact_number: '',
     password: '',
     password2: '',
-    image: '',
+
     error: '',
     success: false,
   })
@@ -34,11 +34,21 @@ function Profile() {
     contact_number,
     password,
     password2,
-    image,
+
     error,
     success,
   } = values
-
+  const showUserDP = () => {
+    userService
+      .getUserDP(image)
+      .then((url) => {
+        console.log('user image url: ', url)
+        setImageurl(url)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   const showUserInfo = () => {
     setPasswordButton(true)
     userService
@@ -55,17 +65,15 @@ function Profile() {
   useEffect(() => {
     showUserInfo()
   }, [])
+  useEffect(() => {
+    showUserDP()
+  }, [])
 
   const userLinks = () => {
     return (
       <div className='card'>
         <h4 className='card-header'>User Links</h4>
         <ul class='list-group list-group-flush'>
-          {/* <li class='list-group-item list-group-item-action active'>
-            <Link className='nav-link' to='/myAds'>
-              My Ads
-            </Link>
-          </li> */}
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -90,11 +98,7 @@ function Profile() {
               Update Profile
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to={`/profile/${id}`}>
-              Update Profile
-            </Link>
-          </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -107,11 +111,7 @@ function Profile() {
               Post an ad
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to='/create/product'>
-              Post an ad
-            </Link>
-          </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -124,11 +124,7 @@ function Profile() {
               Recieved Requests
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to='/pending/requests'>
-              Recieved Requests
-            </Link>
-          </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -141,11 +137,6 @@ function Profile() {
               Recieved Responses
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to='/acceptedRequests'>
-              Recieved Responses
-            </Link>
-          </li> */}
         </ul>
       </div>
     )
@@ -229,6 +220,24 @@ function Profile() {
   )
   const profileUpdate = () => (
     <form>
+      <div className='form-group'>
+        <label className='text-muted'>Profile Picture</label>
+        <Avatar
+          alt='Remy Sharp'
+          src={imageurl}
+          style={{ width: 100, height: 100 }}
+        />
+        <br />
+
+        {/* <input
+          type='file'
+          className='form-control'
+          onChange={uploadMultipleFiles}
+          multiple
+          accept='image/*'
+          required
+        /> */}
+      </div>
       <div className='form-group'>
         <label className='text-muted'>User Name</label>
 

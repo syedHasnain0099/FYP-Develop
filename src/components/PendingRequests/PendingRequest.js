@@ -31,30 +31,7 @@ function PendingRequest() {
         console.log(err)
       })
   }
-  const showAcceptedRequests = () => {
-    console.log('supplier id: ', id)
-    quoteService
-      .getQuoteRequestResponse(id, 'accepted')
-      .then((data) => {
-        console.log('my accepted requests: ', data)
-        // setAcceptedRequestsData(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-  const showRejectedRequests = () => {
-    console.log('supplier id: ', id)
-    quoteService
-      .getQuoteRequestResponse(id, 'rejected')
-      .then((data) => {
-        console.log('my rejected requests: ', data)
-        // setAcceptedRequestsData(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+
   const AcceptHandleChange = (index) => {
     console.log(index)
     const {
@@ -104,19 +81,12 @@ function PendingRequest() {
   useEffect(() => {
     getPendingRequests()
     getAcceptedRequests()
-    // showAcceptedRequests()
-    // showRejectedRequests()
   }, [])
   const userLinks = () => {
     return (
       <div className='card'>
         <h4 className='card-header'>User Links</h4>
         <ul class='list-group list-group-flush'>
-          {/* <li class='list-group-item list-group-item-action active'>
-            <Link className='nav-link' to='/myAds'>
-              My Ads
-            </Link>
-          </li> */}
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -141,11 +111,7 @@ function PendingRequest() {
               Update Profile
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to={`/profile/${id}`}>
-              Update Profile
-            </Link>
-          </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -158,11 +124,7 @@ function PendingRequest() {
               Post an ad
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to='/create/product'>
-              Post an ad
-            </Link>
-          </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action active'
@@ -175,11 +137,7 @@ function PendingRequest() {
               Recieved Requests
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to='/pending/requests'>
-              Recieved Requests
-            </Link>
-          </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -192,11 +150,6 @@ function PendingRequest() {
               Recieved Responses
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to='/acceptedRequests'>
-              Recieved Responses
-            </Link>
-          </li> */}
         </ul>
       </div>
     )
