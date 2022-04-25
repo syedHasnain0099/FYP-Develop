@@ -155,6 +155,7 @@ function GetQuote() {
               className='getquote-form-input'
               name='enddate'
               placeholder='End'
+              min={enteredStartDate}
               //value={enteredUserName}
               onChange={endDateChangeHandler}
             />
