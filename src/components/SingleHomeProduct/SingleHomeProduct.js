@@ -99,6 +99,17 @@ function SingleHomeProduct() {
       <span className='badge badge-primary badge-pill'>Out of Stock</span>
     )
   }
+  const showVideo = (video) => {
+    video.map((img, index) => {
+      mediaType = productService.checkMediaType(img)
+      if (mediaType == 'image') {
+        console.log("it's an image")
+      } else if (mediaType == 'video') {
+        console.log("it's a video")
+        console.log(index)
+      }
+    })
+  }
   const showReviews = (reviews) => {
     if (reviews.length > 0) {
       for (let i = 0; i < reviews.length; i++) {
@@ -130,8 +141,15 @@ function SingleHomeProduct() {
               >
                 <ProductImagesSlider images={item.image_urls} />
                 <br />
+
                 <span className='description-form-input-login'>
-                  <NavLink to='/product/video' state={{ from: 'occupation' }}>
+                  <NavLink
+                    to={{
+                      pathname: '/product/video',
+                      state: { video: item.image_urls },
+                    }}
+                    exact
+                  >
                     Watch video of product
                   </NavLink>
                 </span>

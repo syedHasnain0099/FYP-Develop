@@ -52,15 +52,15 @@ function Product() {
       .catch((err) => console.log(err))
     //delete request from requested ads
     productService
-    .deleteRequestedAd(id)
-    .then((data) => console.log(`the requested ad: ${data} has been deleted`))
-    .catch((err) => console.log(err))
+      .deleteRequestedAd(id)
+      .then((data) => console.log(`the requested ad: ${data} has been deleted`))
+      .catch((err) => console.log(err))
   }
   const disapproveHandleChange = () => {
-    const {id} = data[0]
+    const { id } = data[0]
     //send user notification
     productService
-      .addRejectedAd(data[0],data[0].supplier.id)
+      .addRejectedAd(data[0], data[0].supplier.id)
       .then((data) => console.log(`the rejected ad: ${data}`))
       .catch((err) => console.log(err))
     //delete request from requested ads
@@ -139,7 +139,13 @@ function Product() {
                 <ProductImagesSlider images={item.image_urls} />
                 <br />
                 <span className='description-form-input-login'>
-                  <NavLink to='/product/video' state={{ from: 'occupation' }}>
+                  <NavLink
+                    to={{
+                      pathname: '/product/video',
+                      state: { video: item.image_urls },
+                    }}
+                    exact
+                  >
                     Watch video of product
                   </NavLink>
                 </span>
