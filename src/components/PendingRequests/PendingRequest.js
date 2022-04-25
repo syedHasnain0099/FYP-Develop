@@ -55,12 +55,17 @@ function PendingRequest() {
         console.log(err)
       })
   }
-  const AcceptHandleChange = () => {
-    const { startDate, endDate, requestQuoteId = id } = pendingRequestsData[0]
-    const { rent } = pendingRequestsData[0].product
-    const productId = pendingRequestsData[0].product.id
-    const { supplierId = id } = pendingRequestsData[0].product.supplier
-    const { requestingUserId = id } = pendingRequestsData[0].requestingUser
+  const AcceptHandleChange = (index) => {
+    console.log(index)
+    const {
+      startDate,
+      endDate,
+      requestQuoteId = id,
+    } = pendingRequestsData[index]
+    const { rent } = pendingRequestsData[index].product
+    const productId = pendingRequestsData[index].product.id
+    const { supplierId = id } = pendingRequestsData[index].product.supplier
+    const { requestingUserId = id } = pendingRequestsData[index].requestingUser
 
     var start = moment(startDate, 'YYYY-MM-DD')
     var end = moment(endDate, 'YYYY-MM-DD')
@@ -84,8 +89,8 @@ function PendingRequest() {
       .catch((err) => console.log(err))
     getPendingRequests()
   }
-  const RejectHandleChange = () => {
-    const { quote, requestQuoteId = id } = pendingRequestsData[0]
+  const RejectHandleChange = (index) => {
+    const { quote, requestQuoteId = id } = pendingRequestsData[index]
     quoteService
       .updateQuote(quote, 'rejected', requestQuoteId)
       .then((res) => {
@@ -199,7 +204,7 @@ function PendingRequest() {
   const requestedQuotes = () => {
     return (
       <>
-        {pendingRequestsData.map((item) => {
+        {pendingRequestsData.map((item, index) => {
           return (
             <>
               <div className='col-4 mb-3'>
@@ -230,14 +235,18 @@ function PendingRequest() {
 
                     <button
                       className='btn btn-outline-primary mt-2 mb-2 mr-2'
-                      onClick={AcceptHandleChange}
+                      onClick={(e) => {
+                        AcceptHandleChange(index)
+                      }}
                     >
                       Accept
                     </button>
 
                     <button
                       className='btn btn-outline-danger mt-2 mb-2 mr-2'
-                      onClick={RejectHandleChange}
+                      onClick={(e) => {
+                        RejectHandleChange(index)
+                      }}
                     >
                       Reject
                     </button>
