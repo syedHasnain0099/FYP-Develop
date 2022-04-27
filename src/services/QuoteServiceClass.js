@@ -12,7 +12,7 @@ class QuoteService extends GenericService {
           'users_permissions_user',
         ]
     }
-    sendRequestQuote = (startDate, endDate, quantity, city, userId, productId) => {
+    sendRequestQuote = (startDate, endDate, quantity, city, userId, productId, quote, st) => {
         return this.post(`request-quotes`, {
             data: {
                 start_date: startDate,
@@ -21,6 +21,8 @@ class QuoteService extends GenericService {
                 city: city,
                 users_permissions_user: userId,
                 product: productId,
+                quote: quote,
+                status: st
             }
         })
     }

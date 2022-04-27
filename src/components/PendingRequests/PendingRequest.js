@@ -12,7 +12,7 @@ function PendingRequest() {
     quoteService
       .getRequestQuotes(id, 'pending')
       .then((data) => {
-        console.log('user requests: ', data)
+        console.log('pending requests: ', data)
         setPendingRequestsData(data)
       })
       .catch((err) => {
@@ -24,7 +24,7 @@ function PendingRequest() {
     quoteService
       .getRequestQuotes(id, 'accepted')
       .then((data) => {
-        console.log('user requests: ', data)
+        console.log('accepted requests: ', data)
         setAcceptedRequestsData(data)
       })
       .catch((err) => {
@@ -37,13 +37,25 @@ function PendingRequest() {
     const {
       startDate,
       endDate,
-      requestQuoteId = id,
+      id,
     } = pendingRequestsData[index]
+    let reqId=id;
+    console.log("reqId:",id)
     const { rent } = pendingRequestsData[index].product
-    const productId = pendingRequestsData[index].product.id
-    const { supplierId = id } = pendingRequestsData[index].product.supplier
-    const { requestingUserId = id } = pendingRequestsData[index].requestingUser
-
+    // const productId = pendingRequestsData[index].product.id
+    // var supplierId;
+    // if(pendingRequestsData[index].product.supplier)
+    // { 
+    //   const { id } = pendingRequestsData[index].product.supplier
+    //   supplierId=id;
+    // }
+    // var requestingUserId
+    // if(pendingRequestsData[index].requestingUser)
+    // { 
+    //   const { id } = pendingRequestsData[index].requestingUser
+    //   requestingUserId=id;
+    // }
+    
     var start = moment(startDate, 'YYYY-MM-DD')
     var end = moment(endDate, 'YYYY-MM-DD')
     // var current = moment().startOf('day')
@@ -53,13 +65,13 @@ function PendingRequest() {
 
     const quote = price * duration
     console.log('quote', quote)
-    console.log('supplier id: ', supplierId)
-    console.log('product id: ', productId)
-    console.log('requesting user id: ', requestingUserId)
-    console.log('request Quote id: ', requestQuoteId)
+    // console.log('supplier id: ', supplierId)
+    // console.log('product id: ', productId)
+    // console.log('requesting user id: ', requestingUserId)
+    console.log('request Quote id: ', reqId)
 
     quoteService
-      .updateQuote(quote, 'accepted', requestQuoteId)
+      .updateQuote(quote, 'accepted', reqId)
       .then((res) => {
         console.log('accepted request: ', res)
       })
@@ -67,7 +79,10 @@ function PendingRequest() {
     getPendingRequests()
   }
   const RejectHandleChange = (index) => {
-    const { quote, requestQuoteId = id } = pendingRequestsData[index]
+    const { quote,  id } = pendingRequestsData[index]
+    let requestQuoteId=id;
+    console.log("req id inside rejected ads: ",requestQuoteId)
+    console.log("quote val: ",quote)
     quoteService
       .updateQuote(quote, 'rejected', requestQuoteId)
       .then((res) => {
