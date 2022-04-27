@@ -166,15 +166,7 @@ function Product() {
               <p>Product Category: {item.categoryType}</p>
               <p>Added on {moment(item.createdAt).fromNow()}</p>
               <br />
-              {/* <p class='lead mt-2'>Reviews and Ratings</p>
-              {showReviews(item.reviews)}
-              <div className='description-product__rating'>
-                {item.reviews.length > 0 &&
-                  Array(item.reviews[0].rating)
-                    .fill()
-                    .map((_, i) => <span>&#9733;</span>)}
-              </div>
-              <br /> */}
+
               <p class='lead mt-2'>Supplier information</p>
               <p class='card-text'>Name: {item.supplier.username}</p>
               <p class='card-text'>Email: {item.supplier.email}</p>

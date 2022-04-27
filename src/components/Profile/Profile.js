@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import productService from '../../services/ProductService'
 import userService from '../../services/UserService'
 import { useParams } from 'react-router-dom'
 import { userData } from '../../auth'
@@ -7,12 +8,17 @@ import { userPassword } from '../../auth'
 import validateInfo from './validateInfoProfile'
 import Avatar from '@material-ui/core/Avatar'
 import './Profile.css'
+import { profileDp, profileDpArray } from '../../auth'
 function Profile() {
   let { userId } = useParams()
   const { id, image } = userData()
   const pass = userPassword()
   const [passwordButton, setPasswordButton] = useState(false)
+  const [imageFile, setImageFile] = useState({
+    file: [null],
+  })
   const [imageurl, setImageurl] = useState('')
+  const [mediaIds, setMediaIds] = useState('')
   const [errors, setErrors] = useState({})
   const [values, setValues] = useState({
     first_name: '',
@@ -43,7 +49,7 @@ function Profile() {
       .getUserDP(image)
       .then((url) => {
         console.log('user image url: ', url)
-        setImageurl(url)
+        setImageFile({ file: url })
       })
       .catch((err) => {
         console.log(err)
@@ -148,6 +154,23 @@ function Profile() {
     setErrors('')
     setValues({ ...values, success: '' })
   }
+  const mediaHandleChange = (event) => {
+    profileDp.push(event.target.files)
+    for (let i = 0; i < profileDp[0].length; i++) {
+      profileDpArray.push(URL.createObjectURL(profileDp[0][i]))
+    }
+    setImageFile({ file: profileDpArray })
+    productService
+      .uploadMedia(event.target.files)
+      .then((res) => {
+        console.log(res)
+        console.log('id of uploaded image', res)
+        setMediaIds(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   const clickSubmit = (e) => {
     clearErrorFields()
     e.preventDefault()
@@ -222,21 +245,21 @@ function Profile() {
     <form>
       <div className='form-group'>
         <label className='text-muted'>Profile Picture</label>
+        {console.log(imageFile)}
         <Avatar
           alt='Remy Sharp'
-          src={imageurl}
+          src={imageFile.file}
           style={{ width: 100, height: 100 }}
         />
         <br />
 
-        {/* <input
+        <input
           type='file'
           className='form-control'
-          onChange={uploadMultipleFiles}
-          multiple
+          onChange={mediaHandleChange}
           accept='image/*'
           required
-        /> */}
+        />
       </div>
       <div className='form-group'>
         <label className='text-muted'>User Name</label>
