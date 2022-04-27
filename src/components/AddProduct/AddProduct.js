@@ -51,7 +51,7 @@ function AddProduct() {
   const { id } = userData()
   const [categories, setCategories] = useState([])
   const [mediaIds, setMediaIds] = useState([])
-  const [videoMediaId, setVideoMediaId] = useState('')
+  const [videoMediaId, setVideoMediaId] = useState([])
   const [subCategories, setSubCategories] = useState([])
 
   const init = () => {
@@ -126,8 +126,10 @@ function AddProduct() {
     productService
       .uploadMedia(event.target.files)
       .then((res) => {
-        console.log('id of uploaded video', res)
-        setVideoMediaId(res)
+        for(let videoFile of res){
+          console.log('id of uploaded video', videoFile)
+          setVideoMediaId(videoFile)
+        }
       })
       .catch((err) => console.log(err))
   }
