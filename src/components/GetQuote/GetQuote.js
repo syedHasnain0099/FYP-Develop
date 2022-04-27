@@ -64,7 +64,9 @@ function GetQuote() {
         getQuoteData.quantity,
         getQuoteData.location,
         id,
-        productId
+        productId,
+        0,
+        "pending"
       )
       .then((data) => console.log('congratulations your post is added ', data))
       .catch((err) => console.log(err))

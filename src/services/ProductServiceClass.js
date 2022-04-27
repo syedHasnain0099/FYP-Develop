@@ -179,7 +179,7 @@ class ProductService extends GenericService {
     })
   }
   uploadMedia = (files) => {
-    let mediaIds = ''
+    let mediaIds = []
     const data = new FormData()
     if (!files[0]) {
       console.log('please select some file')
@@ -198,9 +198,10 @@ class ProductService extends GenericService {
           },
         })
         .then((response) => {
+          console.log("response of image uploading: ",response)
           const { data } = response
           for (let singleMedia of data) {
-            mediaIds = this.extractMediaId(singleMedia)
+            mediaIds.push(this.extractMediaId(singleMedia))
           }
           resolve(mediaIds)
         })

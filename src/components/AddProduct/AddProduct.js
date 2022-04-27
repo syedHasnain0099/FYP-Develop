@@ -12,6 +12,7 @@ function AddProduct() {
     file: [null],
   })
   const uploadMultipleFiles = (e) => {
+    console.log("my multiple files:",e.target.files)
     productService
       .uploadMedia(e.target.files)
       .then((res) => {
@@ -49,7 +50,7 @@ function AddProduct() {
 
   const { id } = userData()
   const [categories, setCategories] = useState([])
-  const [mediaIds, setMediaIds] = useState('')
+  const [mediaIds, setMediaIds] = useState([])
   const [videoMediaId, setVideoMediaId] = useState('')
   const [subCategories, setSubCategories] = useState([])
 
@@ -107,12 +108,15 @@ function AddProduct() {
   }, [category])
 
   const mediaHandleChange = (event) => {
+    console.log("my files: ",event.target.files)
     productService
       .uploadMedia(event.target.files)
       .then((res) => {
         console.log(res)
-        console.log('id of uploaded image', res)
-        setMediaIds(res)
+        for(let mediaFile of res){
+          console.log('id of uploaded image', mediaFile)
+          setMediaIds(mediaFile)
+        }
       })
       .catch((err) => {
         console.log(err)
