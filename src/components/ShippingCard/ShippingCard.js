@@ -4,6 +4,7 @@ import { Redirect, useLocation } from 'react-router-dom'
 function ShippingCard() {
   let location = useLocation()
   console.log(location.state)
+
   const [fullName, setFullName] = useState('')
   const [address, setAddress] = useState('')
   const [cellPhone, setCellPhone] = useState('')
@@ -18,7 +19,16 @@ function ShippingCard() {
   }
   const redirectUser = () => {
     if (redirectToReferrer) {
-      return <Redirect to='/payment'></Redirect>
+      console.log(location)
+      return (
+        <Redirect
+          to={{
+            pathname: '/payment',
+            state: { productId: location.state.productId },
+          }}
+          exact
+        ></Redirect>
+      )
     }
   }
 
