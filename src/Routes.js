@@ -24,7 +24,8 @@ import MyAds from './components/MyAds/MyAds'
 import AcceptedRequests from './components/RequestResponses/AcceptedRequests'
 import PendingRequest from './components/PendingRequests/PendingRequest'
 import ProductEdit from './components/ProductEdit/ProductEdit'
-
+import ShippingCard from './components/ShippingCard/ShippingCard'
+import PaymentCart from './components/PaymentCart/PaymentCart'
 function Routes() {
   return (
     <BrowserRouter>
@@ -54,6 +55,14 @@ function Routes() {
             <Header />
             <Product />
           </AdminRoute>
+          <PrivateRoute path='/payment'>
+            <Header />
+            <PaymentCart />
+          </PrivateRoute>
+          <PrivateRoute path='/shipping'>
+            <Header />
+            <ShippingCard />
+          </PrivateRoute>
           <PrivateRoute path='/productEdit/:productId'>
             <Header />
             <ProductEdit />

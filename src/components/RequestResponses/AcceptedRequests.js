@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import productService from '../../services/ProductService'
 import quoteService from '../../services/QuoteService'
@@ -166,11 +167,17 @@ function MyAds() {
                     <p class='lead mt-2'>Duration</p>
                     <p class='card-text'>Start Date:{item.startDate}</p>
                     <p class='card-text'>End Date:{item.endDate}</p>
-
-                    <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
-                      Proceed to Payment
-                    </button>
-
+                    <NavLink
+                      to={{
+                        pathname: '/shipping',
+                        state: { productId: item.id },
+                      }}
+                      exact
+                    >
+                      <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
+                        Proceed to Payment
+                      </button>
+                    </NavLink>
                     <button className='btn btn-outline-danger mt-2 mb-2 mr-2'>
                       Reject
                     </button>
