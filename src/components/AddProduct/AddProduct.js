@@ -12,7 +12,7 @@ function AddProduct() {
     file: [null],
   })
   const uploadMultipleFiles = (e) => {
-    console.log("my multiple files:",e.target.files)
+    console.log('my multiple files:', e.target.files)
     productService
       .uploadMedia(e.target.files)
       .then((res) => {
@@ -108,12 +108,12 @@ function AddProduct() {
   }, [category])
 
   const mediaHandleChange = (event) => {
-    console.log("my files: ",event.target.files)
+    console.log('my files: ', event.target.files)
     productService
       .uploadMedia(event.target.files)
       .then((res) => {
         console.log(res)
-        for(let mediaFile of res){
+        for (let mediaFile of res) {
           console.log('id of uploaded image', mediaFile)
           setMediaIds(mediaFile)
         }
@@ -126,7 +126,7 @@ function AddProduct() {
     productService
       .uploadMedia(event.target.files)
       .then((res) => {
-        for(let videoFile of res){
+        for (let videoFile of res) {
           console.log('id of uploaded video', videoFile)
           setVideoMediaId(videoFile)
         }
@@ -221,7 +221,7 @@ function AddProduct() {
           />
         </div>
 
-        <label className='btn btn-secondary'>
+        {/* <label className='btn btn-secondary'>
           <input
             onChange={mediaHandleChange}
             type='file'
@@ -230,7 +230,7 @@ function AddProduct() {
             required
             multiple
           />
-        </label>
+        </label> */}
       </div>
       <h4>Post Video</h4>
 
@@ -259,7 +259,7 @@ function AddProduct() {
             required
           />
         </div>
-        <label className='btn btn-secondary'>
+        {/* <label className='btn btn-secondary'>
           <input
             onChange={videoMediaHandleChange}
             type='file'
@@ -267,7 +267,7 @@ function AddProduct() {
             accept='.mov,.mp4'
             required
           />
-        </label>
+        </label> */}
       </div>
       <div className='form-group'>
         <label className='text-muted'>Product Name</label>

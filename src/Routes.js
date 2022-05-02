@@ -70,6 +70,10 @@ function Routes() {
             <Header />
             <AcceptedRequests />
           </PrivateRoute>
+          <PrivateRoute path='/getQuote/:productId'>
+            <Header />
+            <GetQuote></GetQuote>
+          </PrivateRoute>
           <PrivateRoute path='/profile/:userId'>
             <Header />
             <Profile />
@@ -103,10 +107,10 @@ function Routes() {
             <Header />
             <ResetPageForm></ResetPageForm>
           </Route>
-          <Route path='/getQuote/:productId'>
+          {/* <Route path='/getQuote/:productId'>
             <Header />
             <GetQuote></GetQuote>
-          </Route>
+          </Route> */}
           <Route path='/SignUp'>
             <Header />
             <SignUp></SignUp>

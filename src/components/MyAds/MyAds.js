@@ -237,6 +237,118 @@ function MyAds() {
       </>
     )
   }
+  const DisApproveAds1 = () => {
+    return (
+      <>
+        {disapprovedData.map((product) => {
+          return (
+            <>
+              <div className='col-md-3 ' style={{ marginTop: '20px' }}>
+                <div className='card-card'>
+                  <div className='card-body'>
+                    <div className='card-img-actions'>
+                      <img
+                        src={product.image_urls[0]}
+                        className='card-img-top'
+                        // width='96'
+                        // height='350'
+                        // alt=''
+                        height='250px'
+                      />
+                    </div>
+                  </div>
+                  <div className='card-body bg-light text-center'>
+                    <div className='mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
+                        <Link
+                          to={`/products/${product.id}`}
+                          className='text-default mb-2'
+                          data-abc='true'
+                        >
+                          {product.name}
+                        </Link>
+                      </h5>
+                      <p class='text-muted'>
+                        {product.description.substring(0, 20)}...
+                      </p>
+                    </div>
+                    <h3 className='mb-0 font-weight-semibold'>
+                      Rs {product.rent} / day
+                    </h3>
+                    <br />
+                    <Link to={`/products/${product.id}`}>
+                      <h6>Details</h6>
+                    </Link>
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn btn-outline-danger mt-2 mb-2 mr-2'>
+                        Delete Product
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        })}
+      </>
+    )
+  }
+  const ApproveAds1 = () => {
+    return (
+      <>
+        {approvedData.map((product) => {
+          return (
+            <>
+              <div className='col-md-3 ' style={{ marginTop: '20px' }}>
+                <div className='card-card'>
+                  <div className='card-body'>
+                    <div className='card-img-actions'>
+                      <img
+                        src={product.image_urls[0]}
+                        className='card-img-top'
+                        // width='96'
+                        // height='350'
+                        // alt=''
+                        height='250px'
+                      />
+                    </div>
+                  </div>
+                  <div className='card-body bg-light text-center'>
+                    <div className='mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
+                        <Link
+                          to={`/products/${product.id}`}
+                          className='text-default mb-2'
+                          data-abc='true'
+                        >
+                          {product.name}
+                        </Link>
+                      </h5>
+                      <p class='text-muted'>
+                        {product.description.substring(0, 20)}...
+                      </p>
+                    </div>
+                    <h3 className='mb-0 font-weight-semibold'>
+                      Rs {product.rent} / day
+                    </h3>
+                    <br />
+                    <Link to={`/products/${product.id}`}>
+                      <h6>Details</h6>
+                    </Link>
+                    <Link to={`/productEdit/${product.id}`}>
+                      <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
+                        Edit Product
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        })}
+      </>
+    )
+  }
   return (
     <div className='container-fluid mt-4'>
       <div className='row'>
@@ -245,13 +357,13 @@ function MyAds() {
           <h3 className='card-header'>Approved Ads</h3>
           <div className='container my-2 py-2'>
             <div className='row justify-content-center'>
-              {loading ? <Loading /> : <ApproveAds />}
+              {loading ? <Loading /> : <ApproveAds1 />}
             </div>
           </div>
           <h3 className='card-header'>Disapproved Ads</h3>
           <div className='container my-2 py-2'>
             <div className='row justify-content-center'>
-              {loading ? <Loading /> : <DisApproveAds />}
+              {loading ? <Loading /> : <DisApproveAds1 />}
             </div>
           </div>
         </div>

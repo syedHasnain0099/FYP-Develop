@@ -119,7 +119,7 @@ function Products() {
                   </div>
                   <div className='card-body bg-light text-center'>
                     <div className='mb-2'>
-                      <h5 className='font-weight-semibold mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
                         <Link
                           to={`/products/${product.id}`}
                           className='text-default mb-2'
@@ -133,8 +133,9 @@ function Products() {
                       </p>
                     </div>
                     <h3 className='mb-0 font-weight-semibold'>
-                      Rs{product.rent}/per day
+                      Rs {product.rent} / day
                     </h3>
+
                     {product.reviews.length > 0 &&
                       Array(product.reviews[0].rating)
                         .fill()
@@ -162,6 +163,11 @@ function Products() {
     )
   }
   return (
+    // <div className='container  justify-content-center mb-50'>
+    //   <div className='row' style={{ paddingTop: '102px' }}>
+    //     {<ShowProducts1 />}
+    //   </div>
+    // </div>
     <div>
       <div className='container my-5 py-5'>
         <div className='row'>

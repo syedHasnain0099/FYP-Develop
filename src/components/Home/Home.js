@@ -8,7 +8,7 @@ function Home() {
           className='card-img'
           src='./images/bg.jpg'
           alt='background image'
-          height='900px'
+          height='800px'
         />
         <div className='card-img-overlay d-flex flex-column justify-content-center'>
           <div className='container'>

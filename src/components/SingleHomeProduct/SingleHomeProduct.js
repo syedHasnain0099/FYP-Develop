@@ -3,12 +3,14 @@ import productService from '../../services/ProductService'
 import { NavLink, useParams } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
+import { isAuthenticated, userData } from '../../auth'
 import moment from 'moment'
 import './SingleHomeProduct.css'
 import ProductImagesSlider from './ProductImagesSlider'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
+import Rating from '../Rating/Rating'
 
 function SingleHomeProduct() {
   let { productId } = useParams()
@@ -18,6 +20,8 @@ function SingleHomeProduct() {
   const [productName, setProductName] = useState('')
   const [relatedProducts, setRelatedProducts] = useState([])
   const [searched, setSearched] = useState(false)
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
   let mediaType = ''
   const getProducts = (productId) => {
     setLoading(true)
@@ -91,7 +95,9 @@ function SingleHomeProduct() {
       return `No related products found`
     }
   }
-
+  const submitRating = async (e) => {
+    e.preventDefault()
+  }
   const showStock = (quantity) => {
     return quantity > 0 ? (
       <span className='badge badge-primary badge-pill'>In Stock</span>
@@ -118,6 +124,224 @@ function SingleHomeProduct() {
     } else {
       return <p class='card-text'>No reviews and rating on this product</p>
     }
+  }
+  const ShowProduct3 = () => {
+    return (
+      <>
+        {data.map((product) => {
+          return (
+            <>
+              <div className='container single_product show'>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <div className='row'>
+                    <div className='col-sm-6 '>
+                      <div className='img_div'>
+                        <div
+                          style={{
+                            // height: '100vh',
+                            display: 'flex',
+                            // alignItems: 'center',
+                            // justifyContent: 'center',
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: '500px',
+                              backgroundColor: '#fff',
+                              padding: '20px',
+                            }}
+                          >
+                            <ProductImagesSlider images={product.image_urls} />
+                            <br />
+
+                            <span className='description-form-input-login'>
+                              <NavLink
+                                to={{
+                                  pathname: '/product/video',
+                                  state: { video: product.image_urls },
+                                }}
+                                exact
+                              >
+                                Watch video of product
+                              </NavLink>
+                            </span>
+                          </div>
+                        </div>
+                        {/* <img
+                          className='img-fluid'
+                          src={product.image_urls[0]}
+                          alt=''
+                        /> */}
+
+                        <div className='review' style={{ paddingTop: '10px' }}>
+                          <h4>REVIEWS</h4>
+
+                          {product.reviews && product.reviews.length === 0 && (
+                            <>
+                              <div
+                                class='alert alert-warning alert_warning_custom'
+                                role='alert'
+                                data-mdb-color='warning'
+                              >
+                                No review added yet
+                              </div>
+                            </>
+                          )}
+
+                          <div className='review_loop'>
+                            {product.reviews &&
+                              product.reviews.map((review) => (
+                                <ul className='review_list'>
+                                  <li>
+                                    {/* <strong>{review.name}</strong> */}
+                                    <strong>Syed Hasnain</strong>
+                                  </li>
+                                  <li>
+                                    {Array(review.rating)
+                                      .fill()
+                                      .map((_, i) => (
+                                        <span style={{ color: '#ffd700' }}>
+                                          &#9733;
+                                        </span>
+                                      ))}
+                                  </li>
+                                  <li>
+                                    {/* <strong>
+                                      {new Date(
+                                        review.createdAt
+                                      ).toLocaleDateString()}
+                                    </strong> */}
+                                    <strong>Date:</strong>
+                                  </li>
+                                  <li>
+                                    {console.log(review.content)}
+                                    <p>{review.content}</p>
+                                  </li>
+                                </ul>
+                              ))}
+                            <hr />
+                            <div className='review_comment'>
+                              {isAuthenticated() ? (
+                                <>
+                                  <form
+                                    className='col-sm-6  pt-5'
+                                    onSubmit={submitRating}
+                                  >
+                                    <h4>Leave a review</h4>
+                                    <div className='mb-2'>
+                                      <select
+                                        class='mdb-select'
+                                        onChange={(e) =>
+                                          setRating(e.target.value)
+                                        }
+                                        value={rating}
+                                        required
+                                      >
+                                        <option value='' selected>
+                                          Choose your rating
+                                        </option>
+                                        <option value='1'> 1 - Poor</option>
+                                        <option value='2'> 2 - Fair</option>
+                                        <option value='3'> 3 - Good</option>
+                                        <option value='4'>4 - Very Good</option>
+                                        <option value='5'>5 - Excellent</option>
+                                      </select>
+                                    </div>
+                                    <div className='mb-4'>
+                                      <label
+                                        className='form-label'
+                                        htmlFor='form4Example1'
+                                      >
+                                        Leave a comment
+                                      </label>
+                                      <textarea
+                                        required
+                                        value={comment}
+                                        onChange={(e) =>
+                                          setComment(e.target.value)
+                                        }
+                                        className='form-control'
+                                        name=''
+                                        id=''
+                                        cols='100'
+                                        rows='3'
+                                        placeholder='Comment...'
+                                      ></textarea>
+                                    </div>
+                                    <button
+                                      type='submit'
+                                      className='btn btn-primary btn-block mb-4'
+                                    >
+                                      Add review
+                                    </button>
+                                  </form>
+                                </>
+                              ) : (
+                                <>
+                                  Please <Link to='/login'>Sign In</Link> to
+                                  leave a review
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='col-sm-6'>
+                      <div className='product_desc_wrapper'>
+                        <div className='product_title'>
+                          <h1>{product.name}</h1>
+                          <span>
+                            <h6>Product # {product.id}</h6>
+                          </span>
+                          <hr />
+                          <h1>Rs {product.rent} / day</h1>
+                        </div>
+                        <Link to={`/getQuote/${product.id}`}>
+                          <button className='btn bg-cart mt-2 mb-2 mr-2'>
+                            Get Quote
+                          </button>
+                        </Link>
+
+                        <div className='stock'>
+                          <hr />
+                          <h6>
+                            Status:
+                            {product.quantity < 1 ? (
+                              <span className='text-danger'>Out of Stock</span>
+                            ) : (
+                              <span className='text-success'>Available</span>
+                            )}
+                          </h6>
+                        </div>
+
+                        <hr />
+                        <div className='desc'>
+                          <h2>Description</h2>
+                          <p>{product.description}</p>
+                        </div>
+                        <hr />
+                        <div className='desc'>
+                          <h2>Supplier Information</h2>
+                          <p>Name: {product.supplier.username}</p>
+                          <p>Email: {product.supplier.email}</p>
+                          <p>
+                            Contact number: +92{' '}
+                            {product.supplier.contact_number}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )
+        })}
+      </>
+    )
   }
   const ShowProduct = () => {
     return (
@@ -202,6 +426,71 @@ function SingleHomeProduct() {
       </div>
     )
   }
+  const ShowProducts1 = () => {
+    return (
+      <>
+        {relatedProducts.map((product) => {
+          return (
+            <>
+              <div className='col-md-3 ' style={{ marginTop: '20px' }}>
+                <div className='card-card'>
+                  <div className='card-body'>
+                    <div className='card-img-actions'>
+                      <img
+                        src={product.image_urls[0]}
+                        className='card-img-top'
+                        // width='96'
+                        // height='350'
+                        // alt=''
+                        height='250px'
+                      />
+                    </div>
+                  </div>
+                  <div className='card-body bg-light text-center'>
+                    <div className='mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
+                        <Link
+                          to={`/products/${product.id}`}
+                          className='text-default mb-2'
+                          data-abc='true'
+                        >
+                          {product.name}
+                        </Link>
+                      </h5>
+                      <p class='text-muted'>
+                        {product.description.substring(0, 20)}...
+                      </p>
+                    </div>
+                    <h3 className='mb-0 font-weight-semibold'>
+                      Rs {product.rent} / day
+                    </h3>
+
+                    {product.reviews.length > 0 &&
+                      Array(product.reviews[0].rating)
+                        .fill()
+                        .map((_, i) => (
+                          <span style={{ color: '#ffd700' }}>&#9733;</span>
+                        ))}
+                    <div className='text-muted mb-3'>
+                      {product.reviews.length} reviews
+                    </div>
+                    <Link to={`/products/${product.id}`}>
+                      <h6>Details</h6>
+                    </Link>
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn bg-cart mt-2 mb-2 mr-2'>
+                        Get Quote
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        })}
+      </>
+    )
+  }
   const ShowProducts = () => {
     return (
       <>
@@ -259,7 +548,7 @@ function SingleHomeProduct() {
           </div>
         </div>
         <div className='row justify-content-center'>
-          {loading ? <Loading /> : <ShowProduct />}
+          {loading ? <Loading /> : <ShowProduct3 />}
         </div>
       </div>
       <div className='container my-5 py-5'>
@@ -275,7 +564,7 @@ function SingleHomeProduct() {
           {searchMessage(searched, relatedProducts)}
         </h2>
         <div className='row justify-content-center'>
-          {loading ? <Loading /> : <ShowProducts />}
+          {loading ? <Loading /> : <ShowProducts1 />}
         </div>
       </div>
     </div>
