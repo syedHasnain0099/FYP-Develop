@@ -34,28 +34,24 @@ function PendingRequest() {
 
   const AcceptHandleChange = (index) => {
     console.log(index)
-    const {
-      startDate,
-      endDate,
-      id,
-    } = pendingRequestsData[index]
-    let reqId=id;
-    console.log("reqId:",id)
+    const { startDate, endDate, id } = pendingRequestsData[index]
+    let reqId = id
+    console.log('reqId:', id)
     const { rent } = pendingRequestsData[index].product
     // const productId = pendingRequestsData[index].product.id
     // var supplierId;
     // if(pendingRequestsData[index].product.supplier)
-    // { 
+    // {
     //   const { id } = pendingRequestsData[index].product.supplier
     //   supplierId=id;
     // }
     // var requestingUserId
     // if(pendingRequestsData[index].requestingUser)
-    // { 
+    // {
     //   const { id } = pendingRequestsData[index].requestingUser
     //   requestingUserId=id;
     // }
-    
+
     var start = moment(startDate, 'YYYY-MM-DD')
     var end = moment(endDate, 'YYYY-MM-DD')
     // var current = moment().startOf('day')
@@ -79,10 +75,10 @@ function PendingRequest() {
     getPendingRequests()
   }
   const RejectHandleChange = (index) => {
-    const { quote,  id } = pendingRequestsData[index]
-    let requestQuoteId=id;
-    console.log("req id inside rejected ads: ",requestQuoteId)
-    console.log("quote val: ",quote)
+    const { quote, id } = pendingRequestsData[index]
+    let requestQuoteId = id
+    console.log('req id inside rejected ads: ', requestQuoteId)
+    console.log('quote val: ', quote)
     quoteService
       .updateQuote(quote, 'rejected', requestQuoteId)
       .then((res) => {
@@ -167,6 +163,116 @@ function PendingRequest() {
           </li>
         </ul>
       </div>
+    )
+  }
+  const ShowProducts1 = () => {
+    return (
+      <>
+        {pendingRequestsData.map((item, index) => {
+          return (
+            <>
+              <div className='col-md-5 ' style={{ marginTop: '20px' }}>
+                <div className='card-card'>
+                  <div className='card-body'>
+                    <div className='card-img-actions'>
+                      <img
+                        src={item.product.image_urls[0]}
+                        className='card-img-top'
+                        // width='96'
+                        // height='350'
+                        // alt=''
+                        height='250px'
+                      />
+                    </div>
+                  </div>
+                  <div className='card-body bg-light text-center'>
+                    <div className='mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
+                        {item.product.name}
+                      </h5>
+                      <p class='text-muted'>
+                        {item.product.description.substring(0, 20)}...
+                      </p>
+                    </div>
+                    <h3 className='mb-0 font-weight-semibold'>
+                      Rs {item.product.rent} / day
+                    </h3>
+                    <p class='lead mt-2'>City: {item.city}</p>
+                    <p class='lead mt-2'>Quantity: {item.quantity}</p>
+                    <p class='lead mt-2'>Duration</p>
+                    <p class='card-text'>Start Date:{item.startDate}</p>
+                    <p class='card-text'>End Date:{item.endDate}</p>
+
+                    <button
+                      className='btn btn-outline-primary mt-2 mb-2 mr-2'
+                      onClick={(e) => {
+                        AcceptHandleChange(index)
+                      }}
+                    >
+                      Accept
+                    </button>
+
+                    <button
+                      className='btn btn-outline-danger mt-2 mb-2 mr-2'
+                      onClick={(e) => {
+                        RejectHandleChange(index)
+                      }}
+                    >
+                      Reject
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        })}
+      </>
+    )
+  }
+  const ShowProducts2 = () => {
+    return (
+      <>
+        {acceptedRequestsData.map((item, index) => {
+          return (
+            <>
+              <div className='col-md-5 ' style={{ marginTop: '20px' }}>
+                <div className='card-card'>
+                  <div className='card-body'>
+                    <div className='card-img-actions'>
+                      <img
+                        src={item.product.image_urls[0]}
+                        className='card-img-top'
+                        // width='96'
+                        // height='350'
+                        // alt=''
+                        height='250px'
+                      />
+                    </div>
+                  </div>
+                  <div className='card-body bg-light text-center'>
+                    <div className='mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
+                        {item.product.name}
+                      </h5>
+                      <p class='text-muted'>
+                        {item.product.description.substring(0, 20)}...
+                      </p>
+                    </div>
+                    <h3 className='mb-0 font-weight-semibold'>
+                      Rs {item.product.rent} / day
+                    </h3>
+                    <p class='lead mt-2'>City: {item.city}</p>
+                    <p class='lead mt-2'>Quantity: {item.quantity}</p>
+                    <p class='lead mt-2'>Duration</p>
+                    <p class='card-text'>Start Date:{item.startDate}</p>
+                    <p class='card-text'>End Date:{item.endDate}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        })}
+      </>
     )
   }
   const requestedQuotes = () => {
@@ -275,12 +381,14 @@ function PendingRequest() {
           <h3 className='card-header'>Pending Requests</h3>
           <div className='container my-2 py-2'>
             <div className='row justify-content-center'>
-              {requestedQuotes()}
+              <ShowProducts1 />
             </div>
           </div>
           <h3 className='card-header'>Accepted Requests</h3>
           <div className='container my-2 py-2'>
-            <div className='row justify-content-center'>{AcceptedQuotes()}</div>
+            <div className='row justify-content-center'>
+              <ShowProducts2 />
+            </div>
           </div>
         </div>
       </div>

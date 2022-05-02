@@ -68,11 +68,6 @@ function MyAds() {
       <div className='card'>
         <h4 className='card-header'>User Links</h4>
         <ul class='list-group list-group-flush'>
-          {/* <li class='list-group-item list-group-item-action active'>
-            <Link className='nav-link' to='/myAds'>
-              My Ads
-            </Link>
-          </li> */}
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -97,11 +92,7 @@ function MyAds() {
               Update Profile
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to={`/profile/${id}`}>
-              Update Profile
-            </Link>
-          </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -114,11 +105,7 @@ function MyAds() {
               Post an ad
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to='/create/product'>
-              Post an ad
-            </Link>
-          </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -131,11 +118,7 @@ function MyAds() {
               Recieved Requests
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to='/pending/requests'>
-              Recieved Requests
-            </Link>
-          </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action active'
@@ -148,11 +131,6 @@ function MyAds() {
               Recieved Responses
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-            <Link className='nav-link' to='/acceptedRequests'>
-              Recieved Responses
-            </Link>
-          </li> */}
         </ul>
       </div>
     )
@@ -163,7 +141,7 @@ function MyAds() {
         {acceptedRequestsData.map((item) => {
           return (
             <>
-              <div className='col-4 mb-3'>
+              <div className='col-md-5' style={{ marginTop: '20px' }}>
                 <div class='card h-100 text-center p-4' key={item.id}>
                   <img
                     class='card-img-top'
@@ -211,7 +189,7 @@ function MyAds() {
         {rejectedRequestsData.map((item) => {
           return (
             <>
-              <div className='col-4 mb-3'>
+              <div className='col-md-5' style={{ marginTop: '20px' }}>
                 <div class='card h-100 text-center p-4' key={item.id}>
                   <img
                     class='card-img-top'
