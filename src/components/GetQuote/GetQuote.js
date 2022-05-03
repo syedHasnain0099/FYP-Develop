@@ -5,7 +5,16 @@ import productService from '../../services/ProductService'
 import quoteService from '../../services/QuoteService'
 import { userData } from '../../auth'
 import './GetQuote.css'
+import { cities } from './cities'
+import VirtualizedSelect from 'react-virtualized-select'
+import 'react-select/dist/react-select.css'
+import 'react-virtualized/styles.css'
+import 'react-virtualized-select/styles.css'
 function GetQuote() {
+  let city = cities()
+  let today = new Date().toISOString().slice(0, 10)
+
+  console.log(today)
   let { productId } = useParams()
   const { id, username, email } = userData()
   const [enteredStartDate, setEnteredStartDate] = useState('')
@@ -66,7 +75,7 @@ function GetQuote() {
         id,
         productId,
         0,
-        "pending"
+        'pending'
       )
       .then((data) => console.log('congratulations your post is added ', data))
       .catch((err) => console.log(err))
@@ -141,11 +150,10 @@ function GetQuote() {
               id='startdate'
               className='getquote-form-input'
               name='startdate'
+              min={today}
               placeholder='Start'
-              //value={enteredUserName}
               onChange={startDateChangeHandler}
             />
-            {/* {errors.username && <p>{errors.username}</p>} */}
           </div>
           <div className='getquote-form-inputs'>
             <label htmlFor='enddate' className='getquote-form-label'>
@@ -158,25 +166,26 @@ function GetQuote() {
               name='enddate'
               placeholder='End'
               min={enteredStartDate}
-              //value={enteredUserName}
               onChange={endDateChangeHandler}
             />
-            {/* {errors.username && <p>{errors.username}</p>} */}
           </div>
           <div className='getquote-form-inputs'>
             <label htmlFor='location' className='getquote-form-label'>
               Where
             </label>
-            <input
+            <VirtualizedSelect
+              options={city}
+              onChange={(value) => setEnteredLocation(value)}
+              value={enteredLocation}
+            />
+            {/* <input
               type='text'
               id='location'
               className='getquote-form-input'
               name='location'
               placeholder='City'
-              //value={enteredUserName}
               onChange={locationChangeHandler}
-            />
-            {/* {errors.username && <p>{errors.username}</p>} */}
+            /> */}
           </div>
           <div className='getquote-form-inputs'>
             <label htmlFor='quantity' className='getquote-form-label'>
@@ -188,10 +197,8 @@ function GetQuote() {
               className='getquote-form-input'
               name='quantity'
               placeholder='Quantity'
-              //value={enteredUserName}
               onChange={quantityChangeHandler}
             />
-            {/* {errors.username && <p>{errors.username}</p>} */}
           </div>
 
           <button type='submit' className='getquote-form-input-btn'>
