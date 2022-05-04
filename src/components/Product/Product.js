@@ -116,6 +116,102 @@ function Product() {
       </>
     )
   }
+  const ShowProduct3 = () => {
+    return (
+      <>
+        {data.map((product) => {
+          return (
+            <>
+              <div className='container single_product show'>
+                {loading ? (
+                  <Loading />
+                ) : (
+                  <div className='row'>
+                    <div className='col-sm-6 '>
+                      <div className='img_div'>
+                        <div
+                          style={{
+                            // height: '100vh',
+                            display: 'flex',
+                            // alignItems: 'center',
+                            // justifyContent: 'center',
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: '500px',
+                              backgroundColor: '#fff',
+                              padding: '20px',
+                            }}
+                          >
+                            <ProductImagesSlider images={product.image_urls} />
+                            <br />
+
+                            <span className='description-form-input-login'>
+                              <NavLink
+                                to={{
+                                  pathname: '/product/video',
+                                  state: { video: product.image_urls },
+                                }}
+                                exact
+                              >
+                                Watch video of product
+                              </NavLink>
+                            </span>
+                          </div>
+                        </div>
+                        {/* <img
+                          className='img-fluid'
+                          src={product.image_urls[0]}
+                          alt=''
+                        /> */}
+                      </div>
+                    </div>
+                    <div className='col-sm-6'>
+                      <div className='product_desc_wrapper'>
+                        <div className='product_title'>
+                          <h1>{product.name}</h1>
+                          <span>
+                            <h6>Product # {product.id}</h6>
+                          </span>
+                          <hr />
+                          <h1>Rs {product.rent} / day</h1>
+                        </div>
+
+                        <p>
+                          Availability of Product for rent: {product.duration}{' '}
+                          days
+                        </p>
+                        <p>Product Category: {product.categoryType}</p>
+                        <p>Added on {moment(product.createdAt).fromNow()}</p>
+
+                        <hr />
+                        <div className='desc'>
+                          <h2>Description</h2>
+                          <p>{product.description}</p>
+                        </div>
+                        <hr />
+                        <div className='desc'>
+                          <h2>Supplier Information</h2>
+                          <p>Name: {product.supplier.username}</p>
+                          <p>Email: {product.supplier.email}</p>
+                          <p>
+                            Contact number: +92{' '}
+                            {product.supplier.contact_number}
+                          </p>
+                        </div>
+                      </div>
+                      {showApproveButton()}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )
+        })}
+      </>
+    )
+  }
   const ShowProducts = () => {
     return (
       <div className='show'>
@@ -204,7 +300,7 @@ function Product() {
         </div>
 
         <div className='row justify-content-center'>
-          {loading ? <Loading /> : <ShowProducts />}
+          {loading ? <Loading /> : <ShowProduct3 />}
         </div>
       </div>
     </div>

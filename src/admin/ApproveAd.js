@@ -38,6 +38,57 @@ function ApproveAd() {
       </>
     )
   }
+  const ShowProducts1 = () => {
+    return (
+      <>
+        {data.map((product) => {
+          return (
+            <>
+              <div className='col-md-3 ' style={{ marginTop: '20px' }}>
+                <div className='card-card'>
+                  <div className='card-body'>
+                    <div className='card-img-actions'>
+                      <img
+                        src={product.image_urls[0]}
+                        className='card-img-top'
+                        // width='96'
+                        // height='350'
+                        // alt=''
+                        height='250px'
+                      />
+                    </div>
+                  </div>
+                  <div className='card-body bg-light text-center'>
+                    <div className='mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
+                        <Link
+                          to={`/products/${product.id}`}
+                          className='text-default mb-2'
+                          data-abc='true'
+                        >
+                          {product.name}
+                        </Link>
+                      </h5>
+                      <p class='text-muted'>
+                        {product.description.substring(0, 20)}...
+                      </p>
+                    </div>
+                    <h3 className='mb-0 font-weight-semibold'>
+                      Rs {product.rent} / day
+                    </h3>
+
+                    <Link to={`/approveAds/${product.id}`}>
+                      <h6>Details</h6>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        })}
+      </>
+    )
+  }
   const ShowProducts = () => {
     return (
       <>
@@ -91,7 +142,7 @@ function ApproveAd() {
         </div>
 
         <div className='row justify-content-center'>
-          {loading ? <Loading /> : <ShowProducts />}
+          {loading ? <Loading /> : <ShowProducts1 />}
         </div>
       </div>
     </div>
