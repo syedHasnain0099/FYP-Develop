@@ -38,17 +38,31 @@ function Search() {
         console.log(err)
       })
   }
-  useEffect(() => {
-    init1()
-    init2()
-  }, [])
+  useEffect(
+    () => {
+      init1()
+      init2()
+    },
+    [searchResults],
+    [digitalResults],
+    [homeApplianceResults]
+  )
   const searchResult = () => {
+    console.log('it comes here')
+    console.log(categoryDigital)
+    console.log(categoryHomeAppliance)
+    console.log(search)
     if (categoryDigital === '') {
       productService
         .search(search, categoryHomeAppliance)
         .then((res) => {
           setSearchResults(res)
-          setData({ ...data, searched: true })
+          setData({
+            ...data,
+            searched: true,
+
+            categoryHomeAppliance: '',
+          })
         })
         .catch((err) => console.log(err))
     }
@@ -57,7 +71,11 @@ function Search() {
         .search(search, categoryDigital)
         .then((res) => {
           setSearchResults(res)
-          setData({ ...data, searched: true })
+          setData({
+            ...data,
+            searched: true,
+            categoryDigital: '',
+          })
         })
         .catch((err) => console.log(err))
     }
@@ -66,7 +84,11 @@ function Search() {
         .search('', categoryDigital)
         .then((res) => {
           setSearchResults(res)
-          setData({ ...data, searched: true })
+          setData({
+            ...data,
+            searched: true,
+            categoryDigital: '',
+          })
         })
         .catch((err) => console.log(err))
     }
@@ -75,7 +97,11 @@ function Search() {
         .search('', categoryHomeAppliance)
         .then((res) => {
           setSearchResults(res)
-          setData({ ...data, searched: true })
+          setData({
+            ...data,
+            searched: true,
+            categoryHomeAppliance: '',
+          })
         })
         .catch((err) => console.log(err))
     }
@@ -158,35 +184,54 @@ function Search() {
         {searchResults.map((product) => {
           return (
             <>
-              <div className='col-4 mb-3'>
-                <div class='card h-100 text-center p-4' key={product.id}>
-                  <img
-                    class='card-img-top'
-                    src={product.image_urls[0]}
-                    alt={product.name}
-                    height='250px'
-                  />
-                  <div class='card-body'>
-                    <h5
-                      class='card-title mb-1
-                     lead fw-bold'
-                    >
-                      {product.name}
-                    </h5>
-                    <p class='card-text'>
-                      {product.description.substring(0, 20)}...
-                    </p>
-                    <p class='card-text'>
-                      Rs {product.price} / {product.duration}
-                    </p>
-                    <Link to='/'>
-                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-                        View Product
-                      </button>
+              <div className='col-md-3 ' style={{ marginTop: '20px' }}>
+                <div className='card-card'>
+                  <div className='card-body'>
+                    <div className='card-img-actions'>
+                      <img
+                        src={product.image_urls[0]}
+                        className='card-img-top'
+                        // width='96'
+                        // height='350'
+                        // alt=''
+                        height='250px'
+                      />
+                    </div>
+                  </div>
+                  <div className='card-body bg-light text-center'>
+                    <div className='mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
+                        <Link
+                          to={`/products/${product.id}`}
+                          className='text-default mb-2'
+                          data-abc='true'
+                        >
+                          {product.name}
+                        </Link>
+                      </h5>
+                      <p class='text-muted'>
+                        {product.description.substring(0, 20)}...
+                      </p>
+                    </div>
+                    <h3 className='mb-0 font-weight-semibold'>
+                      Rs {product.rent} / day
+                    </h3>
+
+                    {product.reviews.length > 0 &&
+                      Array(product.reviews[0].rating)
+                        .fill()
+                        .map((_, i) => (
+                          <span style={{ color: '#ffd700' }}>&#9733;</span>
+                        ))}
+                    <div className='text-muted mb-3'>
+                      {product.reviews.length} reviews
+                    </div>
+                    <Link to={`/products/${product.id}`}>
+                      <h6>Details</h6>
                     </Link>
-                    <Link to='/'>
-                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-                        Add to cart
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn bg-cart mt-2 mb-2 mr-2'>
+                        Get Quote
                       </button>
                     </Link>
                   </div>
@@ -204,35 +249,54 @@ function Search() {
         {digitalResults.map((product) => {
           return (
             <>
-              <div className='col-4 mb-3'>
-                <div class='card h-100 text-center p-4' key={product.id}>
-                  <img
-                    class='card-img-top'
-                    src={product.image_urls[0]}
-                    alt={product.name}
-                    height='250px'
-                  />
-                  <div class='card-body'>
-                    <h5
-                      class='card-title mb-1
-                     lead fw-bold'
-                    >
-                      {product.name}
-                    </h5>
-                    <p class='card-text'>
-                      {product.description.substring(0, 20)}...
-                    </p>
-                    <p class='card-text'>
-                      Rs {product.price} / {product.duration}
-                    </p>
-                    <Link to='/'>
-                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-                        View Product
-                      </button>
+              <div className='col-md-3 ' style={{ marginTop: '20px' }}>
+                <div className='card-card'>
+                  <div className='card-body'>
+                    <div className='card-img-actions'>
+                      <img
+                        src={product.image_urls[0]}
+                        className='card-img-top'
+                        // width='96'
+                        // height='350'
+                        // alt=''
+                        height='250px'
+                      />
+                    </div>
+                  </div>
+                  <div className='card-body bg-light text-center'>
+                    <div className='mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
+                        <Link
+                          to={`/products/${product.id}`}
+                          className='text-default mb-2'
+                          data-abc='true'
+                        >
+                          {product.name}
+                        </Link>
+                      </h5>
+                      <p class='text-muted'>
+                        {product.description.substring(0, 20)}...
+                      </p>
+                    </div>
+                    <h3 className='mb-0 font-weight-semibold'>
+                      Rs {product.rent} / day
+                    </h3>
+
+                    {product.reviews.length > 0 &&
+                      Array(product.reviews[0].rating)
+                        .fill()
+                        .map((_, i) => (
+                          <span style={{ color: '#ffd700' }}>&#9733;</span>
+                        ))}
+                    <div className='text-muted mb-3'>
+                      {product.reviews.length} reviews
+                    </div>
+                    <Link to={`/products/${product.id}`}>
+                      <h6>Details</h6>
                     </Link>
-                    <Link to='/'>
-                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-                        Add to cart
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn bg-cart mt-2 mb-2 mr-2'>
+                        Get Quote
                       </button>
                     </Link>
                   </div>
@@ -250,37 +314,54 @@ function Search() {
         {homeApplianceResults.map((product) => {
           return (
             <>
-              <div className='col-4 mb-3'>
-                <div class='card h-100 text-center p-4' key={product.id}>
-                  <img
-                    class='card-img-top'
-                    src={product.image_urls[0]}
-                    alt={product.name}
-                    height='250px'
-                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
-                  />
-                  <div class='card-body'>
-                    <h5
-                      class='card-title mb-1
-                     lead fw-bold'
-                    >
-                      {product.name}
-                    </h5>
-                    <p class='card-text'>
-                      {product.description.substring(0, 20)}...
-                    </p>
-                    <p class='card-text'>
-                      Rs {product.price} / {product.duration}
-                    </p>
+              <div className='col-md-3 ' style={{ marginTop: '20px' }}>
+                <div className='card-card'>
+                  <div className='card-body'>
+                    <div className='card-img-actions'>
+                      <img
+                        src={product.image_urls[0]}
+                        className='card-img-top'
+                        // width='96'
+                        // height='350'
+                        // alt=''
+                        height='250px'
+                      />
+                    </div>
+                  </div>
+                  <div className='card-body bg-light text-center'>
+                    <div className='mb-2'>
+                      <h5 className='font-weight-bold mb-2'>
+                        <Link
+                          to={`/products/${product.id}`}
+                          className='text-default mb-2'
+                          data-abc='true'
+                        >
+                          {product.name}
+                        </Link>
+                      </h5>
+                      <p class='text-muted'>
+                        {product.description.substring(0, 20)}...
+                      </p>
+                    </div>
+                    <h3 className='mb-0 font-weight-semibold'>
+                      Rs {product.rent} / day
+                    </h3>
 
-                    <Link to='/'>
-                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-                        View Product
-                      </button>
+                    {product.reviews.length > 0 &&
+                      Array(product.reviews[0].rating)
+                        .fill()
+                        .map((_, i) => (
+                          <span style={{ color: '#ffd700' }}>&#9733;</span>
+                        ))}
+                    <div className='text-muted mb-3'>
+                      {product.reviews.length} reviews
+                    </div>
+                    <Link to={`/products/${product.id}`}>
+                      <h6>Details</h6>
                     </Link>
-                    <Link to='/'>
-                      <button className='btn btn-outline-dark mt-2 mb-2 mr-2'>
-                        Add to cart
+                    <Link to={`/getQuote/${product.id}`}>
+                      <button className='btn bg-cart mt-2 mb-2 mr-2'>
+                        Get Quote
                       </button>
                     </Link>
                   </div>
@@ -293,6 +374,7 @@ function Search() {
     )
   }
   const searchForm = () => {
+    console.log('it executes again')
     return (
       <form onSubmit={searchSubmit}>
         <span className='input-group-text'>
