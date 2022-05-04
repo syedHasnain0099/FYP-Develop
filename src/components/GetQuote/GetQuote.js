@@ -106,7 +106,7 @@ function GetQuote() {
         {data.map((product) => {
           return (
             <>
-              <div className='' style={{ marginTop: '30px', padding: '20px' }}>
+              <div className='' style={{ padding: '40px' }}>
                 <div className='card-card'>
                   <div className='card-body'>
                     <div className='card-img-actions'>

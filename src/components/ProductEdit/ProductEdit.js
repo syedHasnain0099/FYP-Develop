@@ -12,12 +12,24 @@ function ProductEdit() {
   const [mediaIds, setMediaIds] = useState('')
   const [videoMediaId, setVideoMediaId] = useState('')
   const [subCategories, setSubCategories] = useState([])
+  const [values, setValues] = useState({
+    name: '',
+    description: '',
+    rent: '',
+    duration: '',
+    subcategory: '',
+    category: '',
+    quantity: '',
+    loading: false,
+    error: '',
+    createdProduct: '',
+  })
   const getProducts = (productId) => {
     productService
       .findOneProduct(productId)
       .then((response) => {
         console.log('product: ', response)
-        setValues(response)
+        setValues(response[0])
       })
       .catch((err) => {
         console.log('inside catch')
@@ -48,21 +60,8 @@ function ProductEdit() {
       })
   }
 
-  const [values, setValues] = useState({
-    productname: '',
-    description: '',
-    rent: '',
-    duration: '',
-    subcategory: '',
-    category: '',
-    quantity: '',
-    loading: false,
-    error: '',
-    createdProduct: '',
-  })
-
   const {
-    productname,
+    name,
     description,
     rent,
     duration,
@@ -73,12 +72,12 @@ function ProductEdit() {
     error,
     createdProduct,
   } = values
-  // useEffect(() => {
-  //   init()
-  // }, [])
-  // useEffect(() => {
-  //   init1()
-  // }, [category])
+  useEffect(() => {
+    init()
+  }, [])
+  useEffect(() => {
+    init1()
+  }, [category])
 
   const mediaHandleChange = (event) => {
     productService
@@ -108,9 +107,9 @@ function ProductEdit() {
     setValues({ ...values, subcategory: option })
   }
 
-  const handleChange = (name) => async (event) => {
-    const value = name === 'photo' ? event.target.files[0] : event.target.value
-    setValues({ ...values, [name]: value })
+  const handleChange = (names) => async (event) => {
+    const value = names === 'photo' ? event.target.files[0] : event.target.value
+    setValues({ ...values, [names]: value })
   }
 
   const clickSubmit = (event) => {
@@ -122,15 +121,15 @@ function ProductEdit() {
       mIds.push(videoMediaId)
     }
 
-    postAd(
-      { productname, description, rent, duration, subcategory, quantity, id },
-      mIds
-    )
+    // postAd(
+    //   { name, description, rent, duration, subcategory, quantity, id },
+    //   mIds
+    // )
   }
   const postAd = (props, mediaIds) => {
     productService
       .postAd(
-        props.productname,
+        props.name,
         props.description,
         props.rent,
         props.duration,
@@ -143,7 +142,7 @@ function ProductEdit() {
         console.log('congratulations your post is added ', data)
         setValues({
           ...values,
-          productname: '',
+          name: '',
           description: '',
           photo: '',
           video: '',
@@ -197,9 +196,9 @@ function ProductEdit() {
       <div className='form-group'>
         <label className='text-muted'>Product Name</label>
         <input
-          onChange={handleChange('productname')}
+          onChange={handleChange('name')}
           type='text'
-          value={productname}
+          value={name}
           className='form-control'
         />
       </div>
@@ -291,7 +290,7 @@ function ProductEdit() {
       className='alert alert-info'
       style={{ display: createdProduct ? '' : 'none' }}
     >
-      <h2>{`${createdProduct}`} ad is created</h2>
+      <h2>{`${createdProduct}`} ad is updated</h2>
     </div>
   )
   const showLoading = () =>
@@ -307,15 +306,12 @@ function ProductEdit() {
         <div className='col-3'>{userLinks()}</div>
         <div className='col-9'> */}
       <h3 className='card-header mb-3'>Edit your Ad</h3>
-      <div className='col-md-8 offset-md-2'>
-        {console.log(values)}
-        {showLoading()}
-        {showSuccess()}
-        {showError()}
-        {newPostForm()}
-      </div>
+      <div className='col-md-8 offset-md-2'>{newPostForm()}</div>
       {/* </div>
       </div> */}
+      {showLoading()}
+      {showSuccess()}
+      {showError()}
     </div>
 
     // <div className='container mt-4'>

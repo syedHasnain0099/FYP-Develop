@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import productService from '../../services/ProductService'
-import { NavLink, useParams } from 'react-router-dom'
+import { NavLink, Redirect, useParams } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
@@ -10,6 +10,7 @@ function Product() {
   let { productId } = useParams()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [redirectToReferrer, setRedirectToReferrer] = useState(false)
   const getProducts = (productId) => {
     setLoading(true)
     productService
@@ -53,7 +54,10 @@ function Product() {
     //delete request from requested ads
     productService
       .deleteRequestedAd(id)
-      .then((data) => console.log(`the requested ad: ${data} has been deleted`))
+      .then((data) => {
+        console.log(`the requested ad: ${data} has been deleted`)
+        setRedirectToReferrer(true)
+      })
       .catch((err) => console.log(err))
   }
   const disapproveHandleChange = () => {
@@ -61,7 +65,10 @@ function Product() {
     //send user notification
     productService
       .addRejectedAd(data[0], data[0].supplier.id)
-      .then((data) => console.log(`the rejected ad: ${data}`))
+      .then((data) => {
+        console.log(`the rejected ad: ${data}`)
+        setRedirectToReferrer(true)
+      })
       .catch((err) => console.log(err))
     //delete request from requested ads
     // productService
@@ -69,7 +76,11 @@ function Product() {
     //   .then((data) => console.log(`the requested ad: ${data} has been deleted`))
     //   .catch((err) => console.log(err))
   }
-
+  const redirectUser = () => {
+    if (redirectToReferrer) {
+      return <Redirect to='/approve/ad'></Redirect>
+    }
+  }
   const Loading = () => {
     return (
       <>
@@ -303,6 +314,7 @@ function Product() {
           {loading ? <Loading /> : <ShowProduct3 />}
         </div>
       </div>
+      {redirectUser()}
     </div>
   )
 }
