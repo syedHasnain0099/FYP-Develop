@@ -76,7 +76,7 @@ function Profile() {
   }, [])
   useEffect(() => {
     showUserDP()
-  }, [])
+  }, [values])
 
   const userLinks = () => {
     return (
