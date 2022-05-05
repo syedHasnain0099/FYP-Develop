@@ -11,8 +11,8 @@ import './Profile.css'
 import { profileDp, profileDpArray } from '../../auth'
 function Profile() {
   let { userId } = useParams()
-  const { id, image } = userData()
-  const pass = userPassword()
+  const { id } = userData()
+  var pass = userPassword()
   console.log(pass)
   const [passwordButton, setPasswordButton] = useState(false)
   const [imageFile, setImageFile] = useState({
@@ -29,7 +29,7 @@ function Profile() {
     contact_number: '',
     password: '',
     password2: '',
-
+    image: '',
     error: '',
     success: false,
   })
@@ -41,21 +41,11 @@ function Profile() {
     contact_number,
     password,
     password2,
-
+    image,
     error,
     success,
   } = values
-  const showUserDP = () => {
-    userService
-      .getUserDP(image)
-      .then((url) => {
-        console.log('user image url: ', url)
-        setImageFile({ file: url })
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+  
   const showUserInfo = () => {
     setPasswordButton(true)
     userService
@@ -64,6 +54,18 @@ function Profile() {
         console.log('user data: ', data)
 
         setValues(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+  const showUserDP = () => {
+    console.log("user image id: ",image)
+    userService
+      .getUserDP(image)
+      .then((url) => {
+        console.log('user image url: ', url)
+        setImageFile({ file: url })
       })
       .catch((err) => {
         console.log(err)
@@ -164,7 +166,7 @@ function Profile() {
     productService
       .uploadMedia(event.target.files)
       .then((res) => {
-        console.log(res)
+        console.log("Image has been uploaded!")
         console.log('id of uploaded image', res)
         setMediaIds(res)
       })
@@ -204,6 +206,7 @@ function Profile() {
       .then((data) => {
         console.log('first name: ', data.first_name)
         setValues({ ...values, success: true })
+        showUserDP()
       })
       .catch((err) => {
         console.log(err)

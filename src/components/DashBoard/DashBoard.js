@@ -8,7 +8,7 @@ import Avatar from '@material-ui/core/Avatar'
 function DashBoard() {
   const [imageurl, setImageurl] = useState('')
   const [data, setData] = useState([])
-  const { id, image } = userData()
+  const { id } = userData()
   const pass = userPassword()
 
   const getUserInfo = () => {
@@ -22,8 +22,9 @@ function DashBoard() {
       })
   }
   const showUserDP = () => {
+    console.log("image from data: ",data.image)
     userService
-      .getUserDP(image)
+      .getUserDP(data.image)
       .then((url) => {
         console.log('user image url: ', url)
         setImageurl(url)
@@ -48,8 +49,8 @@ function DashBoard() {
             data.username,
             data.email,
             data.contact_number,
-            pass,
-            res[0]
+            res[0],
+            pass
           )
           .then((data) => {
             console.log('updated image: ', data.image)

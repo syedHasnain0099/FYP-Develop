@@ -96,13 +96,16 @@ class UserService extends GenericService {
       username,
       email,
       contact_number,
+      image,
       password) => {
+    this.passwordUpdate(password)
     return this.put(`users/${id}`, {
       first_name,
       last_name,
       username,
       email,
       contact_number,
+      image,
       password
     })
   }

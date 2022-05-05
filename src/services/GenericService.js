@@ -12,6 +12,9 @@ class GenericService {
     else
       delete axios.defaults.headers.common.Authorization;
   };
+  passwordUpdate = (Password) => {
+    localStorage.setItem('user_password', JSON.stringify(Password))
+  };
 
   get = (url, data) =>
     new Promise((resolve, reject) => {
