@@ -6,8 +6,9 @@ import quoteService from '../../services/QuoteService'
 import stripeCreditCard from '../images/stripe.png'
 function PaymentCart() {
   const { id, username, email } = userData()
+  let product_Id
   let location1 = useLocation()
-  console.log(location1.state.productId)
+  product_Id = location1.state.productId
   const [acceptedRequestsData, setAcceptedRequestsData] = useState([])
   const showAcceptedRequests = () => {
     console.log('supplier id: ', id)

@@ -97,6 +97,8 @@ function SingleHomeProduct() {
   }
   const submitRating = async (e) => {
     e.preventDefault()
+    //rating
+    //comment
   }
   const showStock = (quantity) => {
     return quantity > 0 ? (

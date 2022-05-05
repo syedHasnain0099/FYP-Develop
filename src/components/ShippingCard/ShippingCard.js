@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import CheckOutSteps from '../CheckOutSteps/CheckOutSteps'
 import { Redirect, useLocation } from 'react-router-dom'
 function ShippingCard() {
+  //product id
   let location = useLocation()
   console.log(location.state)
 
@@ -15,6 +16,8 @@ function ShippingCard() {
   const handleSubmitShipping = (e) => {
     e.preventDefault()
     console.log('clicked')
+    //run your backend api
+    //success setRedirectToReferrer(true)
     setRedirectToReferrer(true)
   }
   const redirectUser = () => {

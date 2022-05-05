@@ -13,6 +13,7 @@ function Profile() {
   let { userId } = useParams()
   const { id, image } = userData()
   const pass = userPassword()
+  console.log(pass)
   const [passwordButton, setPasswordButton] = useState(false)
   const [imageFile, setImageFile] = useState({
     file: [null],
@@ -186,44 +187,27 @@ function Profile() {
     setPasswordButton(false)
   }
   const updateProfile = () => {
-    if (password === '') {
-      userService
-        .updateProfile(
-          id,
-          first_name,
-          last_name,
-          username,
-          email,
-          contact_number,
-          image
-        )
-        .then((data) => {
-          console.log('first name: ', data.first_name)
-          setValues({ ...values, success: true })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    } else {
-      userService
-        .updateProfile(
-          id,
-          first_name,
-          last_name,
-          username,
-          email,
-          contact_number,
-          password,
-          image
-        )
-        .then((data) => {
-          console.log('first name: ', data.first_name)
-          setValues({ ...values, success: true })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+    if (password !== '') {
+      pass = password
     }
+    userService
+      .updateProfile(
+        id,
+        first_name,
+        last_name,
+        username,
+        email,
+        contact_number,
+        mediaIds,
+        pass
+      )
+      .then((data) => {
+        console.log('first name: ', data.first_name)
+        setValues({ ...values, success: true })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   const showError = () => (
     <div
@@ -245,7 +229,7 @@ function Profile() {
     <form>
       <div className='form-group'>
         <label className='text-muted'>Profile Picture</label>
-        {console.log(imageFile)}
+
         <Avatar
           alt='Remy Sharp'
           src={imageFile.file}
