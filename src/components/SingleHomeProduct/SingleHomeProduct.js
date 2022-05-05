@@ -14,6 +14,7 @@ import Rating from '../Rating/Rating'
 
 function SingleHomeProduct() {
   let { productId } = useParams()
+  const { id } = userData()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [subCategory, setSubCategory] = useState('')
@@ -51,6 +52,17 @@ function SingleHomeProduct() {
   useEffect(() => {
     getProducts(productId)
   }, [])
+
+  const getAllReviews = () => {
+    productService
+      .getReviews(productId)
+      .then((response) => {
+        console.log('product reviews ', response)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   const getRelatedProducts = () => {
     console.log('subcategory', subCategory)
     console.log('productname', productName)
@@ -67,6 +79,7 @@ function SingleHomeProduct() {
   }
   useEffect(() => {
     getRelatedProducts()
+    getAllReviews()
   }, [productName])
   const Loading = () => {
     return (
@@ -96,7 +109,16 @@ function SingleHomeProduct() {
     }
   }
   const submitRating = async (e) => {
+    const userId=id;
     e.preventDefault()
+    productService
+      .uploadReview(comment,rating,productId,userId)
+      .then((response) => {
+        console.log('uploaded review: ', response)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     //rating
     //comment
   }

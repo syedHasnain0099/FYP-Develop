@@ -128,6 +128,41 @@ class ProductService extends GenericService {
       },
     })
   }
+  uploadReview = (comment,rating,prodId,userId) => {
+    return this.post(`reviews`, {
+      data: {
+        content: comment,
+        rating: rating,
+        product: prodId,
+        users_permissions_user: userId,
+      },
+    })
+  }
+  getReviews = (prodId) => {
+    const reviews = []
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
+          product: {
+            id: {
+              $eq: prodId,
+            }
+          },
+        },
+      })
+      this.get(`reviews?populate=users_permissions_user,product&${query}`, {})
+        .then((response) => {
+          const { data } = response
+          for (let review of data) {
+            reviews.push(this.extractReviews(review))
+          }
+          resolve(reviews)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
   getRejectedAds = (userId) => {
     const allAds = []
     return new Promise((resolve, reject) => {
@@ -566,10 +601,15 @@ class ProductService extends GenericService {
     const { name } = attributes
     return {id, name}
   }
-  extractReviews = (data) => {
-    const { id, attributes } = data
-    const { content, rating } = attributes
-    return { content, rating }
+  extractReviews = (rev) => {
+    let user = {}
+    const { id, attributes } = rev
+    const { content, rating, users_permissions_user, createdAt} = attributes
+    if(users_permissions_user){
+      const {data}=users_permissions_user
+      user = this.extractUser(data)
+    }
+    return { content, rating, user, createdAt}
   }
   extractUser = (data) => {
     const { id, attributes } = data
