@@ -127,98 +127,15 @@ function MyAds() {
       </div>
     )
   }
-  const ApproveAds = () => {
-    return (
-      <>
-        {approvedData.map((product) => {
-          return (
-            <>
-              <div className='col-4 mb-3'>
-                <div class='card h-100 text-center p-4' key={product.id}>
-                  <img
-                    class='card-img-top'
-                    src={product.image_urls[0]}
-                    alt={product.name}
-                    height='250px'
-                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
-                  />
-                  <div class='card-body'>
-                    <h5
-                      class='card-title mb-1
-                     lead fw-bold'
-                    >
-                      {product.name}
-                    </h5>
-                    <p class='lead mt-2'>{product.description}...</p>
-                    <p class='card-text'>Rs {product.rent} / per day</p>
-                    <Link to={`/products/${product.id}`}>
-                      <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
-                        View Product
-                      </button>
-                    </Link>
-                    <Link to={`/productEdit/${product.id}`}>
-                      <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
-                        Edit Product
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </>
-          )
-        })}
-      </>
-    )
+  const RejectHandleChange = (index) => {
+    const { id } = disapprovedData[index]
+    console.log(id, 'product id that user clicked to delete')
   }
-  const DisApproveAds = () => {
-    return (
-      <>
-        {disapprovedData.map((product) => {
-          return (
-            <>
-              <div className='col-4 mb-3'>
-                <div class='card h-100 text-center p-4' key={product.id}>
-                  <img
-                    class='card-img-top'
-                    src={product.image_urls[0]}
-                    alt={product.name}
-                    height='250px'
-                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
-                  />
-                  <div class='card-body'>
-                    <h5
-                      class='card-title mb-1
-                     lead fw-bold'
-                    >
-                      {product.name}
-                    </h5>
-                    <p class='lead mt-2'>
-                      {product.description.substring(0, 20)}...
-                    </p>
-                    <p class='card-text'>Rs {product.rent} / per day</p>
-                    <Link to={`/products/${product.id}`}>
-                      <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
-                        View Product
-                      </button>
-                    </Link>
-                    <Link to={`/getQuote/${product.id}`}>
-                      <button className='btn btn-outline-danger mt-2 mb-2 mr-2'>
-                        Delete Product
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </>
-          )
-        })}
-      </>
-    )
-  }
+
   const DisApproveAds1 = () => {
     return (
       <>
-        {disapprovedData.map((product) => {
+        {disapprovedData.map((product, index) => {
           return (
             <>
               <div className='col-md-4 ' style={{ marginTop: '20px' }}>
@@ -257,11 +174,15 @@ function MyAds() {
                     <Link to={`/products/${product.id}`}>
                       <h6>Details</h6>
                     </Link>
-                    <Link to={`/getQuote/${product.id}`}>
-                      <button className='btn btn-outline-danger mt-2 mb-2 mr-2'>
-                        Delete Product
-                      </button>
-                    </Link>
+
+                    <button
+                      className='btn btn-outline-danger mt-2 mb-2 mr-2'
+                      onClick={(e) => {
+                        RejectHandleChange(index)
+                      }}
+                    >
+                      Delete Product
+                    </button>
                   </div>
                 </div>
               </div>
