@@ -45,7 +45,7 @@ function Profile() {
     error,
     success,
   } = values
-  
+
   const showUserInfo = () => {
     setPasswordButton(true)
     userService
@@ -60,7 +60,7 @@ function Profile() {
       })
   }
   const showUserDP = () => {
-    console.log("user image id: ",image)
+    console.log('user image id: ', image)
     userService
       .getUserDP(image)
       .then((url) => {
@@ -166,7 +166,7 @@ function Profile() {
     productService
       .uploadMedia(event.target.files)
       .then((res) => {
-        console.log("Image has been uploaded!")
+        console.log('Image has been uploaded!')
         console.log('id of uploaded image', res)
         setMediaIds(res)
       })
@@ -177,6 +177,7 @@ function Profile() {
   const clickSubmit = (e) => {
     clearErrorFields()
     e.preventDefault()
+    console.log(values)
     setErrors(validateInfo(values))
 
     var errors = validateInfo(values)
@@ -329,7 +330,7 @@ function Profile() {
             <label className='text-muted'>Confirm Password</label>
             <input
               type='password'
-              onChange={handleChange('password')}
+              onChange={handleChange('password2')}
               className='form-control'
               value={password2}
             />
