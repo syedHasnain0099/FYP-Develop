@@ -45,7 +45,14 @@ function MyAds() {
   useEffect(() => {
     showRejectedRequests()
   }, [])
-
+  const RejectHandleChange = (index) => {
+    const { id } = acceptedRequestsData[index]
+    console.log(id, 'product id that user clicked to delete')
+  }
+  const DeleteHandleChange = (index) => {
+    const { id } = rejectedRequestsData[index]
+    console.log(id, 'product id that user clicked to delete')
+  }
   const Loading = () => {
     return (
       <>
@@ -139,7 +146,7 @@ function MyAds() {
   const AcceptedRequests = () => {
     return (
       <>
-        {acceptedRequestsData.map((item) => {
+        {acceptedRequestsData.map((item, index) => {
           return (
             <>
               <div className='col-md-5' style={{ marginTop: '20px' }}>
@@ -178,7 +185,12 @@ function MyAds() {
                         Proceed to Payment
                       </button>
                     </NavLink>
-                    <button className='btn btn-outline-danger mt-2 mb-2 mr-2'>
+                    <button
+                      className='btn btn-outline-danger mt-2 mb-2 mr-2'
+                      onClick={(e) => {
+                        RejectHandleChange(index)
+                      }}
+                    >
                       Reject
                     </button>
                   </div>
@@ -193,7 +205,7 @@ function MyAds() {
   const DisApproveAds = () => {
     return (
       <>
-        {rejectedRequestsData.map((item) => {
+        {rejectedRequestsData.map((item, index) => {
           return (
             <>
               <div className='col-md-5' style={{ marginTop: '20px' }}>
@@ -221,6 +233,14 @@ function MyAds() {
                     <p class='lead mt-2'>Duration</p>
                     <p class='card-text'>Start Date:{item.startDate}</p>
                     <p class='card-text'>End Date:{item.endDate}</p>
+                    <button
+                      className='btn btn-outline-danger mt-2 mb-2 mr-2'
+                      onClick={(e) => {
+                        DeleteHandleChange(index)
+                      }}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
