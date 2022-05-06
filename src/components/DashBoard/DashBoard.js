@@ -22,7 +22,7 @@ function DashBoard() {
       })
   }
   const showUserDP = () => {
-    console.log("image from data: ",data.image)
+    console.log('image from data: ', data.image)
     userService
       .getUserDP(data.image)
       .then((url) => {
@@ -68,9 +68,10 @@ function DashBoard() {
   }
   useEffect(() => {
     getUserInfo()
-    showUserDP()
-    // addDP()
   }, [])
+  useEffect(() => {
+    showUserDP()
+  }, [data])
   const userLinks = () => {
     return (
       <div className='card'>
@@ -149,11 +150,13 @@ function DashBoard() {
         <h3 className='card-header'> User Information</h3>
         <div class='card-body'>
           <ul class='list-group list-group-flush'>
-            <Avatar
-              alt='Remy Sharp'
-              src={imageurl}
-              style={{ width: 100, height: 100 }}
-            />
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Avatar
+                alt='Remy Sharp'
+                src={imageurl}
+                style={{ width: 100, height: 100 }}
+              />
+            </div>
             <br />
             <label className='text-muted'>First Name</label>
             <li class='list-group-item'>{data.first_name}</li>
