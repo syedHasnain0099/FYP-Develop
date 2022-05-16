@@ -4,10 +4,15 @@ import { Link } from 'react-router-dom'
 import categoryService from '../../services/CategoryService'
 import productService from '../../services/ProductService'
 import { userData } from '../../auth'
+import './ProductEdit.css'
+import ReactPlayer from 'react-player'
 function ProductEdit() {
+  let mediaType = ''
   let { productId } = useParams()
   console.log('productid', productId)
   const { id } = userData()
+  const [imageButton, setImageButton] = useState(true)
+  const [videoButton, setVideoButton] = useState(true)
   const [categories, setCategories] = useState([])
   const [mediaIds, setMediaIds] = useState('')
   const [videoMediaId, setVideoMediaId] = useState('')
@@ -17,6 +22,7 @@ function ProductEdit() {
     description: '',
     rent: '',
     duration: '',
+    image_urls: '',
     subcategory: '',
     category: '',
     quantity: '',
@@ -66,6 +72,7 @@ function ProductEdit() {
     rent,
     duration,
     category,
+    image_urls,
     quantity,
     subcategory,
     loading,
@@ -120,7 +127,7 @@ function ProductEdit() {
     if (videoMediaId != '') {
       mIds.push(videoMediaId)
     }
-
+    console.log(values)
     // postAd(
     //   { name, description, rent, duration, subcategory, quantity, id },
     //   mIds
@@ -166,32 +173,108 @@ function ProductEdit() {
         setValues({ ...values, error: err_msg })
       })
   }
+  const ChangeImage = () => {
+    setImageButton(false)
+    image_urls.map((url, i) => {
+      mediaType = productService.checkMediaType(url)
+      if (mediaType == 'image') {
+        image_urls[i] = ''
+        // setValues({ ...values, image_urls[i]: '' })
+      }
+    })
+  }
+  const ChangeVideo = () => {
+    setVideoButton(false)
+    image_urls.map((url, i) => {
+      mediaType = productService.checkMediaType(url)
+      if (mediaType == 'video') {
+        image_urls[i] = ''
+        // setValues({ ...values, image_urls[i]: '' })
+      }
+    })
+  }
   const newPostForm = () => (
     <form className='mb-3' onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
       <div className='form-group mb-4'>
-        <label className='btn btn-secondary'>
-          <input
-            onChange={mediaHandleChange}
-            type='file'
-            name='photo'
-            accept='image/*'
-            required
-            multiple
-          />
-        </label>
+        <div className='form-group multi-preview '>
+          {(image_urls || []).map((url, i) => {
+            mediaType = productService.checkMediaType(url)
+            if (mediaType == 'image') {
+              return <img className='img' src={url} alt='...' key={i} />
+            }
+          })}
+        </div>
+        {imageButton && (
+          <div>
+            <button
+              type='button'
+              class='btn btn-outline-secondary'
+              onClick={ChangeImage}
+            >
+              Click Here To Change Photos
+            </button>
+          </div>
+        )}
+        {!imageButton && (
+          <>
+            <label className='btn btn-secondary'>
+              <input
+                onChange={mediaHandleChange}
+                type='file'
+                name='photo'
+                accept='image/*'
+                required
+                multiple
+              />
+            </label>
+          </>
+        )}
       </div>
       <h4>Post Video</h4>
+
       <div className='form-group mb-4'>
-        <label className='btn btn-secondary'>
-          <input
-            onChange={videoMediaHandleChange}
-            type='file'
-            name='video'
-            accept='.mov,.mp4'
-            required
-          />
-        </label>
+        <div className='form-group multi-preview '>
+          {(image_urls || []).map((url) => {
+            mediaType = productService.checkMediaType(url)
+            if (mediaType == 'video') {
+              return (
+                <ReactPlayer
+                  url={url}
+                  controls
+                  onReady={() => console.log('onReady callback')}
+                  onStart={() => console.log('onStart callback')}
+                  onPause={() => console.log('onPause callback')}
+                  onEnded={() => console.log('onEnded callback')}
+                  onError={() => console.log('onError callback')}
+                />
+              )
+            }
+          })}
+        </div>
+        {videoButton && (
+          <div>
+            <button
+              type='button'
+              class='btn btn-outline-secondary'
+              onClick={ChangeVideo}
+            >
+              Click Here To Change Video
+            </button>
+          </div>
+        )}
+        {!videoButton && (
+          <label className='btn btn-secondary'>
+            <input
+              onChange={videoMediaHandleChange}
+              type='file'
+              name='video'
+              accept='.mov,.mp4'
+              required
+              multiple
+            />
+          </label>
+        )}
       </div>
       <div className='form-group'>
         <label className='text-muted'>Product Name</label>
@@ -274,7 +357,7 @@ function ProductEdit() {
           className='form-control'
         />
       </div>
-      <button className='btn btn-outline-primary'>Create Product</button>
+      <button className='btn btn-outline-primary'>Update Product</button>
     </form>
   )
   const showError = () => (
@@ -309,9 +392,9 @@ function ProductEdit() {
       <div className='col-md-8 offset-md-2'>{newPostForm()}</div>
       {/* </div>
       </div> */}
-      {showLoading()}
+      {/* {showLoading()}
       {showSuccess()}
-      {showError()}
+      {showError()} */}
     </div>
 
     // <div className='container mt-4'>

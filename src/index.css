@@ -145,10 +145,10 @@ nav#sidebarMenu {
   z-index: 0;
 }
 
-.jumbotron {
+/* .jumbotron {
   background-color: #1266f1a8;
   padding: 50px 0;
-}
+} */
 
 .home_product {
   padding-bottom: 50px;
@@ -342,9 +342,9 @@ body {
   text-align: center;
 }
 
-.card-img {
+/* .card-img {
   width: 215px;
-}
+} */
 
 .star {
   color: #fff700ab;
@@ -611,7 +611,8 @@ thead.thead-dark {
 .card {
   background-color: #fff;
   width: 100%;
-  float: left;
+  /* float: left; */
+  margin-top: 0px;
   /* margin-top: 40px; */
   border-radius: 5px;
   box-sizing: border-box;
