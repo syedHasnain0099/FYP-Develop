@@ -171,7 +171,7 @@ function MyAds() {
                       Rs {product.rent} / day
                     </h3>
                     <br />
-                    <Link to={`/products/${product.id}`}>
+                    <Link to={`/product/${product.id}`}>
                       <h6>Details</h6>
                     </Link>
 
@@ -231,7 +231,7 @@ function MyAds() {
                       Rs {product.rent} / day
                     </h3>
                     <br />
-                    <Link to={`/products/${product.id}`}>
+                    <Link to={`/product/${product.id}`}>
                       <h6>Details</h6>
                     </Link>
                     <Link to={`/productEdit/${product.id}`}>

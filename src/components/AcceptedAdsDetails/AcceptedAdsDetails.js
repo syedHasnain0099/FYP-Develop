@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import productService from '../../services/ProductService'
 import { NavLink, useParams } from 'react-router-dom'
-import { FormControlLabel, Radio, RadioGroup, Skeleton } from '@mui/material'
+import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { isAuthenticated, userData } from '../../auth'
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from '@mui/material'
+
 import './SingleHomeProduct.css'
 import ProductImagesSlider from './ProductImagesSlider'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
-import Box from '@material-ui/core/Box'
-import { reasonOptions } from './ReasonOptions'
-function SingleHomeProduct() {
-  const options = reasonOptions()
+
+function AcceptedAdsDetails() {
   let { productId } = useParams()
   const { id } = userData()
   const [data, setData] = useState([])
@@ -31,8 +22,6 @@ function SingleHomeProduct() {
   const [searched, setSearched] = useState(false)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState('')
   let mediaType = ''
   const getProducts = (productId) => {
     setLoading(true)
@@ -121,10 +110,7 @@ function SingleHomeProduct() {
     //rating
     //comment
   }
-  const handleChange = (event) => {
-    setValue(event.target.value)
-    console.log(id)
-  }
+
   const showProduct3 = () =>
     data.map((product) => (
       <div className='container single_product show'>
@@ -213,67 +199,6 @@ function SingleHomeProduct() {
                             {console.log(review.content)}
                             <p>{review.content}</p>
                           </li>
-                          <Box mb={2}>
-                            <Button
-                              mb={10}
-                              variant='outlined'
-                              size='small'
-                              onClick={() => setOpen(true)}
-                            >
-                              Report Review
-                            </Button>
-                            <Dialog
-                              sx={{
-                                '& .MuiDialog-paper': {
-                                  width: '80%',
-                                  maxHeight: 435,
-                                },
-                              }}
-                              maxWidth='xs'
-                              aria-labelledby='dialog-title'
-                              aria-describedby='dialog-description'
-                              open={open}
-                              onClose={() => setOpen(false)}
-                            >
-                              <DialogTitle id='dialog-title'>
-                                Reason for reporting
-                              </DialogTitle>
-                              <DialogContent>
-                                {/* <DialogContentText id='dialog-description'>
-                                  Reason for reporting
-                                </DialogContentText> */}
-                                <RadioGroup
-                                  //ref={radioGroupRef}
-                                  aria-label='ringtone'
-                                  name='ringtone'
-                                  value={value}
-                                  onChange={() => {
-                                    handleChange()
-                                  }}
-                                >
-                                  {options.map((option) => (
-                                    <FormControlLabel
-                                      value={option}
-                                      key={option}
-                                      control={<Radio />}
-                                      label={option}
-                                    />
-                                  ))}
-                                </RadioGroup>
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={() => setOpen(false)}>
-                                  Cancel
-                                </Button>
-                                <Button
-                                  autoFocus
-                                  onClick={() => setOpen(false)}
-                                >
-                                  Submit
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
-                          </Box>
                         </ul>
                       ))}
                     <hr />
@@ -351,9 +276,9 @@ function SingleHomeProduct() {
                   <hr />
                   <h1>Rs {product.rent} / day</h1>
                 </div>
-                <Link to={`/getQuote/${product.id}`}>
+                <Link to={`/productEdit/${product.id}`}>
                   <button className='btn bg-cart mt-2 mb-2 mr-2'>
-                    Get Quote
+                    Edit Product
                   </button>
                 </Link>
 
@@ -388,72 +313,6 @@ function SingleHomeProduct() {
       </div>
     ))
 
-  const ShowProducts1 = () => {
-    return (
-      <>
-        {relatedProducts.map((product) => {
-          return (
-            <>
-              <div className='col-md-3 ' style={{ marginTop: '20px' }}>
-                <div className='card-card'>
-                  <div className='card-body'>
-                    <div className='card-img-actions'>
-                      <img
-                        src={product.image_urls[0]}
-                        className='card-img-top'
-                        // width='96'
-                        // height='350'
-                        // alt=''
-                        height='250px'
-                      />
-                    </div>
-                  </div>
-                  <div className='card-body bg-light text-center'>
-                    <div className='mb-2'>
-                      <h5 className='font-weight-bold mb-2'>
-                        <Link
-                          to={`/products/${product.id}`}
-                          className='text-default mb-2'
-                          data-abc='true'
-                        >
-                          {product.name}
-                        </Link>
-                      </h5>
-                      <p class='text-muted'>
-                        {product.description.substring(0, 20)}...
-                      </p>
-                    </div>
-                    <h3 className='mb-0 font-weight-semibold'>
-                      Rs {product.rent} / day
-                    </h3>
-
-                    {product.reviews.length > 0 &&
-                      Array(product.reviews[0].rating)
-                        .fill()
-                        .map((_, i) => (
-                          <span style={{ color: '#ffd700' }}>&#9733;</span>
-                        ))}
-                    <div className='text-muted mb-3'>
-                      {product.reviews.length} reviews
-                    </div>
-                    <Link to={`/products/${product.id}`}>
-                      <h6>Details</h6>
-                    </Link>
-                    <Link to={`/getQuote/${product.id}`}>
-                      <button className='btn bg-cart mt-2 mb-2 mr-2'>
-                        Get Quote
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </>
-          )
-        })}
-      </>
-    )
-  }
-
   return (
     <div>
       <div className='container my-5 py-5'>
@@ -469,24 +328,8 @@ function SingleHomeProduct() {
           {loading ? <Loading /> : showProduct3()}
         </div>
       </div>
-      <div className='container my-5 py-5'>
-        <div className='row'>
-          <div className='col-12 mb-5'>
-            <h1 className='display-6 fw-bolder text-center'>
-              Related Products
-            </h1>
-            <hr />
-          </div>
-        </div>
-        <h2 className='mt-4 mb-4'>
-          {searchMessage(searched, relatedProducts)}
-        </h2>
-        <div className='row justify-content-center'>
-          {loading ? <Loading /> : <ShowProducts1 />}
-        </div>
-      </div>
     </div>
   )
 }
 
-export default SingleHomeProduct
+export default AcceptedAdsDetails

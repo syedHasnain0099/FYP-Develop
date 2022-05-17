@@ -1,0 +1,15 @@
+export const reasonOptions = () => [
+  'Black',
+  'Pink',
+  'Red',
+  'Green',
+  'White',
+  'Dark Brown',
+  'Oberon',
+  'Phobos',
+  'Pyxis',
+  'Sedna',
+  'Titania',
+  'Triton',
+  'Umbriel',
+]
