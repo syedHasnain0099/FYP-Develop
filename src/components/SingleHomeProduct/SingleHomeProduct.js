@@ -19,8 +19,9 @@ import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 import Box from '@material-ui/core/Box'
 import { reasonOptions } from './ReasonOptions'
+import VirtualizedSelect from 'react-virtualized-select'
 function SingleHomeProduct() {
-  const options = reasonOptions()
+  const option = reasonOptions()
   let { productId } = useParams()
   const { id } = userData()
   const [data, setData] = useState([])
@@ -32,7 +33,9 @@ function SingleHomeProduct() {
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState('')
+  const [open1, setOpen1] = useState(false)
+  const [reason, setReason] = useState('')
+  const [reason1, setReason1] = useState('')
   let mediaType = ''
   const getProducts = (productId) => {
     setLoading(true)
@@ -121,9 +124,12 @@ function SingleHomeProduct() {
     //rating
     //comment
   }
-  const handleChange = (event) => {
-    setValue(event.target.value)
-    console.log(id)
+  const handleChange = () => {
+    setOpen(false)
+    console.log(reason)
+  }
+  const handleChange1 = () => {
+    setOpen1(false)
   }
   const showProduct3 = () =>
     data.map((product) => (
@@ -236,19 +242,24 @@ function SingleHomeProduct() {
                               onClose={() => setOpen(false)}
                             >
                               <DialogTitle id='dialog-title'>
-                                Reason for reporting
+                                Reason for reporting Review
                               </DialogTitle>
-                              <DialogContent>
+                              <DialogContent style={{ height: '400px' }}>
                                 {/* <DialogContentText id='dialog-description'>
                                   Reason for reporting
                                 </DialogContentText> */}
-                                <RadioGroup
+                                <VirtualizedSelect
+                                  options={option}
+                                  onChange={(value) => setReason(value)}
+                                  value={reason}
+                                />
+                                {/* <RadioGroup
                                   //ref={radioGroupRef}
                                   aria-label='ringtone'
                                   name='ringtone'
                                   value={value}
-                                  onChange={() => {
-                                    handleChange()
+                                  onClick={(e) => {
+                                    handleChange(e)
                                   }}
                                 >
                                   {options.map((option) => (
@@ -259,16 +270,13 @@ function SingleHomeProduct() {
                                       label={option}
                                     />
                                   ))}
-                                </RadioGroup>
+                                </RadioGroup> */}
                               </DialogContent>
                               <DialogActions>
                                 <Button onClick={() => setOpen(false)}>
                                   Cancel
                                 </Button>
-                                <Button
-                                  autoFocus
-                                  onClick={() => setOpen(false)}
-                                >
+                                <Button autoFocus onClick={handleChange}>
                                   Submit
                                 </Button>
                               </DialogActions>
@@ -381,6 +389,68 @@ function SingleHomeProduct() {
                   <p>Email: {product.supplier.email}</p>
                   <p>Contact number: +92 {product.supplier.contact_number}</p>
                 </div>
+                <hr />
+                <Box mb={2}>
+                  <Button
+                    mb={10}
+                    variant='outlined'
+                    size='small'
+                    onClick={() => setOpen(true)}
+                  >
+                    Report Ad
+                  </Button>
+                  <Dialog
+                    sx={{
+                      '& .MuiDialog-paper': {
+                        width: '80%',
+                        maxHeight: 435,
+                      },
+                    }}
+                    maxWidth='xs'
+                    aria-labelledby='dialog-title'
+                    aria-describedby='dialog-description'
+                    open={open}
+                    onClose={() => setOpen(false)}
+                  >
+                    <DialogTitle id='dialog-title'>
+                      Reason for reporting Ad
+                    </DialogTitle>
+                    <DialogContent style={{ height: '400px' }}>
+                      {/* <DialogContentText id='dialog-description'>
+                                  Reason for reporting
+                                </DialogContentText> */}
+                      <VirtualizedSelect
+                        options={option}
+                        onChange={(value) => setReason1(value)}
+                        value={reason1}
+                      />
+                      {/* <RadioGroup
+                                  //ref={radioGroupRef}
+                                  aria-label='ringtone'
+                                  name='ringtone'
+                                  value={value}
+                                  onClick={(e) => {
+                                    handleChange(e)
+                                  }}
+                                >
+                                  {options.map((option) => (
+                                    <FormControlLabel
+                                      value={option}
+                                      key={option}
+                                      control={<Radio />}
+                                      label={option}
+                                    />
+                                  ))}
+                                </RadioGroup> */}
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={() => setOpen1(false)}>Cancel</Button>
+                      <Button autoFocus onClick={handleChange1}>
+                        Submit
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </Box>
               </div>
             </div>
           </div>
