@@ -41,6 +41,11 @@ function AdminDashBoard() {
               Approve Ad
             </Link>
           </li>
+          <li class='list-group-item'>
+            <Link className='nav-link' to='/review/reporting'>
+              Review Reporting
+            </Link>
+          </li>
         </ul>
       </div>
     )

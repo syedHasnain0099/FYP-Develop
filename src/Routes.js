@@ -27,11 +27,18 @@ import ProductEdit from './components/ProductEdit/ProductEdit'
 import ShippingCard from './components/ShippingCard/ShippingCard'
 import PaymentCart from './components/PaymentCart/PaymentCart'
 import AcceptedAdsDetails from './components/AcceptedAdsDetails/AcceptedAdsDetails'
+import Review from './admin/Review'
+import ReviewDetail from './components/ReviewDetail/ReviewDetail'
+import ReportReviews from './components/ReportReview/ReportReviews'
 function Routes() {
   return (
     <BrowserRouter>
       <div className='app'>
         <Switch>
+          <AdminRoute path='/review/reporting'>
+            <Header />
+            <Review />
+          </AdminRoute>
           <AdminRoute path='/product/video'>
             <Header />
             <VideoPlayer />
@@ -51,6 +58,14 @@ function Routes() {
           <AdminRoute path='/approve/ad'>
             <Header />
             <ApproveAd />
+          </AdminRoute>
+          <AdminRoute path='/reportReviews/:productId'>
+            <Header />
+            <ReportReviews />
+          </AdminRoute>
+          <AdminRoute path='/reviewAds/:productId'>
+            <Header />
+            <ReviewDetail />
           </AdminRoute>
           <AdminRoute path='/approveAds/:productId'>
             <Header />
