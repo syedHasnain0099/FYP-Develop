@@ -609,12 +609,15 @@ class ProductService extends GenericService {
       const {data}=users_permissions_user
       user = this.extractUser(data)
     }
-    return { content, rating, user, createdAt}
+    return { id, content, rating, user, createdAt}
   }
   extractUser = (data) => {
     const { id, attributes } = data
     const { username, email, contact_number } = attributes
-    return { id, username, email, contact_number }
+    const code='+92'
+
+    const contactNumber=code+contact_number
+    return { id, username, email, contactNumber }
   }
   extractImage = (data) => {
     const { id,attributes } = data

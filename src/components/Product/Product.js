@@ -70,11 +70,11 @@ function Product() {
         setRedirectToReferrer(true)
       })
       .catch((err) => console.log(err))
-    //delete request from requested ads
-    // productService
-    //   .deleteRequestedAd(id)
-    //   .then((data) => console.log(`the requested ad: ${data} has been deleted`))
-    //   .catch((err) => console.log(err))
+    // delete request from requested ads
+    productService
+      .deleteRequestedAd(id)
+      .then((data) => console.log(`the requested ad: ${data} has been deleted`))
+      .catch((err) => console.log(err))
   }
   const redirectUser = () => {
     if (redirectToReferrer) {
