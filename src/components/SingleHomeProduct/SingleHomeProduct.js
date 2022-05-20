@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import productService from '../../services/ProductService'
 import { NavLink, useParams } from 'react-router-dom'
-import { FormControlLabel, Radio, RadioGroup, Skeleton } from '@mui/material'
+import {
+  Alert,
+  Collapse,
+  FormControlLabel,
+  IconButton,
+  Radio,
+  RadioGroup,
+  Skeleton,
+} from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import { Link } from 'react-router-dom'
 import { isAuthenticated, userData } from '../../auth'
 import {
@@ -36,6 +45,8 @@ function SingleHomeProduct() {
   const [open1, setOpen1] = useState(false)
   const [reason, setReason] = useState('')
   const [reason1, setReason1] = useState('')
+  const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
+  const [openSuccessAlertReview, setOpenSuccessAlertReview] = useState(false)
   let mediaType = ''
   const getProducts = (productId) => {
     setLoading(true)
@@ -126,10 +137,62 @@ function SingleHomeProduct() {
   }
   const handleChange = () => {
     setOpen(false)
+    setOpenSuccessAlertReview(true)
     console.log(reason)
   }
   const handleChange1 = () => {
     setOpen1(false)
+    setOpenSuccessAlert(true)
+  }
+  const SuccessDialogue = () => {
+    return (
+      <Box sx={{ width: '100%' }}>
+        <Collapse in={openSuccessAlert}>
+          <Alert
+            action={
+              <IconButton
+                aria-label='close'
+                color='inherit'
+                size='small'
+                onClick={() => {
+                  setOpenSuccessAlert(false)
+                }}
+              >
+                <CloseIcon fontSize='inherit' />
+              </IconButton>
+            }
+            sx={{ mb: 2 }}
+          >
+            Ad has been reported SuccessFully!
+          </Alert>
+        </Collapse>
+      </Box>
+    )
+  }
+  const SuccessDialogueReview = () => {
+    return (
+      <Box sx={{ width: '100%' }}>
+        <Collapse in={openSuccessAlertReview}>
+          <Alert
+            action={
+              <IconButton
+                aria-label='close'
+                color='inherit'
+                size='small'
+                onClick={() => {
+                  setOpenSuccessAlertReview(false)
+                }}
+              >
+                <CloseIcon fontSize='inherit' />
+              </IconButton>
+            }
+            sx={{ mb: 2 }}
+          >
+            Review has been reported SuccessFully!
+          </Alert>
+        </Collapse>
+      </Box>
+    )
   }
   const showProduct3 = () =>
     data.map((product) => (
@@ -284,6 +347,7 @@ function SingleHomeProduct() {
                           </Box>
                         </ul>
                       ))}
+                    {SuccessDialogueReview()}
                     <hr />
                     <div className='review_comment'>
                       {isAuthenticated() ? (
@@ -395,7 +459,7 @@ function SingleHomeProduct() {
                     mb={10}
                     variant='outlined'
                     size='small'
-                    onClick={() => setOpen(true)}
+                    onClick={() => setOpen1(true)}
                   >
                     Report Ad
                   </Button>
@@ -409,8 +473,8 @@ function SingleHomeProduct() {
                     maxWidth='xs'
                     aria-labelledby='dialog-title'
                     aria-describedby='dialog-description'
-                    open={open}
-                    onClose={() => setOpen(false)}
+                    open={open1}
+                    onClose={() => setOpen1(false)}
                   >
                     <DialogTitle id='dialog-title'>
                       Reason for reporting Ad
@@ -451,6 +515,7 @@ function SingleHomeProduct() {
                     </DialogActions>
                   </Dialog>
                 </Box>
+                {SuccessDialogue()}
               </div>
             </div>
           </div>
