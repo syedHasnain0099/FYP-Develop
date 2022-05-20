@@ -136,12 +136,20 @@ function SingleHomeProduct() {
     //comment
   }
   const handleChange = () => {
+    // reason of reporting review
     setOpen(false)
-    setOpenSuccessAlertReview(true)
+
+    // reason= reporting reason of review
     console.log(reason)
+    //when api successfull run next line init
+    setOpenSuccessAlertReview(true)
   }
-  const handleChange1 = () => {
+  const handleChange1 = (productId) => {
+    //reason for reporting ad
+    // reason= reporting reason of Ad
+    console.log(reason1)
     setOpen1(false)
+    //when api successfull run next line init
     setOpenSuccessAlert(true)
   }
   const SuccessDialogue = () => {
