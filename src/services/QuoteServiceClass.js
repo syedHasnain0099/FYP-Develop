@@ -10,6 +10,7 @@ class QuoteService extends GenericService {
           'product.users_permissions_user',
           'product.image',
           'users_permissions_user',
+          'product'
         ]
     }
     sendRequestQuote = (startDate, endDate, quantity, city, userId, productId, quote, st) => {
@@ -33,6 +34,30 @@ class QuoteService extends GenericService {
               status
             }
     })
+    }
+    getProductOfQuote = (qid,status) => {
+        return new Promise((resolve, reject)=> {
+            const query = qs.stringify({
+                filters: {
+                    status: {
+                        $eq: status
+                    }
+                },
+            })
+            this.get(`request-quotes/${qid}?${query}&populate=product,product.image`, {})
+            .then((response) => {
+                let prod=[]
+                const { data } = response
+                const {attributes} = data
+                const {product} = attributes
+                if(product){
+                    const {data} = product
+                    prod.push(productService.extractProducts(data))
+                }
+                resolve(prod)
+            })
+            .catch(err => reject(err))
+        })
     }
     getRequestQuotes = (currentUserId,status) => {
         const allRequests = []

@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import CheckOutSteps from '../CheckOutSteps/CheckOutSteps'
+import shippingService from '../../services/ShippingService'
 import { Redirect, useLocation } from 'react-router-dom'
+import { userData } from '../../auth'
 function ShippingCard() {
   //product id
+  const { id } = userData()
   let location = useLocation()
   console.log(location.state)
 
@@ -17,8 +20,25 @@ function ShippingCard() {
     e.preventDefault()
     console.log('clicked')
     //run your backend api
+    shippingService
+      .addShippingDetail(
+        fullName,
+        address,
+        cellPhone,
+        country,
+        city,
+        postalCode,
+        id
+      )
+      .then((data) => {
+        console.log('congratulations your shipping detail is added ', data)
+        setRedirectToReferrer(true)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     //success setRedirectToReferrer(true)
-    setRedirectToReferrer(true)
+    
   }
   const redirectUser = () => {
     if (redirectToReferrer) {

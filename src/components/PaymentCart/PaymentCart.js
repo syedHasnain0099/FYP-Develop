@@ -3,13 +3,17 @@ import { Redirect, useLocation } from 'react-router-dom'
 import CheckOutSteps from '../CheckOutSteps/CheckOutSteps'
 import { userData } from '../../auth'
 import quoteService from '../../services/QuoteService'
+import productService from '../../services/ProductService'
 import stripeCreditCard from '../images/stripe.png'
+import shippingService from '../../services/ShippingService'
 function PaymentCart() {
   const { id, username, email } = userData()
-  let product_Id
+  let quote_Id
   let location1 = useLocation()
-  product_Id = location1.state.productId
+  quote_Id = location1.state.productId
   const [acceptedRequestsData, setAcceptedRequestsData] = useState([])
+  const [paymentProductData, setPaymentProductData] = useState([])
+  const [paymentShippingData, setPaymentShippingData] = useState([])
   const showAcceptedRequests = () => {
     console.log('supplier id: ', id)
     quoteService
@@ -22,8 +26,30 @@ function PaymentCart() {
         console.log(err)
       })
   }
+  const getDetails = () => {
+    console.log("quote id: ",quote_Id)
+    quoteService
+      .getProductOfQuote(quote_Id,'accepted')
+      .then((data)=> {
+        console.log("product details: ", data)
+        setPaymentProductData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    shippingService
+      .getShippingDetail(id)
+      .then((data)=> {
+        console.log("shipping details: ", data)
+        setPaymentShippingData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   useEffect(() => {
     showAcceptedRequests()
+    getDetails()
   }, [])
   return (
     <>
@@ -34,19 +60,19 @@ function PaymentCart() {
           <h2 className='signup_title '> Details Summaries</h2>
           <div className='row'>
             <div className='col-sm-8'>
-              {acceptedRequestsData &&
-                acceptedRequestsData.map((item) => (
+              {paymentProductData &&
+                paymentProductData.map((item) => (
                   <div className='row_loop' key={item.id}>
                     <div className='colcart'>
-                      <img src={item.product.image_urls[0]} className='small' />
+                      <img src={item.image_urls[0]} className='small' />
                     </div>
 
                     <div className='colcart'>
-                      <h6>{item.product.name}</h6>
+                      <h6>{item.name}</h6>
                     </div>
 
                     <div className='colcart'>
-                      <h6>Rs.{item.product.rent} / day</h6>
+                      <h6>Rs.{item.rent} / day</h6>
                     </div>
                   </div>
                 ))}
@@ -56,27 +82,27 @@ function PaymentCart() {
                 <h4>Shipping</h4>
                 <div className='te'>
                   <b>Name:</b>
-                  {/* {shippingAddress.fullName} */}
+                  {paymentShippingData.fullName}
                 </div>
                 <div className=''>
                   <b>Address:</b>
-                  {/* {shippingAddress.address} */}
+                  {paymentShippingData.address}
                 </div>
                 <div className=''>
                   <b>Cellphone:</b>
-                  {/* {shippingAddress.cellPhone} */}
+                  {paymentShippingData.cellno}
                 </div>
                 <div className=''>
                   <b>Country:</b>
-                  {/* {shippingAddress.country} */}
+                  {paymentShippingData.country}
                 </div>
                 <div className=''>
                   <b>City:</b>
-                  {/* {shippingAddress.city} */}
+                  {paymentShippingData.city}
                 </div>
                 <div className=''>
                   <b>Postal Code:</b>
-                  {/* {shippingAddress.postalCode} */}
+                  {paymentShippingData.postalCode}
                 </div>
               </div>
 
@@ -84,7 +110,7 @@ function PaymentCart() {
                 <h4>Order Summary</h4>
                 <div className='te'>
                   <b>Items price:</b>
-                  {/* Rs.{item.product.rent} / day */}
+                  Rs.{(paymentProductData[0].rent*paymentProductData[0].duration) * paymentProductData[0].quantity}
                 </div>
                 <div className=''>
                   <b>Shipping Price:</b>
