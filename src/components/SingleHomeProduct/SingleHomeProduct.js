@@ -135,10 +135,10 @@ function SingleHomeProduct() {
     //rating
     //comment
   }
-  const handleChange = () => {
+  const handleChange = (reviewId) => {
     // reason of reporting review
     setOpen(false)
-
+    console.log(reviewId)
     // reason= reporting reason of review
     console.log(reason)
     //when api successfull run next line init
@@ -347,7 +347,12 @@ function SingleHomeProduct() {
                                 <Button onClick={() => setOpen(false)}>
                                   Cancel
                                 </Button>
-                                <Button autoFocus onClick={handleChange}>
+                                <Button
+                                  autoFocus
+                                  onClick={() => {
+                                    handleChange(review.id)
+                                  }}
+                                >
                                   Submit
                                 </Button>
                               </DialogActions>
