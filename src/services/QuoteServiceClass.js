@@ -1,8 +1,6 @@
 import qs from 'qs'
 import GenericService from './GenericService'
 import productService from './ProductService'
-// import productService from './ProductService'
-import axios from 'axios'
 class QuoteService extends GenericService {
     constructor() {
         super()

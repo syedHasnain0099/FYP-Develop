@@ -609,7 +609,7 @@ class ProductService extends GenericService {
       const {data}=users_permissions_user
       user = this.extractUser(data)
     }
-    return { content, rating, user, createdAt}
+    return { id, content, rating, user, createdAt}
   }
   extractUser = (data) => {
     const { id, attributes } = data
