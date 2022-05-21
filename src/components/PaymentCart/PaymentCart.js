@@ -3,6 +3,7 @@ import { Redirect, useLocation } from 'react-router-dom'
 import CheckOutSteps from '../CheckOutSteps/CheckOutSteps'
 import { userData } from '../../auth'
 import quoteService from '../../services/QuoteService'
+import orderService from '../../services/OrderService'
 import productService from '../../services/ProductService'
 import stripeCreditCard from '../images/stripe.png'
 import shippingService from '../../services/ShippingService'
@@ -11,6 +12,7 @@ function PaymentCart() {
   let quote_Id
   let location1 = useLocation()
   quote_Id = location1.state.productId
+  const [orders, setOrders] = useState([])
   const [acceptedRequestsData, setAcceptedRequestsData] = useState([])
   const [paymentProductData, setPaymentProductData] = useState([])
   const [paymentShippingData, setPaymentShippingData] = useState([])
@@ -21,6 +23,17 @@ function PaymentCart() {
       .then((data) => {
         console.log('my accepted requests: ', data)
         setAcceptedRequestsData(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+  const getOrders = () => {
+    orderService
+      .getOrders(id,'paid')
+      .then((data)=> {
+        console.log("order details: ", data)
+        setOrders(data)
       })
       .catch((err) => {
         console.log(err)
@@ -51,6 +64,7 @@ function PaymentCart() {
   useEffect(() => {
     showAcceptedRequests()
     getDetails()
+    getOrders()
   }, [])
   return (
     <>
