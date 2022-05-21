@@ -30,6 +30,16 @@ function ProductEdit() {
     error: '',
     createdProduct: '',
   })
+  const editProduct = () => {
+    productService
+      .updateProduct(productId,name,description,rent,duration,subcategory,quantity,image_urls)
+      .then((data)=> {
+        console.log("updated product: ", data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   const getProducts = (productId) => {
     productService
       .findOneProduct(productId)

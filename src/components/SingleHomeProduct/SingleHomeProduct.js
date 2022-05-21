@@ -142,15 +142,31 @@ function SingleHomeProduct() {
     // reason= reporting reason of review
     console.log(reason)
     //when api successfull run next line init
-    setOpenSuccessAlertReview(true)
+    productService
+      .addReportingReason(reviewId,reason1)
+      .then((data)=> {
+        console.log("reporting reason: ", data)
+        setOpenSuccessAlertReview(true)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
-  const handleChange1 = (productId) => {
+  const handleChange1 = () => {
     //reason for reporting ad
     // reason= reporting reason of Ad
     console.log(reason1)
     setOpen1(false)
+    productService
+      .addReportingReason(productId,reason1)
+      .then((data)=> {
+        console.log("reporting reason: ", data)
+        setOpenSuccessAlert(true)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     //when api successfull run next line init
-    setOpenSuccessAlert(true)
   }
   const SuccessDialogue = () => {
     return (

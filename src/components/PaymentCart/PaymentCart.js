@@ -37,6 +37,7 @@ function PaymentCart() {
       .catch((err) => {
         console.log(err)
       })
+      
     shippingService
       .getShippingDetail(id)
       .then((data)=> {

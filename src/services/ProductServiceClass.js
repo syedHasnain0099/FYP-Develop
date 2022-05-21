@@ -77,6 +77,45 @@ class ProductService extends GenericService {
       },
     })
   }
+  addReportingReason  = (productId,reason) =>{
+    console.log("prod id: ",productId)
+    console.log("reason: ",reason.value)
+     return this.put(`products/${productId}`, {
+       data: {
+         reporting_reason:reason.value
+       }
+    })
+  }
+  addReportingReasonForReview  = (reviewId,reason) =>{
+    console.log("review id: ",reviewId)
+    console.log("reason: ",reason.value)
+     return this.put(`reviews/${reviewId}`, {
+       data: {
+         reporting_reason:reason.value
+       }
+    })
+  }
+  updateProduct = (
+    pId,
+    name,
+    description,
+    rent,
+    duration,
+    categoryTypeId,
+    quantity,
+    image_ids)=> {
+    return this.put(`products/${pId}`, {
+       data: {
+        name: name,
+        description: description,
+        image: image_ids,
+        rent: rent,
+        duration: duration,
+        quantity: quantity,
+        category_list: categoryTypeId,
+       }
+    })
+  }
   addRejectedAd = (
     {name,
     description,
