@@ -1,8 +1,17 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
 function Review() {
   const [loading, setLoading] = useState(false)
+  const reportingAds = () => {}
+  useEffect(() => {
+    reportingAds()
+  })
+  const reportingReviews = () => {}
+  useEffect(() => {
+    reportingReviews()
+  })
+
   const Loading = () => {
     return (
       <>
