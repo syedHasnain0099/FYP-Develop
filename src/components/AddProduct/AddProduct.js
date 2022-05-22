@@ -50,8 +50,8 @@ function AddProduct() {
 
   const { id } = userData()
   const [categories, setCategories] = useState([])
-  const [mediaIds, setMediaIds] = useState([])
-  const [videoMediaId, setVideoMediaId] = useState([])
+  const [mediaIds, setMediaIds] = useState('')
+  const [videoMediaId, setVideoMediaId] = useState('')
   const [subCategories, setSubCategories] = useState([])
 
   const init = () => {
@@ -107,32 +107,32 @@ function AddProduct() {
     init1()
   }, [category])
 
-  const mediaHandleChange = (event) => {
-    console.log('my files: ', event.target.files)
-    productService
-      .uploadMedia(event.target.files)
-      .then((res) => {
-        console.log(res)
-        for (let mediaFile of res) {
-          console.log('id of uploaded image', mediaFile)
-          setMediaIds(mediaFile)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-  const videoMediaHandleChange = (event) => {
-    productService
-      .uploadMedia(event.target.files)
-      .then((res) => {
-        for (let videoFile of res) {
-          console.log('id of uploaded video', videoFile)
-          setVideoMediaId(videoFile)
-        }
-      })
-      .catch((err) => console.log(err))
-  }
+  // const mediaHandleChange = (event) => {
+  //   console.log('my files: ', event.target.files)
+  //   productService
+  //     .uploadMedia(event.target.files)
+  //     .then((res) => {
+  //       console.log(res)
+  //       for (let mediaFile of res) {
+  //         console.log('id of uploaded image', mediaFile)
+  //         setMediaIds(mediaFile)
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
+  // const videoMediaHandleChange = (event) => {
+  //   productService
+  //     .uploadMedia(event.target.files)
+  //     .then((res) => {
+  //       for (let videoFile of res) {
+  //         console.log('id of uploaded video', videoFile)
+  //         setVideoMediaId(videoFile)
+  //       }
+  //     })
+  //     .catch((err) => console.log(err))
+  // }
   const subCategoryHandleChange = (event) => {
     const index = event.target.selectedIndex
     const el = event.target.childNodes[index]
@@ -148,12 +148,19 @@ function AddProduct() {
   const clickSubmit = (event) => {
     event.preventDefault()
     setValues({ ...values, error: '', loading: true })
+    console.log('mediaIds', mediaIds)
+    console.log('videoMediaId', videoMediaId)
     const mIds = []
-    mIds.push(mediaIds)
-    if (videoMediaId != '') {
-      mIds.push(videoMediaId)
+    for (let i = 0; i < mediaIds.length; i++) {
+      mIds.push(mediaIds[i])
     }
-
+    if (videoMediaId != '') {
+      for (let i = 0; i < videoMediaId.length; i++) {
+        mIds.push(videoMediaId[i])
+      }
+    }
+    console.log('values', values)
+    console.log('mIds', mIds)
     postAd(
       { productname, description, rent, duration, subcategory, quantity, id },
       mIds
