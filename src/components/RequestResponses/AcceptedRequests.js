@@ -47,11 +47,28 @@ function MyAds() {
   }, [])
   const RejectHandleChange = (index) => {
     const { id } = acceptedRequestsData[index]
-    console.log(id, 'product id that user clicked to delete')
+    console.log(id, 'request quote id that user clicked to delete')
+    quoteService
+      .deleteRequestQuote(id)
+      .then((data) => {
+        console.log('deleted request: ', data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   const DeleteHandleChange = (index) => {
     const { id } = rejectedRequestsData[index]
     console.log(id, 'product id that user clicked to delete')
+    //delete this requestQuote
+    quoteService
+      .deleteRequestQuote(id)
+      .then((data) => {
+        console.log('deleted request: ', data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
   const Loading = () => {
     return (
