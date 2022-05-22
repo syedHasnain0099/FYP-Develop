@@ -167,7 +167,7 @@ function GetQuote() {
   const showSuccess = () => (
     <div
       className='alert alert-info'
-      style={{ display: createdProduct ? '' : 'none' }}
+      style={({ display: createdProduct ? '' : 'none' }, { height: '100px' })}
     >
       <h2>Quote has been sent SuccessFully</h2>
     </div>
@@ -175,7 +175,9 @@ function GetQuote() {
 
   return (
     <div className='getquote-form-container'>
-      <span className='getquote-close-btn'>×</span>
+      <Link to='/products' className='getquote-close-btn'>
+        ×
+      </Link>
 
       <div className='getquote-form-content-left'>
         {loading ? <Loading /> : <ShowProducts1 />}
