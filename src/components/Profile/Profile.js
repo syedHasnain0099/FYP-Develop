@@ -190,9 +190,9 @@ function Profile() {
     setPasswordButton(false)
   }
   const updateProfile = () => {
-    if (password !== '') {
-      pass = password
-    }
+    // if (password !== '') {
+    //   pass = password
+    // }
     userService
       .updateProfile(
         id,

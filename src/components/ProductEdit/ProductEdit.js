@@ -147,16 +147,16 @@ function ProductEdit() {
     }
     console.log('values', values)
     console.log('mIds', mIds)
-    console.log('values', values)
+    console.log('product id', id)
     editProduct(
-      { name, description, rent, duration, subcategory, quantity, id },
+      { name, description, rent, duration, subcategory, quantity, productId },
       mIds
     )
   }
   const editProduct = (props, mediaIds) => {
     productService
       .updateProduct(
-        props.id,
+        props.productId,
         props.name,
         props.description,
         props.rent,
