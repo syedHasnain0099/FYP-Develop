@@ -230,7 +230,7 @@ function Profile() {
     </div>
   )
   const profileUpdate = () => (
-    <form>
+    <form onClick={clickSubmit}>
       <div className='form-group'>
         <label className='text-muted'>Profile Picture</label>
 
@@ -342,7 +342,7 @@ function Profile() {
       )}
 
       <br />
-      <button onClick={clickSubmit} className='btn btn-outline-primary'>
+      <button type='submit' className='btn btn-outline-primary'>
         Submit
       </button>
     </form>
