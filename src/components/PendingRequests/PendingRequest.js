@@ -34,7 +34,7 @@ function PendingRequest() {
 
   const AcceptHandleChange = (index) => {
     console.log(index)
-    const { startDate, endDate, id } = pendingRequestsData[index]
+    const { startDate, endDate, id, quantity } = pendingRequestsData[index]
     let reqId = id
     console.log('reqId:', id)
     const { rent } = pendingRequestsData[index].product
@@ -59,7 +59,10 @@ function PendingRequest() {
     const duration = moment.duration(end.diff(start)).asDays()
     const price = rent
 
-    const quote = price * duration
+    const quote = price * duration * quantity
+    console.log('price', price)
+    console.log('quanity', quantity)
+    console.log('duration', duration)
     console.log('quote', quote)
     // console.log('supplier id: ', supplierId)
     // console.log('product id: ', productId)

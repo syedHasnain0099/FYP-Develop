@@ -47,10 +47,12 @@ class QuoteService extends GenericService {
                 let prod=[]
                 const { data } = response
                 const {attributes} = data
-                const {product} = attributes
+                const {product,quote} = attributes
                 if(product){
                     const {data} = product
-                    prod.push(productService.extractProducts(data))
+                    let prodRes=productService.extractProducts(data)
+                    prodRes.quote=quote
+                    prod.push(prodRes)
                 }
                 resolve(prod)
             })
