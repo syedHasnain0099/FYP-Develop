@@ -9,8 +9,15 @@ class OrderService extends GenericService {
           'product'
         ]
     }
+    postOrder = (productId) => {
+        return this.post(`orders`, {
+            data: {
+                product: productId,
+            }
+        })
+    }
     getOrders = (currentUserId,status) => {
-        const allRequests = []
+        const orders = []
         return new Promise((resolve, reject) => {
             const query = qs.stringify({
                 populate: this.populate,
@@ -27,51 +34,45 @@ class OrderService extends GenericService {
             })
             this.get(`orders?${query}`, {})
             .then((response) => {
-                // const { data } = response
-                // for (let req of data) {
-                //     allRequests.push(this.extractRequests(req))
-                // }
-                resolve(response)
+                const { data } = response
+                for (let ord of data) {
+                    orders.push(this.extractOrders(ord))
+                }
+                resolve(orders)
             })
             .catch(err => reject(err))
         })
     }
 
-    extractRequests = (req) => {
+    extractOrders = (req) => {
         const { id, attributes } = req
-        const { start_date, end_date, quantity, city, createdAt, status, quote, product,users_permissions_user } = attributes
+        const {status, total, checkout_session, product,user, createdAt } = attributes
 
-        var request = {
+        var order = {
         id: '',
-        startDate: {},
-        endDate: {},
-        quantity: '',
-        city: '',
-        createdAt: '',
         status: '',
-        quote: '',
+        total: '',
+        checkout_session: '',
         product: {},
-        requestingUser :{}
+        currentUser :{},
+        created_at: ''
         }
-        request.id = id
-        request.startDate = start_date
-        request.endDate = end_date
-        request.quantity = quantity
-        request.city = city
-        request.status = status
-        request.quote = quote
-        request.createdAt = createdAt.slice(0, 10)
+        order.id = id
+        order.status = status
+        order.total = total
+        order.checkout_session = checkout_session
+        order.created_at = new Date(createdAt).toLocaleDateString('en-EN')
 
         if (product) {
             const { data } = product
-            request.product = productService.extractProducts(data);
+            order.product = productService.extractProducts(data);
         }
-        if (users_permissions_user) {
-            const { data } = users_permissions_user
-            request.requestingUser = productService.extractUser(data);
+        if (user) {
+            const { data } = user
+            order.currentUser = productService.extractUser(data);
         }
         
-        return request
+        return order
     }
 
 }

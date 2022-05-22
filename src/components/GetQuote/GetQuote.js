@@ -57,7 +57,7 @@ function GetQuote() {
     const getQuoteData = {
       startDate: new Date(enteredStartDate),
       endDate: new Date(enteredEndDate),
-      location: enteredLocation,
+      location: enteredLocation.value,
       quantity: enteredQuantity,
     }
     console.log('get quote data: ', getQuoteData)

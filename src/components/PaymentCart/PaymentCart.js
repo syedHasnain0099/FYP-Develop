@@ -7,26 +7,37 @@ import orderService from '../../services/OrderService'
 import productService from '../../services/ProductService'
 import stripeCreditCard from '../images/stripe.png'
 import shippingService from '../../services/ShippingService'
+import { loadStripe } from '@stripe/stripe-js'
+
 function PaymentCart() {
+  const STRIPE_PK = 'pk_test_51L21M9CkQckw00WvUtYFfgcAmm9NQzQ8pI4JlVRLlIoH8jrQV9bFOuN6XBJtNFvaXbMcUueCaU2IotdF1zabgWqy00xR8aRYtZ'
+  const stripePromise = loadStripe(STRIPE_PK)
+
   const { id, username, email } = userData()
   let quote_Id
   let location1 = useLocation()
   quote_Id = location1.state.productId
+  const [session,setSession] = useState('')
   const [orders, setOrders] = useState([])
-  const [acceptedRequestsData, setAcceptedRequestsData] = useState([])
   const [paymentProductData, setPaymentProductData] = useState([])
   const [paymentShippingData, setPaymentShippingData] = useState([])
-  const showAcceptedRequests = () => {
-    console.log('supplier id: ', id)
-    quoteService
-      .getQuoteRequestResponse(id, 'accepted')
+
+  const handleBuy = async() => {
+    // const stripe = await stripePromise
+    const productId=paymentProductData[0].id
+    console.log("product id: ",productId)
+    orderService
+      .postOrder(productId)
       .then((data) => {
-        console.log('my accepted requests: ', data)
-        setAcceptedRequestsData(data)
+        console.log("posted order: ",data)
+        setSession(data);
+        stripePromise.redirectToCheckout({
+          sessionId: session.id
+        })
       })
-      .catch((err) => {
+      .catch = (err)=>{
         console.log(err)
-      })
+      }
   }
   const getOrders = () => {
     orderService
@@ -62,9 +73,9 @@ function PaymentCart() {
       })
   }
   useEffect(() => {
-    showAcceptedRequests()
     getDetails()
     getOrders()
+    handleBuy()
   }, [])
   return (
     <>
@@ -125,7 +136,7 @@ function PaymentCart() {
                 <h4>Order Summary</h4>
                 <div className='te'>
                   <b>Items price:</b>
-                  Rs.{(paymentProductData[0].rent*paymentProductData[0].duration) * paymentProductData[0].quantity}
+                  {/* Rs.{(paymentProductData[0].rent*paymentProductData[0].duration) * paymentProductData[0].quantity} */}
                 </div>
                 <div className=''>
                   <b>Shipping Price:</b>
