@@ -6,11 +6,23 @@ import productService from '../../services/ProductService'
 import { userData } from '../../auth'
 import './ProductEdit.css'
 import ReactPlayer from 'react-player'
+import {
+  fileObjEditProduct,
+  fileArrayEditProduct,
+  videofileObjEditProduct,
+  videofileArrayEditProduct,
+} from '../../auth'
 function ProductEdit() {
   let mediaType = ''
   let { productId } = useParams()
   console.log('productid', productId)
   const { id } = userData()
+  const [imageFile, setImageFile] = useState({
+    file: [null],
+  })
+  const [videoFile, setVideoFile] = useState({
+    videofile: [null],
+  })
   const [imageButton, setImageButton] = useState(true)
   const [videoButton, setVideoButton] = useState(true)
   const [categories, setCategories] = useState([])
@@ -30,16 +42,7 @@ function ProductEdit() {
     error: '',
     createdProduct: '',
   })
-  const editProduct = () => {
-    productService
-      .updateProduct(productId,name,description,rent,duration,subcategory,quantity,image_urls)
-      .then((data)=> {
-        console.log("updated product: ", data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+
   const getProducts = (productId) => {
     productService
       .findOneProduct(productId)
@@ -95,28 +98,6 @@ function ProductEdit() {
   useEffect(() => {
     init1()
   }, [category])
-
-  const mediaHandleChange = (event) => {
-    productService
-      .uploadMedia(event.target.files)
-      .then((res) => {
-        console.log(res)
-        console.log('id of uploaded image', res)
-        setMediaIds(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-  const videoMediaHandleChange = (event) => {
-    productService
-      .uploadMedia(event.target.files)
-      .then((res) => {
-        console.log('id of uploaded video', res)
-        setVideoMediaId(res)
-      })
-      .catch((err) => console.log(err))
-  }
   const subCategoryHandleChange = (event) => {
     const index = event.target.selectedIndex
     const el = event.target.childNodes[index]
@@ -128,61 +109,6 @@ function ProductEdit() {
     const value = names === 'photo' ? event.target.files[0] : event.target.value
     setValues({ ...values, [names]: value })
   }
-
-  const clickSubmit = (event) => {
-    event.preventDefault()
-    setValues({ ...values, error: '', loading: true })
-    const mIds = []
-    mIds.push(mediaIds)
-    if (videoMediaId != '') {
-      mIds.push(videoMediaId)
-    }
-    console.log(values)
-    // postAd(
-    //   { name, description, rent, duration, subcategory, quantity, id },
-    //   mIds
-    // )
-  }
-  const postAd = (props, mediaIds) => {
-    productService
-      .postAd(
-        props.name,
-        props.description,
-        props.rent,
-        props.duration,
-        props.subcategory,
-        props.quantity,
-        props.id,
-        mediaIds
-      )
-      .then((data) => {
-        console.log('congratulations your post is added ', data)
-        setValues({
-          ...values,
-          name: '',
-          description: '',
-          photo: '',
-          video: '',
-          rent: '',
-          category: '',
-          subcategory: '',
-          duration: '',
-          quantity: '',
-          error: false,
-          loading: false,
-          createdProduct: data.data.attributes.product_name,
-        })
-        setMediaIds('')
-        setVideoMediaId('')
-      })
-      .catch((err) => {
-        let err_msg = err.response.data.error.message
-        if (!err.response) {
-          err_msg = 'Error occured please try later'
-        }
-        setValues({ ...values, error: err_msg })
-      })
-  }
   const ChangeImage = () => {
     setImageButton(false)
     image_urls.map((url, i) => {
@@ -193,6 +119,7 @@ function ProductEdit() {
       }
     })
   }
+
   const ChangeVideo = () => {
     setVideoButton(false)
     image_urls.map((url, i) => {
@@ -203,6 +130,84 @@ function ProductEdit() {
       }
     })
   }
+
+  const clickSubmit = (event) => {
+    event.preventDefault()
+    setValues({ ...values, error: '', loading: true })
+    console.log('mediaIds', mediaIds)
+    console.log('videoMediaId', videoMediaId)
+    const mIds = []
+    for (let i = 0; i < mediaIds.length; i++) {
+      mIds.push(mediaIds[i])
+    }
+    if (videoMediaId != '') {
+      for (let i = 0; i < videoMediaId.length; i++) {
+        mIds.push(videoMediaId[i])
+      }
+    }
+    console.log('values', values)
+    console.log('mIds', mIds)
+    console.log('values', values)
+    editProduct(
+      { name, description, rent, duration, subcategory, quantity, id },
+      mIds
+    )
+  }
+  const editProduct = (props, mediaIds) => {
+    productService
+      .updateProduct(
+        props.id,
+        props.name,
+        props.description,
+        props.rent,
+        props.duration,
+        props.subcategory,
+        props.quantity,
+        mediaIds
+      )
+      .then((data) => {
+        console.log('updated product: ', data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+  const uploadMultipleFiles = (e) => {
+    console.log('my multiple files:', e.target.files)
+    productService
+      .uploadMedia(e.target.files)
+      .then((res) => {
+        console.log(res)
+        console.log('id of uploaded image', res)
+        setMediaIds(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    fileObjEditProduct.push(e.target.files)
+
+    for (let i = 0; i < fileObjEditProduct[0].length; i++) {
+      fileArrayEditProduct.push(URL.createObjectURL(fileObjEditProduct[0][i]))
+    }
+    setImageFile({ file: fileArrayEditProduct })
+  }
+  const uploadVideoMultipleFiles = (e) => {
+    productService
+      .uploadMedia(e.target.files)
+      .then((res) => {
+        console.log('id of uploaded video', res)
+        setVideoMediaId(res)
+      })
+      .catch((err) => console.log(err))
+    videofileObjEditProduct.push(e.target.files)
+    for (let i = 0; i < videofileObjEditProduct[0].length; i++) {
+      videofileArrayEditProduct.push(
+        URL.createObjectURL(videofileObjEditProduct[0][i])
+      )
+    }
+    setVideoFile({ videofile: videofileArrayEditProduct })
+  }
+
   const newPostForm = () => (
     <form className='mb-3' onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
@@ -214,6 +219,11 @@ function ProductEdit() {
               return <img className='img' src={url} alt='...' key={i} />
             }
           })}
+        </div>
+        <div className='form-group multi-preview '>
+          {(fileArrayEditProduct || []).map((url, i) => (
+            <img className='img' src={url} alt='...' key={i} />
+          ))}
         </div>
         {imageButton && (
           <div>
@@ -230,7 +240,7 @@ function ProductEdit() {
           <>
             <label className='btn btn-secondary'>
               <input
-                onChange={mediaHandleChange}
+                onChange={uploadMultipleFiles}
                 type='file'
                 name='photo'
                 accept='image/*'
@@ -262,6 +272,19 @@ function ProductEdit() {
             }
           })}
         </div>
+        <div className='form-group multi-preview '>
+          {(videofileArrayEditProduct || []).map((url) => (
+            <ReactPlayer
+              url={url}
+              controls
+              onReady={() => console.log('onReady callback')}
+              onStart={() => console.log('onStart callback')}
+              onPause={() => console.log('onPause callback')}
+              onEnded={() => console.log('onEnded callback')}
+              onError={() => console.log('onError callback')}
+            />
+          ))}
+        </div>
         {videoButton && (
           <div>
             <button
@@ -276,7 +299,7 @@ function ProductEdit() {
         {!videoButton && (
           <label className='btn btn-secondary'>
             <input
-              onChange={videoMediaHandleChange}
+              onChange={uploadVideoMultipleFiles}
               type='file'
               name='video'
               accept='.mov,.mp4'
