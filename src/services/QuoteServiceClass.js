@@ -11,6 +11,15 @@ class QuoteService extends GenericService {
           'product'
         ]
     }
+    deleteRequestQuote = (id) => {
+        return new Promise((resolve, reject)=> {
+            this.delete(`request-quotes/${id}`)
+            .then((response) => {
+                resolve(response)
+            })
+            .catch(err => reject(err))
+        })
+    }
     sendRequestQuote = (startDate, endDate, quantity, city, userId, productId, quote, st) => {
         return this.post(`request-quotes`, {
             data: {

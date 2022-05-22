@@ -130,6 +130,15 @@ function MyAds() {
   const RejectHandleChange = (index) => {
     const { id } = disapprovedData[index]
     console.log(id, 'product id that user clicked to delete')
+    //delete rejected ad
+    productService
+      .deleteRejectedAd(id)
+      .then((data) => {
+        console.log('deleted ad: ', data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   const DisApproveAds1 = () => {
