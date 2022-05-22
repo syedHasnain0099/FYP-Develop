@@ -21,6 +21,7 @@ function GetQuote() {
   const [enteredEndDate, setEnteredEndDate] = useState('')
   const [enteredLocation, setEnteredLocation] = useState('')
   const [enteredQuantity, setEnteredQuantity] = useState('')
+  const [createdProduct, setCreatedProduct] = useState('')
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const getProducts = (productId) => {
@@ -77,7 +78,10 @@ function GetQuote() {
         0,
         'pending'
       )
-      .then((data) => console.log('congratulations your post is added ', data))
+      .then((data) => {
+        console.log('congratualtiosn', data)
+        setCreatedProduct(data.data.attributes.city)
+      })
       .catch((err) => console.log(err))
   }
   const Loading = () => {
@@ -160,47 +164,24 @@ function GetQuote() {
       </>
     )
   }
-  const ShowProducts = () => {
-    return (
-      <>
-        {data.map((product) => {
-          return (
-            <>
-              {console.log('running')}
-              <img
-                className='getquote-form-img'
-                src={product.image_urls[0]}
-                alt='spaceship'
-              />
-              <p className='getquote-checkoutProduct__title'>{product.name}</p>
-              {/* <p className='getquote-product__price'>{product.description}</p> */}
-              <p className='getquote-product__price'>
-                <div>Product Description:</div>
-                <br />
-                <div>{product.description}</div>
-                <small>Rs</small>
-                <strong>{product.rent}</strong>
-              </p>
-              <div className='getquote-product__rating'>
-                {product.reviews.length > 0 &&
-                  Array(product.reviews[0].rating)
-                    .fill()
-                    .map((_, i) => <span>&#9733;</span>)}
-              </div>
-            </>
-          )
-        })}
-      </>
-    )
-  }
+  const showSuccess = () => (
+    <div
+      className='alert alert-info'
+      style={{ display: createdProduct ? '' : 'none' }}
+    >
+      <h2>Quote has been sent SuccessFully</h2>
+    </div>
+  )
 
   return (
     <div className='getquote-form-container'>
       <span className='getquote-close-btn'>×</span>
+
       <div className='getquote-form-content-left'>
         {loading ? <Loading /> : <ShowProducts1 />}
       </div>
       <div className='getquote-form-content-right'>
+        {showSuccess()}
         <form className='getquote-form' onSubmit={submitHandler}>
           <h1>One Request, Multiple Quotes</h1>
           <div className='getquote-form-inputs'>
