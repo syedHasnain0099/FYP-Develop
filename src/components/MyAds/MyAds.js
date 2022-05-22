@@ -7,6 +7,7 @@ function MyAds() {
   const [approvedData, setApprovedData] = useState([])
   const [disapprovedData, setDisApprovedData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [createdProduct, setCreatedProduct] = useState('')
   const { id, username, email } = userData()
   const showUserApprovedAds = () => {
     productService
@@ -35,7 +36,7 @@ function MyAds() {
   }
   useEffect(() => {
     showUserDisApprovedAds()
-  }, [])
+  }, [createdProduct])
   const Loading = () => {
     return (
       <>
@@ -135,11 +136,28 @@ function MyAds() {
       .deleteRejectedAd(id)
       .then((data) => {
         console.log('deleted ad: ', data)
+        setCreatedProduct(data.data.attributes.product_name)
       })
       .catch((err) => {
         console.log(err)
       })
   }
+  const showError = () => (
+    <div
+      className='alert alert-danger'
+      style={{ display: createdProduct ? '' : 'none' }}
+    >
+      <h2>{`${createdProduct}`} has been deleted</h2>
+      <span
+        onClick={() => {
+          setCreatedProduct('')
+        }}
+        className='getquote-close-btn'
+      >
+        ×
+      </span>
+    </div>
+  )
 
   const DisApproveAds1 = () => {
     return (
@@ -271,6 +289,7 @@ function MyAds() {
           <h3 className='card-header'>Disapproved Ads</h3>
           <div className='container my-2 py-2'>
             <div className='row justify-content-center'>
+              {showError()}
               {loading ? <Loading /> : <DisApproveAds1 />}
             </div>
           </div>
