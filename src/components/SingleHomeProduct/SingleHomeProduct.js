@@ -47,6 +47,7 @@ function SingleHomeProduct() {
   const [reason1, setReason1] = useState('')
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
   const [openSuccessAlertReview, setOpenSuccessAlertReview] = useState(false)
+  const [reviewId, setReviewId] = useState('')
   let mediaType = ''
   console.log(productId)
   const getProducts = (productId) => {
@@ -136,26 +137,25 @@ function SingleHomeProduct() {
     //rating
     //comment
   }
-  const handleChange = (index) => {
+  const handleChange = () => {
     // reason of reporting review
     setOpen(false)
-    console.log(index)
     // reason= reporting reason of review
-    console.log(reason)
+    // console.log(reason)
     //when api successfull run next line init
-    // productService
-    //   .addReportingReason(reviewId, reason1)
-    //   .then((data) => {
-    //     console.log('reporting reason: ', data)
-    //     setOpenSuccessAlertReview(true)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
+    productService
+      .addReportingReasonForReview(reviewId, reason)
+      .then((data) => {
+        console.log('reporting reason: ', data)
+        setOpenSuccessAlertReview(true)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
-  const handleChange3 = (index) => {
+  const handleChange3 = (reviewId) => {
     setOpen(true)
-    console.log(index)
+    setReviewId(reviewId)
   }
   const handleChange1 = () => {
     console.log(productId)
@@ -350,13 +350,7 @@ function SingleHomeProduct() {
                                 <Button onClick={() => setOpen(false)}>
                                   Cancel
                                 </Button>
-                                <Button
-                                  autoFocus
-                                  onClick={(e) => {
-                                    handleChange(index)
-                                  }}
-                                  // onClick={handleChange}
-                                >
+                                <Button autoFocus onClick={handleChange}>
                                   Submit
                                 </Button>
                               </DialogActions>
