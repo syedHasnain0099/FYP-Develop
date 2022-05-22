@@ -168,7 +168,7 @@ function MyAds() {
                     <p class='lead mt-2'>
                       {item.product.description.substring(0, 20)}...
                     </p>
-                    <p class='card-text'>Rs.{item.product.rent} / day</p>
+                    <p class='lead mt-2'>Quote: Rs.{item.quote}</p>
                     <p class='lead mt-2'>City: {item.city}</p>
                     <p class='lead mt-2'>Quantity: {item.quantity}</p>
                     <p class='lead mt-2'>Duration</p>
