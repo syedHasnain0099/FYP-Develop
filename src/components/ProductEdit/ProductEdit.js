@@ -26,8 +26,8 @@ function ProductEdit() {
   const [imageButton, setImageButton] = useState(true)
   const [videoButton, setVideoButton] = useState(true)
   const [categories, setCategories] = useState([])
-  const [mediaIds, setMediaIds] = useState('')
-  const [videoMediaId, setVideoMediaId] = useState('')
+  const [mediaIds, setMediaIds] = useState([])
+  const [videoMediaId, setVideoMediaId] = useState([])
   const [subCategories, setSubCategories] = useState([])
   const [values, setValues] = useState({
     name: '',
@@ -41,8 +41,21 @@ function ProductEdit() {
     loading: false,
     error: '',
     createdProduct: '',
+    media_ids:''
   })
-
+  const getMediaIds = () => {
+    console.log("my image urls: ",image_urls)
+    productService
+      .extractMediaIdfromUrl(image_urls)
+      .then((response) => {
+        console.log('image url: ', response)
+        setMediaIds(response)
+      })
+      .catch((err) => {
+        console.log('inside catch')
+        console.log(err)
+      })
+  }
   const getProducts = (productId) => {
     productService
       .findOneProduct(productId)
@@ -97,6 +110,7 @@ function ProductEdit() {
   }, [])
   useEffect(() => {
     init1()
+    getMediaIds()
   }, [category])
   const subCategoryHandleChange = (event) => {
     const index = event.target.selectedIndex
@@ -138,6 +152,7 @@ function ProductEdit() {
     console.log('videoMediaId', videoMediaId)
     const mIds = []
     for (let i = 0; i < mediaIds.length; i++) {
+      console.log("heh")
       mIds.push(mediaIds[i])
     }
     if (videoMediaId != '') {
@@ -153,7 +168,7 @@ function ProductEdit() {
       mIds
     )
   }
-  const editProduct = (props, mIds) => {
+  const editProduct = (props, mediaIds) => {
     productService
       .updateProduct(
         props.productId,
@@ -163,7 +178,7 @@ function ProductEdit() {
         props.duration,
         props.subcategory,
         props.quantity,
-        mIds
+        mediaIds
       )
       .then((data) => {
         console.log('updated product: ', data)

@@ -577,6 +577,28 @@ class ProductService extends GenericService {
     }
     return ad
   }
+  extractMediaIdfromUrl= (url) => {
+    let addMids=[]
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
+            url: {
+              $eq: url,
+            }
+        },
+      })
+      this.get(`upload/files?${query}`, {})
+        .then((response) => {
+          for (let im of response) {
+            addMids.push(im.id)
+          }
+          resolve(addMids)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
   extractProducts = (ad) => {
     const { id, attributes } = ad
     const {
