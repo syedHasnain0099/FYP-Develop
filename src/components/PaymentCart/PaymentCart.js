@@ -94,6 +94,7 @@ function PaymentCart() {
         console.log(err)
       })
   }
+  let quote = ''
   return (
     <>
       <div className='container wrapper_add_to_Cart'>
@@ -115,7 +116,7 @@ function PaymentCart() {
                     </div>
 
                     <div className='colcart'>
-                      <h6>Rs.{item.rent} / day</h6>
+                      <h6>Rs.{(quote = item.quote)} </h6>
                     </div>
                   </div>
                 ))}
@@ -152,20 +153,18 @@ function PaymentCart() {
               <div className='shipping_details text-center pt-3 mt-3'>
                 <h4>Order Summary</h4>
                 <div className='te'>
-                  <b>Items price:</b>
-                  {/* Rs.{(paymentProductData[0].rent*paymentProductData[0].duration) * paymentProductData[0].quantity} */}
+                  <b>Items price: Rs.{quote}</b>
                 </div>
                 <div className=''>
-                  <b>Shipping Price:</b>
+                  <b>Shipping Price: Rs.1000</b>
                   {/* ${cart.shippingPrice} */}
                 </div>
                 <div className=''>
-                  <b>Tax price:</b>
+                  <b>Tax price: Rs.500</b>
                   {/* ${cart.taxPrice} */}
                 </div>
                 <div className=''>
-                  <b>Total:</b>
-                  {/* ${cart.totalPrice} */}
+                  <b>Total: Rs.{quote + 500 + 1000}</b>
                 </div>
                 <div className=''>
                   <img
@@ -186,30 +185,6 @@ function PaymentCart() {
                       {/* {paymentProductData[0].rent *
                     paymentProductData[0].duration *
                     paymentProductData[0].quantity} */}
-                </div>
-                <div className=''>
-                  <b>Shipping Price:</b>
-                  {/* ${cart.shippingPrice} */}
-                </div>
-                <div className=''>
-                  <b>Tax price:</b>
-                  {/* ${cart.taxPrice} */}
-                </div>
-                <div className=''>
-                  <b>Total:</b>
-                  {/* ${cart.totalPrice} */}
-                </div>
-                <div className=''>
-                  <img
-                    className='img-fluid imgstripe_style'
-                    src={stripeCreditCard}
-                    alt='stripe payment'
-                  />
-                </div>
-                <div className='addbtnstrip'>
-                  {/* <span className='addtocart '>
-                    <StripeCheckoutButton price={cart.totalPrice} />
-                  </span> */}
                 </div>
               </div>
               {/* ))} */}
