@@ -48,6 +48,7 @@ function SingleHomeProduct() {
   const [openSuccessAlert, setOpenSuccessAlert] = useState(false)
   const [openSuccessAlertReview, setOpenSuccessAlertReview] = useState(false)
   let mediaType = ''
+  console.log(productId)
   const getProducts = (productId) => {
     setLoading(true)
     productService
@@ -135,38 +136,44 @@ function SingleHomeProduct() {
     //rating
     //comment
   }
-  const handleChange = (reviewId) => {
+  const handleChange = (index) => {
     // reason of reporting review
     setOpen(false)
-    console.log(reviewId)
+    console.log(index)
     // reason= reporting reason of review
     console.log(reason)
     //when api successfull run next line init
-    productService
-      .addReportingReason(reviewId,reason1)
-      .then((data)=> {
-        console.log("reporting reason: ", data)
-        setOpenSuccessAlertReview(true)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    // productService
+    //   .addReportingReason(reviewId, reason1)
+    //   .then((data) => {
+    //     console.log('reporting reason: ', data)
+    //     setOpenSuccessAlertReview(true)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err)
+    //   })
+  }
+  const handleChange3 = (index) => {
+    setOpen(true)
+    console.log(index)
   }
   const handleChange1 = () => {
+    console.log(productId)
     //reason for reporting ad
     // reason= reporting reason of Ad
     console.log(reason1)
     setOpen1(false)
     productService
-      .addReportingReason(productId,reason1)
-      .then((data)=> {
-        console.log("reporting reason: ", data)
+      .addReportingReason(productId, reason1)
+      .then((data) => {
+        console.log('reporting reason: ', data)
         setOpenSuccessAlert(true)
       })
       .catch((err) => {
         console.log(err)
       })
     //when api successfull run next line init
+    setOpenSuccessAlert(true)
   }
   const SuccessDialogue = () => {
     return (
@@ -281,7 +288,7 @@ function SingleHomeProduct() {
 
                   <div className='review_loop'>
                     {product.reviews &&
-                      product.reviews.map((review) => (
+                      product.reviews.map((review, index) => (
                         <ul className='review_list'>
                           <li>
                             {/* <strong>{review.name}</strong> */}
@@ -307,11 +314,12 @@ function SingleHomeProduct() {
                             <p>{review.content}</p>
                           </li>
                           <Box mb={2}>
+                            {console.log(review.id)}
                             <Button
                               mb={10}
                               variant='outlined'
                               size='small'
-                              onClick={() => setOpen(true)}
+                              onClick={(e) => handleChange3(review.id)}
                             >
                               Report Review
                             </Button>
@@ -332,32 +340,11 @@ function SingleHomeProduct() {
                                 Reason for reporting Review
                               </DialogTitle>
                               <DialogContent style={{ height: '400px' }}>
-                                {/* <DialogContentText id='dialog-description'>
-                                  Reason for reporting
-                                </DialogContentText> */}
                                 <VirtualizedSelect
                                   options={option}
                                   onChange={(value) => setReason(value)}
                                   value={reason}
                                 />
-                                {/* <RadioGroup
-                                  //ref={radioGroupRef}
-                                  aria-label='ringtone'
-                                  name='ringtone'
-                                  value={value}
-                                  onClick={(e) => {
-                                    handleChange(e)
-                                  }}
-                                >
-                                  {options.map((option) => (
-                                    <FormControlLabel
-                                      value={option}
-                                      key={option}
-                                      control={<Radio />}
-                                      label={option}
-                                    />
-                                  ))}
-                                </RadioGroup> */}
                               </DialogContent>
                               <DialogActions>
                                 <Button onClick={() => setOpen(false)}>
@@ -365,9 +352,10 @@ function SingleHomeProduct() {
                                 </Button>
                                 <Button
                                   autoFocus
-                                  onClick={() => {
-                                    handleChange(review.id)
+                                  onClick={(e) => {
+                                    handleChange(index)
                                   }}
+                                  // onClick={handleChange}
                                 >
                                   Submit
                                 </Button>
