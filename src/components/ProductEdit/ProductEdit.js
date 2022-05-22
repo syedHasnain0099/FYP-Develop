@@ -153,7 +153,7 @@ function ProductEdit() {
       mIds
     )
   }
-  const editProduct = (props, mediaIds) => {
+  const editProduct = (props, mIds) => {
     productService
       .updateProduct(
         props.productId,
@@ -163,7 +163,7 @@ function ProductEdit() {
         props.duration,
         props.subcategory,
         props.quantity,
-        mediaIds
+        mIds
       )
       .then((data) => {
         console.log('updated product: ', data)
