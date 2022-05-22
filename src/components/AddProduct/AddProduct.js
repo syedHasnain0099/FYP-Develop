@@ -107,32 +107,6 @@ function AddProduct() {
     init1()
   }, [category])
 
-  // const mediaHandleChange = (event) => {
-  //   console.log('my files: ', event.target.files)
-  //   productService
-  //     .uploadMedia(event.target.files)
-  //     .then((res) => {
-  //       console.log(res)
-  //       for (let mediaFile of res) {
-  //         console.log('id of uploaded image', mediaFile)
-  //         setMediaIds(mediaFile)
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  // }
-  // const videoMediaHandleChange = (event) => {
-  //   productService
-  //     .uploadMedia(event.target.files)
-  //     .then((res) => {
-  //       for (let videoFile of res) {
-  //         console.log('id of uploaded video', videoFile)
-  //         setVideoMediaId(videoFile)
-  //       }
-  //     })
-  //     .catch((err) => console.log(err))
-  // }
   const subCategoryHandleChange = (event) => {
     const index = event.target.selectedIndex
     const el = event.target.childNodes[index]
@@ -227,17 +201,6 @@ function AddProduct() {
             required
           />
         </div>
-
-        {/* <label className='btn btn-secondary'>
-          <input
-            onChange={mediaHandleChange}
-            type='file'
-            name='photo'
-            accept='image/*'
-            required
-            multiple
-          />
-        </label> */}
       </div>
       <h4>Post Video</h4>
 
@@ -266,15 +229,6 @@ function AddProduct() {
             required
           />
         </div>
-        {/* <label className='btn btn-secondary'>
-          <input
-            onChange={videoMediaHandleChange}
-            type='file'
-            name='video'
-            accept='.mov,.mp4'
-            required
-          />
-        </label> */}
       </div>
       <div className='form-group'>
         <label className='text-muted'>Product Name</label>
