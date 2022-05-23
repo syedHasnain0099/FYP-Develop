@@ -1,75 +1,73 @@
-import React from "react";
-import ProductImagesSlider from "./ProductImagesSlider";
-import { Skeleton } from "@mui/material";
-import moment from "moment";
-import "./Product.css";
-import { useEffect, useState } from "react";
-import { NavLink, Redirect, useParams } from "react-router-dom";
-import productService from "../../services/ProductService";
+import React from 'react'
+import ProductImagesSlider from './ProductImagesSlider'
+import { Skeleton } from '@mui/material'
+import moment from 'moment'
+import './Product.css'
+import { useEffect, useState } from 'react'
+import { NavLink, Redirect, useParams } from 'react-router-dom'
+import productService from '../../services/ProductService'
 function ReportReviews() {
-  let { productId } = useParams();
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [redirectToReferrer, setRedirectToReferrer] = useState(false);
+  let { reportId } = useParams()
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [redirectToReferrer, setRedirectToReferrer] = useState(false)
   const redirectUser = () => {
     if (redirectToReferrer) {
-      return <Redirect to="/review/reporting"></Redirect>;
+      return <Redirect to='/review/reporting'></Redirect>
     }
-  };
-  // const getProduct = (productId) => {
-  //   setLoading(true)
-  //   productService
-  //     .findOneRequestedAd(productId)
-  //     .then((response) => {
-  //       setData(response)
-  //       console.log(response)
-  //       setLoading(false)
-  //     })
-  //     .catch((err) => {
-  //       console.log('inside else if catch')
-  //       console.log(err)
-  //     })
-  // }
-  // useEffect(() => {
-  //   getProducts(productId)
-  // }, [])
+  }
+  const reportedReviews = (reportId) => {
+    productService
+      .getReportedReviews(reportId)
+      .then((resolve) => {
+        console.log('reported reviews: ', resolve)
+        data(resolve)
+      })
+      .catch((err) => {
+        console.log(err)
+        // setValues({ ...values, error: err })
+      })
+  }
+  useEffect(() => {
+    reportedReviews()
+  }, [])
   const Loading = () => {
     return (
       <>
-        <div className="col-md-3">
+        <div className='col-md-3'>
           <Skeleton height={350} />
         </div>
-        <div className="col-md-3">
+        <div className='col-md-3'>
           <Skeleton height={350} />
         </div>
-        <div className="col-md-3">
+        <div className='col-md-3'>
           <Skeleton height={350} />
         </div>
-        <div className="col-md-3">
+        <div className='col-md-3'>
           <Skeleton height={350} />
         </div>
       </>
-    );
-  };
+    )
+  }
   const showApproveButton = () => {
     return (
       <>
         <button
-          className="btn btn-outline-success mt-2 mb-2 mr-2"
+          className='btn btn-outline-success mt-2 mb-2 mr-2'
           onClick={approveHandleChange}
         >
           Delete Request
         </button>
 
         <button
-          className="btn btn-outline-danger mt-2 mb-2 mr-2"
+          className='btn btn-outline-danger mt-2 mb-2 mr-2'
           onClick={disapproveHandleChange}
         >
           Delete Review
         </button>
       </>
-    );
-  };
+    )
+  }
   const approveHandleChange = () => {
     //delete requests (reason for reporting)
     // productService
@@ -80,7 +78,7 @@ function ReportReviews() {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-  };
+  }
   const disapproveHandleChange = () => {
     //delete review (delete review that has been reported)
     // productService
@@ -91,39 +89,39 @@ function ReportReviews() {
     //   .catch((err) => {
     //     console.log(err);
     //   });
-  };
+  }
   const ShowProduct3 = () => {
     return (
       <>
-        <div className="container single_product show">
+        <div className='container single_product show'>
           {loading ? (
             <Loading />
           ) : (
-            <div className="row">
-              <div className="col-sm-6 ">
-                <div className="img_div">
+            <div className='row'>
+              <div className='col-sm-6 '>
+                <div className='img_div'>
                   <div
                     style={{
                       // height: '100vh',
-                      display: "flex",
+                      display: 'flex',
                       // alignItems: 'center',
                       // justifyContent: 'center',
                     }}
                   >
                     <div
                       style={{
-                        width: "500px",
-                        backgroundColor: "#fff",
-                        padding: "20px",
+                        width: '500px',
+                        backgroundColor: '#fff',
+                        padding: '20px',
                       }}
                     >
                       {/* <ProductImagesSlider images={product.image_urls} /> */}
                       <br />
 
-                      <span className="description-form-input-login">
+                      <span className='description-form-input-login'>
                         <NavLink
                           to={{
-                            pathname: "/product/video",
+                            pathname: '/product/video',
                             // state: { video: product.image_urls },
                           }}
                           exact
@@ -140,9 +138,9 @@ function ReportReviews() {
                         /> */}
                 </div>
               </div>
-              <div className="col-sm-6">
-                <div className="product_desc_wrapper">
-                  <div className="product_title">
+              <div className='col-sm-6'>
+                <div className='product_desc_wrapper'>
+                  <div className='product_title'>
                     <h1>
                       Product Name
                       {/* {product.name} */}
@@ -171,12 +169,12 @@ function ReportReviews() {
                   </p>
 
                   <hr />
-                  <div className="desc">
+                  <div className='desc'>
                     <h2>Description</h2>
                     {/* <p>{product.description}</p> */}
                   </div>
                   <hr />
-                  <div className="desc">
+                  <div className='desc'>
                     <h2>Supplier Information</h2>
                     <p>
                       Name:
@@ -198,27 +196,27 @@ function ReportReviews() {
           )}
         </div>
       </>
-    );
-  };
+    )
+  }
   return (
     <div>
-      <div className="container my-5 py-5">
-        <div className="row">
-          <div className="col-12 mb-5">
-            <h1 className="display-6 fw-bolder text-center">
+      <div className='container my-5 py-5'>
+        <div className='row'>
+          <div className='col-12 mb-5'>
+            <h1 className='display-6 fw-bolder text-center'>
               Product Description
             </h1>
             <hr />
           </div>
         </div>
 
-        <div className="row justify-content-center">
+        <div className='row justify-content-center'>
           {loading ? <Loading /> : <ShowProduct3 />}
         </div>
       </div>
       {redirectUser()}
     </div>
-  );
+  )
 }
 
-export default ReportReviews;
+export default ReportReviews
