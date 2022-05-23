@@ -46,6 +46,11 @@ function AdminDashBoard() {
               Review Reporting
             </Link>
           </li>
+          <li class='list-group-item'>
+            <Link className='nav-link' to='/show/orders'>
+              Show Orders
+            </Link>
+          </li>
         </ul>
       </div>
     )

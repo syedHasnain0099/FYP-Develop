@@ -30,11 +30,16 @@ import AcceptedAdsDetails from './components/AcceptedAdsDetails/AcceptedAdsDetai
 import Review from './admin/Review'
 import ReviewDetail from './components/ReviewDetail/ReviewDetail'
 import ReportReviews from './components/ReportReview/ReportReviews'
+import AdminShowOrders from './admin/AdminShowOrders'
 function Routes() {
   return (
     <BrowserRouter>
       <div className='app'>
         <Switch>
+          <AdminRoute path='/show/orders'>
+            <Header />
+            <AdminShowOrders />
+          </AdminRoute>
           <AdminRoute path='/review/reporting'>
             <Header />
             <Review />

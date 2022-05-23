@@ -67,6 +67,7 @@ function Review() {
                     <div className='card-img-actions'>
                       <img
                         src={product.productDetails.image_urls[0]}
+                        // src={product.image_urls[0]}
                         className='card-img-top'
                         // width='96'
                         // height='350'
@@ -93,8 +94,7 @@ function Review() {
                     <h3 className='mb-0 font-weight-semibold'>
                       {product.reporting_reason}
                     </h3>
-
-                    <Link to={`/reportReviews/${product.id}`}>
+                    <Link to={`/reportReviews/${3}`}>
                       <h6>Details</h6>
                     </Link>
                   </div>
