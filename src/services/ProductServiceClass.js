@@ -177,6 +177,52 @@ class ProductService extends GenericService {
       },
     })
   }
+  getReportedReviews = () => {
+    const reviews = []
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
+          reporting_reason: {
+              $notNull:true,
+          },
+        },
+      })
+      this.get(`reviews?${query}`, {})
+        .then((response) => {
+          const { data } = response
+          for (let review of data) {
+            reviews.push(this.extractReviews(review))
+          }
+          resolve(reviews)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
+  getReportedAds = () => {
+    const products = []
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
+          reporting_reason: {
+              $notNull:true,
+          },
+        },
+      })
+      this.get(`products?${query}`, {})
+        .then((response) => {
+          const { data } = response
+          for (let product of data) {
+            products.push(this.extractProducts(product))
+          }
+          resolve(products)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
   getReviews = (prodId) => {
     const reviews = []
     return new Promise((resolve, reject) => {
@@ -612,6 +658,7 @@ class ProductService extends GenericService {
       quantity,
       category_list,
       createdAt,
+      reporting_reason
     } = attributes
     // const { price, duration } = estimated_price
     var product = {
@@ -627,6 +674,7 @@ class ProductService extends GenericService {
       subCategory: '',
       subCategoryId: '',
       createdAt: '',
+      reportingReason:''
     }
     product.id = id
     product.name = name
@@ -635,6 +683,7 @@ class ProductService extends GenericService {
     product.createdAt = createdAt.slice(0, 10)
     product.quantity = quantity
     product.rent = rent
+    product.reportingReason = reporting_reason
 
     if (reviews) {
       const { data } = reviews
@@ -674,12 +723,12 @@ class ProductService extends GenericService {
   extractReviews = (rev) => {
     let user = {}
     const { id, attributes } = rev
-    const { content, rating, users_permissions_user, createdAt} = attributes
+    const { content, rating, users_permissions_user, createdAt,reporting_reason} = attributes
     if(users_permissions_user){
       const {data}=users_permissions_user
       user = this.extractUser(data)
     }
-    return { id, content, rating, user, createdAt}
+    return { id, content, rating, user, createdAt, reporting_reason}
   }
   extractUser = (data) => {
     const { id, attributes } = data

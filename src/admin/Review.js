@@ -1,16 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
+import productService from '../services/ProductService'
 function Review() {
   const [loading, setLoading] = useState(false)
-  const reportingAds = () => {}
+  const [reportedReviewsData, setReportedReviewsData] = useState([])
+  const [reportedAdsData, setReportedAdsData] = useState([])
+  const reportedAds = () => {
+    productService
+      .getReportedAds()
+      .then((resolve) => {
+        console.log("reported Ads: ",resolve)
+        setReportedReviewsData(resolve)
+      })
+      .catch((err) => {
+        console.log(err)
+        // setValues({ ...values, error: err })
+      })
+  }
   useEffect(() => {
-    reportingAds()
-  })
-  const reportingReviews = () => {}
+    reportedAds()
+  },[])
+  const reportedReviews = () => {
+    productService
+      .getReportedReviews()
+      .then((resolve) => {
+        console.log("reported reviews: ",resolve)
+        setReportedReviewsData(resolve)
+      })
+      .catch((err) => {
+        console.log(err)
+        // setValues({ ...values, error: err })
+      })
+  }
   useEffect(() => {
-    reportingReviews()
-  })
+    reportedReviews()
+  },[])
 
   const Loading = () => {
     return (

@@ -13,7 +13,7 @@ function Profile() {
   let { userId } = useParams()
   const { id } = userData()
   var pass = userPassword()
-  console.log(pass)
+  console.log("my own pass",pass)
   const [passwordButton, setPasswordButton] = useState(false)
   const [imageFile, setImageFile] = useState({
     file: [null],
@@ -199,7 +199,7 @@ function Profile() {
     setPasswordButton(false)
   }
   const updateProfile = () => {
-    if (password !== '') {
+    if (password !== undefined) {
       pass = password
     }
 
