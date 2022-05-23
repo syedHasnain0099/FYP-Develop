@@ -177,7 +177,8 @@ class ProductService extends GenericService {
       },
     })
   }
-  getReportedReviews = () => {
+  getReportedReviews = (id='') => {
+
     const reviews = []
     return new Promise((resolve, reject) => {
       const query = qs.stringify({
@@ -187,11 +188,18 @@ class ProductService extends GenericService {
           },
         },
       })
-      this.get(`reviews?${query}`, {})
+      this.get(`reviews/${id}?populate=users_permissions_user,product,product.image,product.users_permissions_user&${query}`, {})
         .then((response) => {
+          console.log(response)
           const { data } = response
-          for (let review of data) {
-            reviews.push(this.extractReviews(review))
+          if(Array.isArray(data))
+            {
+              for (let review of data) {
+                reviews.push(this.extractReviews(review))
+              }
+            }
+          else{
+            reviews.push(this.extractReviews(data))
           }
           resolve(reviews)
         })
@@ -210,7 +218,7 @@ class ProductService extends GenericService {
           },
         },
       })
-      this.get(`products?${query}`, {})
+      this.get(`products?populate=*&${query}`, {})
         .then((response) => {
           const { data } = response
           for (let product of data) {
@@ -722,13 +730,18 @@ class ProductService extends GenericService {
   }
   extractReviews = (rev) => {
     let user = {}
+    let productDetails={}
     const { id, attributes } = rev
-    const { content, rating, users_permissions_user, createdAt,reporting_reason} = attributes
+    const { content, rating, users_permissions_user, createdAt,reporting_reason,product} = attributes
     if(users_permissions_user){
       const {data}=users_permissions_user
       user = this.extractUser(data)
     }
-    return { id, content, rating, user, createdAt, reporting_reason}
+    if(product){
+      const {data} = product
+      productDetails = this.extractProducts(data)
+    }
+    return { id, content, rating, user, createdAt, reporting_reason, productDetails}
   }
   extractUser = (data) => {
     const { id, attributes } = data

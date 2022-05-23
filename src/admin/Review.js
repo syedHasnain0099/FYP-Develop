@@ -23,7 +23,7 @@ function Review() {
   },[])
   const reportedReviews = () => {
     productService
-      .getReportedReviews()
+      .getReportedReviews(2)
       .then((resolve) => {
         console.log("reported reviews: ",resolve)
         setReportedReviewsData(resolve)
