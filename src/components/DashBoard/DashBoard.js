@@ -16,6 +16,15 @@ function DashBoard() {
       .getUser(id)
       .then((data) => {
         setData(data)
+        userService
+          .getUserDP(data.image)
+          .then((url) => {
+            console.log('user image url: ', url)
+            setImageurl(url)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       })
       .catch((err) => {
         console.log(err)
@@ -69,9 +78,9 @@ function DashBoard() {
   useEffect(() => {
     getUserInfo()
   }, [])
-  useEffect(() => {
-    showUserDP()
-  }, [data])
+  // useEffect(() => {
+  //   showUserDP()
+  // }, [data])
   const userLinks = () => {
     return (
       <div className='card'>

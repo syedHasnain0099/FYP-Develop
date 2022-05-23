@@ -54,6 +54,15 @@ function Profile() {
         console.log('user data: ', data)
 
         setValues(data)
+        userService
+          .getUserDP(data.image)
+          .then((url) => {
+            console.log('user image url: ', url)
+            setImageFile({ file: url })
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       })
       .catch((err) => {
         console.log(err)
@@ -74,9 +83,9 @@ function Profile() {
   useEffect(() => {
     showUserInfo()
   }, [])
-  useEffect(() => {
-    showUserDP()
-  }, [values])
+  // useEffect(() => {
+  //   showUserDP()
+  // }, [values])
 
   const userLinks = () => {
     return (
@@ -190,9 +199,10 @@ function Profile() {
     setPasswordButton(false)
   }
   const updateProfile = () => {
-    // if (password !== '') {
-    //   pass = password
-    // }
+    if (password !== '') {
+      pass = password
+    }
+
     userService
       .updateProfile(
         id,
@@ -207,7 +217,7 @@ function Profile() {
       .then((data) => {
         console.log('first name: ', data.first_name)
         setValues({ ...values, success: true })
-        showUserDP()
+        //showUserDP()
       })
       .catch((err) => {
         console.log(err)
@@ -230,7 +240,7 @@ function Profile() {
     </div>
   )
   const profileUpdate = () => (
-    <form onClick={clickSubmit}>
+    <form onSubmit={clickSubmit}>
       <div className='form-group'>
         <label className='text-muted'>Profile Picture</label>
 
@@ -297,7 +307,7 @@ function Profile() {
           type='tel'
           onChange={handleChange('contact_number')}
           className='form-control'
-          value={`+92 ${contact_number}`}
+          value={`${contact_number}`}
           pattern='[0-9]{11}'
         />
       </div>
