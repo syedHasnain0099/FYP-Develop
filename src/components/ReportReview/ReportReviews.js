@@ -115,14 +115,16 @@ function ReportReviews() {
                       padding: '20px',
                     }}
                   >
-                    {/* <ProductImagesSlider images={product.image_urls} /> */}
+                    <ProductImagesSlider
+                      images={product.productDetails.image_urls}
+                    />
                     <br />
 
                     <span className='description-form-input-login'>
                       <NavLink
                         to={{
                           pathname: '/product/video',
-                          state: { video: product.image_urls },
+                          state: { video: product.productDetails.image_urls },
                         }}
                         exact
                       >
@@ -132,29 +134,30 @@ function ReportReviews() {
                   </div>
                 </div>
                 {/* <img
-                      className='img-fluid'
-                      src={product.image_urls[0]}
-                      alt=''
-                    /> */}
+                        className='img-fluid'
+                        src={product.image_urls[0]}
+                        alt=''
+                      /> */}
 
                 <div className='review' style={{ paddingTop: '10px' }}>
                   <h4>REVIEWS</h4>
 
-                  {product.reviews && product.reviews.length === 0 && (
-                    <>
-                      <div
-                        class='alert alert-warning alert_warning_custom'
-                        role='alert'
-                        data-mdb-color='warning'
-                      >
-                        No review added yet
-                      </div>
-                    </>
-                  )}
+                  {product.productDetails.reviews &&
+                    product.productDetails.reviews.length === 0 && (
+                      <>
+                        <div
+                          class='alert alert-warning alert_warning_custom'
+                          role='alert'
+                          data-mdb-color='warning'
+                        >
+                          No review added yet
+                        </div>
+                      </>
+                    )}
 
                   <div className='review_loop'>
-                    {product.reviews &&
-                      product.reviews.map((review, index) => (
+                    {product.productDetails.reviews &&
+                      product.productDetails.reviews.map((review, index) => (
                         <ul className='review_list'>
                           <li>
                             {/* <strong>{review.name}</strong> */}
@@ -190,15 +193,17 @@ function ReportReviews() {
             <div className='col-sm-6'>
               <div className='product_desc_wrapper'>
                 <div className='product_title'>
-                  <h1>{product.name}</h1>
+                  <h1>{product.productDetails.name}</h1>
                   <span>
                     <h6>Reason # {product.id}</h6>
                   </span>
                   <span>
-                    <h6>Reporting Reason: {product.reportingReason}</h6>
+                    <h6>
+                      Reporting Reason: {product.productDetails.reportingReason}
+                    </h6>
                   </span>
                   <hr />
-                  <h1>Rs {product.rent} / day</h1>
+                  <h1>Rs {product.productDetails.rent} / day</h1>
                 </div>
 
                 <div className='stock'>
@@ -216,14 +221,17 @@ function ReportReviews() {
                 <hr />
                 <div className='desc'>
                   <h2>Description</h2>
-                  <p>{product.description}</p>
+                  <p>{product.productDetails.description}</p>
                 </div>
                 <hr />
                 <div className='desc'>
                   <h2>Supplier Information</h2>
-                  {/* <p>Name: {product.supplier.username}</p> */}
-                  {/* <p>Email: {product.supplier.email}</p> */}
-                  {/* <p>Contact number: +92 {product.supplier.contactNumber}</p> */}
+                  <p>Name: {product.productDetails.supplier.username}</p>
+                  <p>Email: {product.productDetails.supplier.email}</p>
+                  <p>
+                    Contact number: +92{' '}
+                    {product.productDetails.supplier.contactNumber}
+                  </p>
                 </div>
                 <hr />
 
