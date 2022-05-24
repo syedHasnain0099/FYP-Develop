@@ -31,6 +31,7 @@ import Review from './admin/Review'
 import ReviewDetail from './components/ReviewDetail/ReviewDetail'
 import ReportReviews from './components/ReportReview/ReportReviews'
 import AdminShowOrders from './admin/AdminShowOrders'
+import StripeButton from './components/StripeButton/StripeButton'
 function Routes() {
   return (
     <BrowserRouter>
@@ -76,6 +77,10 @@ function Routes() {
             <Header />
             <Product />
           </AdminRoute>
+          <PrivateRoute path='/test'>
+            <Header />
+            <StripeButton />
+          </PrivateRoute>
           <PrivateRoute path='/product/:productId'>
             <Header />
             <AcceptedAdsDetails />

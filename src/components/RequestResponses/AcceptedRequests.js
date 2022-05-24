@@ -6,6 +6,7 @@ import { Skeleton } from '@mui/material'
 import productService from '../../services/ProductService'
 import quoteService from '../../services/QuoteService'
 function MyAds() {
+  console.log('accpeted requests.js')
   const [acceptedRequestsData, setAcceptedRequestsData] = useState([])
   const [rejectedRequestsData, setRejectedRequestsData] = useState([])
   const [loading, setLoading] = useState(false)
