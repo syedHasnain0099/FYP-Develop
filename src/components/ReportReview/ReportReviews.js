@@ -8,6 +8,7 @@ import { NavLink, Redirect, useParams } from 'react-router-dom'
 import productService from '../../services/ProductService'
 function ReportReviews() {
   let { reportId } = useParams()
+  console.log('reportid ', reportId)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [redirectToReferrer, setRedirectToReferrer] = useState(false)
@@ -21,7 +22,7 @@ function ReportReviews() {
       .getReportedReviews(reportId)
       .then((resolve) => {
         console.log('reported reviews: ', resolve)
-        data(resolve)
+        setData(resolve)
       })
       .catch((err) => {
         console.log(err)
@@ -90,114 +91,149 @@ function ReportReviews() {
     //     console.log(err);
     //   });
   }
-  const ShowProduct3 = () => {
-    return (
-      <>
-        <div className='container single_product show'>
-          {loading ? (
-            <Loading />
-          ) : (
-            <div className='row'>
-              <div className='col-sm-6 '>
-                <div className='img_div'>
+  const showProduct3 = () =>
+    data.map((product) => (
+      <div className='container single_product show'>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className='row'>
+            <div className='col-sm-6 '>
+              <div className='img_div'>
+                <div
+                  style={{
+                    // height: '100vh',
+                    display: 'flex',
+                    // alignItems: 'center',
+                    // justifyContent: 'center',
+                  }}
+                >
                   <div
                     style={{
-                      // height: '100vh',
-                      display: 'flex',
-                      // alignItems: 'center',
-                      // justifyContent: 'center',
+                      width: '500px',
+                      backgroundColor: '#fff',
+                      padding: '20px',
                     }}
                   >
-                    <div
-                      style={{
-                        width: '500px',
-                        backgroundColor: '#fff',
-                        padding: '20px',
-                      }}
-                    >
-                      {/* <ProductImagesSlider images={product.image_urls} /> */}
-                      <br />
+                    {/* <ProductImagesSlider images={product.image_urls} /> */}
+                    <br />
 
-                      <span className='description-form-input-login'>
-                        <NavLink
-                          to={{
-                            pathname: '/product/video',
-                            // state: { video: product.image_urls },
-                          }}
-                          exact
-                        >
-                          Watch video of product
-                        </NavLink>
-                      </span>
-                    </div>
+                    <span className='description-form-input-login'>
+                      <NavLink
+                        to={{
+                          pathname: '/product/video',
+                          state: { video: product.image_urls },
+                        }}
+                        exact
+                      >
+                        Watch video of product
+                      </NavLink>
+                    </span>
                   </div>
-                  {/* <img
-                          className='img-fluid'
-                          src={product.image_urls[0]}
-                          alt=''
-                        /> */}
+                </div>
+                {/* <img
+                      className='img-fluid'
+                      src={product.image_urls[0]}
+                      alt=''
+                    /> */}
+
+                <div className='review' style={{ paddingTop: '10px' }}>
+                  <h4>REVIEWS</h4>
+
+                  {product.reviews && product.reviews.length === 0 && (
+                    <>
+                      <div
+                        class='alert alert-warning alert_warning_custom'
+                        role='alert'
+                        data-mdb-color='warning'
+                      >
+                        No review added yet
+                      </div>
+                    </>
+                  )}
+
+                  <div className='review_loop'>
+                    {product.reviews &&
+                      product.reviews.map((review, index) => (
+                        <ul className='review_list'>
+                          <li>
+                            {/* <strong>{review.name}</strong> */}
+                            <strong>Syed Hasnain</strong>
+                          </li>
+                          <li>
+                            {Array(review.rating)
+                              .fill()
+                              .map((_, i) => (
+                                <span style={{ color: '#ffd700' }}>
+                                  &#9733;
+                                </span>
+                              ))}
+                          </li>
+                          <li>
+                            <strong>
+                              {new Date(review.createdAt).toLocaleDateString()}
+                            </strong>
+                            {/* <strong>Date:</strong> */}
+                          </li>
+                          <li>
+                            {console.log(review.content)}
+                            <p>{review.content}</p>
+                          </li>
+                        </ul>
+                      ))}
+
+                    <hr />
+                  </div>
                 </div>
               </div>
-              <div className='col-sm-6'>
-                <div className='product_desc_wrapper'>
-                  <div className='product_title'>
-                    <h1>
-                      Product Name
-                      {/* {product.name} */}
-                    </h1>
-                    <span>
-                      <h6>Product #{/* {product.id} */}</h6>
-                    </span>
-                    <hr />
-                    <h1>
-                      Rs
-                      {/* {product.rent} */}/ day
-                    </h1>
-                  </div>
-
-                  <p>
-                    Availability of Product for rent:
-                    {/* {product.duration} days */}
-                  </p>
-                  <p>
-                    Product Category:
-                    {/* {product.categoryType} */}
-                  </p>
-                  <p>
-                    Added on
-                    {/* {moment(product.createdAt).fromNow()} */}
-                  </p>
-
+            </div>
+            <div className='col-sm-6'>
+              <div className='product_desc_wrapper'>
+                <div className='product_title'>
+                  <h1>{product.name}</h1>
+                  <span>
+                    <h6>Reason # {product.id}</h6>
+                  </span>
+                  <span>
+                    <h6>Reporting Reason: {product.reportingReason}</h6>
+                  </span>
                   <hr />
-                  <div className='desc'>
-                    <h2>Description</h2>
-                    {/* <p>{product.description}</p> */}
-                  </div>
-                  <hr />
-                  <div className='desc'>
-                    <h2>Supplier Information</h2>
-                    <p>
-                      Name:
-                      {/* {product.supplier.username} */}
-                    </p>
-                    <p>
-                      Email:
-                      {/* {product.supplier.email} */}
-                    </p>
-                    <p>
-                      Contact number: +92
-                      {/* {product.supplier.contact_number} */}
-                    </p>
-                  </div>
+                  <h1>Rs {product.rent} / day</h1>
                 </div>
+
+                <div className='stock'>
+                  <hr />
+                  <h6>
+                    Status:
+                    {product.quantity < 1 ? (
+                      <span className='text-danger'>Out of Stock</span>
+                    ) : (
+                      <span className='text-success'>Available</span>
+                    )}
+                  </h6>
+                </div>
+
+                <hr />
+                <div className='desc'>
+                  <h2>Description</h2>
+                  <p>{product.description}</p>
+                </div>
+                <hr />
+                <div className='desc'>
+                  <h2>Supplier Information</h2>
+                  {/* <p>Name: {product.supplier.username}</p> */}
+                  {/* <p>Email: {product.supplier.email}</p> */}
+                  {/* <p>Contact number: +92 {product.supplier.contactNumber}</p> */}
+                </div>
+                <hr />
+
                 {showApproveButton()}
               </div>
             </div>
-          )}
-        </div>
-      </>
-    )
-  }
+          </div>
+        )}
+      </div>
+    ))
   return (
     <div>
       <div className='container my-5 py-5'>
@@ -211,7 +247,7 @@ function ReportReviews() {
         </div>
 
         <div className='row justify-content-center'>
-          {loading ? <Loading /> : <ShowProduct3 />}
+          {loading ? <Loading /> : showProduct3()}
         </div>
       </div>
       {redirectUser()}

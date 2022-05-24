@@ -94,7 +94,7 @@ function Review() {
                     <h3 className='mb-0 font-weight-semibold'>
                       {product.reporting_reason}
                     </h3>
-                    <Link to={`/reportReviews/${3}`}>
+                    <Link to={`/reportReviews/${product.id}`}>
                       <h6>Details</h6>
                     </Link>
                   </div>
