@@ -138,56 +138,6 @@ function ReportReviews() {
                         src={product.image_urls[0]}
                         alt=''
                       /> */}
-
-                <div className='review' style={{ paddingTop: '10px' }}>
-                  <h4>REVIEWS</h4>
-
-                  {product.productDetails.reviews &&
-                    product.productDetails.reviews.length === 0 && (
-                      <>
-                        <div
-                          class='alert alert-warning alert_warning_custom'
-                          role='alert'
-                          data-mdb-color='warning'
-                        >
-                          No review added yet
-                        </div>
-                      </>
-                    )}
-
-                  <div className='review_loop'>
-                    {product.productDetails.reviews &&
-                      product.productDetails.reviews.map((review, index) => (
-                        <ul className='review_list'>
-                          <li>
-                            {/* <strong>{review.name}</strong> */}
-                            <strong>Syed Hasnain</strong>
-                          </li>
-                          <li>
-                            {Array(review.rating)
-                              .fill()
-                              .map((_, i) => (
-                                <span style={{ color: '#ffd700' }}>
-                                  &#9733;
-                                </span>
-                              ))}
-                          </li>
-                          <li>
-                            <strong>
-                              {new Date(review.createdAt).toLocaleDateString()}
-                            </strong>
-                            {/* <strong>Date:</strong> */}
-                          </li>
-                          <li>
-                            {console.log(review.content)}
-                            <p>{review.content}</p>
-                          </li>
-                        </ul>
-                      ))}
-
-                    <hr />
-                  </div>
-                </div>
               </div>
             </div>
             <div className='col-sm-6'>
@@ -196,6 +146,9 @@ function ReportReviews() {
                   <h1>{product.productDetails.name}</h1>
                   <span>
                     <h6>Reason # {product.id}</h6>
+                  </span>
+                  <span>
+                    <h6>Reported Review: {product.content}</h6>
                   </span>
                   <span>
                     <h6>
