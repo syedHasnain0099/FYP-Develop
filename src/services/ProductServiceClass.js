@@ -752,7 +752,6 @@ class ProductService extends GenericService {
     }
     return product;
   };
-
   extractSubcategoryName = (data) => {
     const { id, attributes } = data;
     const { name } = attributes;
