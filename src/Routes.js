@@ -64,11 +64,11 @@ function Routes() {
             <Header />
             <ApproveAd />
           </AdminRoute>
-          <AdminRoute path='/reportReviews/:reportId'>
+          <AdminRoute path='/reportReviews/:productId'>
             <Header />
             <ReportReviews />
           </AdminRoute>
-          <AdminRoute path='/reviewAds/:reportId'>
+          <AdminRoute path='/reviewAds/:productId'>
             <Header />
             <ReviewDetail />
           </AdminRoute>
