@@ -220,7 +220,6 @@ class ProductService extends GenericService {
         {}
       )
         .then((response) => {
-          console.log(response);
           const { data } = response;
           if (Array.isArray(data)) {
             for (let review of data) {
@@ -236,7 +235,7 @@ class ProductService extends GenericService {
         });
     });
   };
-  getReportedAds = () => {
+  getReportedAds = (id = "") => {
     const products = [];
     return new Promise((resolve, reject) => {
       const query = qs.stringify({
@@ -246,11 +245,15 @@ class ProductService extends GenericService {
           },
         },
       });
-      this.get(`products?populate=*&${query}`, {})
+      this.get(`products/${id}?populate=*&${query}`, {})
         .then((response) => {
           const { data } = response;
-          for (let product of data) {
-            products.push(this.extractProducts(product));
+          if (Array.isArray(data)) {
+            for (let product of data) {
+              products.push(this.extractProducts(product));
+            }
+          } else {
+            products.push(this.extractProducts(data));
           }
           resolve(products);
         })
