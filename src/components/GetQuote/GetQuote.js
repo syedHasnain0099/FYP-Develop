@@ -21,7 +21,7 @@ function GetQuote() {
   const [enteredEndDate, setEnteredEndDate] = useState('')
   const [enteredLocation, setEnteredLocation] = useState('')
   const [enteredQuantity, setEnteredQuantity] = useState('')
-  const [createdProduct, setCreatedProduct] = useState('')
+  const [createdProduct, setCreatedProduct] = useState(false)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const getProducts = (productId) => {
@@ -167,7 +167,10 @@ function GetQuote() {
   const showSuccess = () => (
     <div
       className='alert alert-info'
-      style={({ display: createdProduct ? '' : 'none' }, { height: '100px' })}
+      style={
+        { height: '100px', display: createdProduct ? '' : 'none' }
+        // { height: '100px' }
+      }
     >
       <h2>Quote has been sent SuccessFully</h2>
     </div>
