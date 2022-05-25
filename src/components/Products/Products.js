@@ -135,19 +135,19 @@ function Products() {
                     <h3 className='mb-0 font-weight-semibold'>
                       Rs {product.rent} / day
                     </h3>
-
+                    {/* 
                     {product.reviews.length > 0 &&
                       Array(product.reviews[0].rating)
                         .fill()
                         .map((_, i) => (
                           <span style={{ color: '#ffd700' }}>&#9733;</span>
-                        ))}
+                        ))} */}
                     <div className='text-muted mb-3'>
                       {product.reviews.length} reviews
                     </div>
-                    <Link to={`/products/${product.id}`}>
+                    {/* <Link to={`/products/${product.id}`}>
                       <h6>Details</h6>
-                    </Link>
+                    </Link> */}
                     <Link to={`/getQuote/${product.id}`}>
                       <button className='btn bg-cart mt-2 mb-2 mr-2'>
                         Get Quote

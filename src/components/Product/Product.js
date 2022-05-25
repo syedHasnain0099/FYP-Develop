@@ -207,8 +207,8 @@ function Product() {
                           <p>Name: {product.supplier.username}</p>
                           <p>Email: {product.supplier.email}</p>
                           <p>
-                            Contact number: +92{' '}
-                            {product.supplier.contact_number}
+                            Contact number:
+                            {product.supplier.contactNumber}
                           </p>
                         </div>
                       </div>

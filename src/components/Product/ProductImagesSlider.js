@@ -19,8 +19,11 @@ const ProductImagesSlider = (props) => {
         className='product-images-slider'
       >
         {props.images.map((item, index) => {
+          console.log('index', index)
           mediaType = productService.checkMediaType(item)
           if (mediaType == 'image') {
+            console.log('index', index)
+            console.log('mediaType', mediaType)
             return (
               <SwiperSlide key={index}>
                 <img src={item} alt='product images' />

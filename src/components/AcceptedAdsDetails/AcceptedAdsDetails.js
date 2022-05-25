@@ -304,7 +304,7 @@ function AcceptedAdsDetails() {
                   <h2>Supplier Information</h2>
                   <p>Name: {product.supplier.username}</p>
                   <p>Email: {product.supplier.email}</p>
-                  <p>Contact number: +92 {product.supplier.contact_number}</p>
+                  <p>Contact number: {product.supplier.contactNumber}</p>
                 </div>
               </div>
             </div>
