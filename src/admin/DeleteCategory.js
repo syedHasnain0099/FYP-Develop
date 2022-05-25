@@ -62,7 +62,7 @@ function DeleteCategory() {
     setError('')
     setSuccess(false)
     console.log(subCategory)
-    //deleteSubCategory(subCategory, category)
+    deleteSubCategory(subCategory)
   }
   const deleteSubCategory = (subCategory) => {
     categoryService
