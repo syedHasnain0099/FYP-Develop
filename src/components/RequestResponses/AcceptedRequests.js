@@ -12,7 +12,8 @@ function MyAds() {
   const [loading, setLoading] = useState(false)
   const [rejectedLoading, setRejectedLoading] = useState(false)
   const { id, username, email } = userData()
-
+  const [createdProduct, setCreatedProduct] = useState(false)
+  const [createdProduct1, setCreatedProduct1] = useState(false)
   const showAcceptedRequests = () => {
     setLoading(true)
     console.log('supplier id: ', id)
@@ -53,6 +54,7 @@ function MyAds() {
       .deleteRequestQuote(id)
       .then((data) => {
         console.log('deleted request: ', data)
+        setCreatedProduct(data.data.attributes.quote)
       })
       .catch((err) => {
         console.log(err)
@@ -65,12 +67,29 @@ function MyAds() {
     quoteService
       .deleteRequestQuote(id)
       .then((data) => {
+        setCreatedProduct1(data.data.attributes)
         console.log('deleted request: ', data)
       })
       .catch((err) => {
         console.log(err)
       })
   }
+  const showSuccess = () => (
+    <div
+      className='alert alert-danger'
+      style={{ display: createdProduct ? '' : 'none' }}
+    >
+      <h2>quote of price {`${createdProduct}`} is rejected</h2>
+    </div>
+  )
+  const showSuccess1 = () => (
+    <div
+      className='alert alert-danger'
+      style={{ display: createdProduct1 ? '' : 'none' }}
+    >
+      <h2>Rejected Request of quote is Deleted</h2>
+    </div>
+  )
   const Loading = () => {
     return (
       <>
@@ -276,12 +295,14 @@ function MyAds() {
           <h3 className='card-header'>Accepted Requests</h3>
           <div className='container my-2 py-2'>
             <div className='row justify-content-center'>
+              {showSuccess()}
               {loading ? <Loading /> : <AcceptedRequests />}
             </div>
           </div>
           <h3 className='card-header'>Rejected Requests</h3>
           <div className='container my-2 py-2'>
             <div className='row justify-content-center'>
+              {showSuccess1()}
               {rejectedLoading ? <Loading /> : <DisApproveAds />}
             </div>
           </div>

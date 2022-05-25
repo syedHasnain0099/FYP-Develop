@@ -41,10 +41,10 @@ function ProductEdit() {
     loading: false,
     error: '',
     createdProduct: '',
-    media_ids:''
+    media_ids: '',
   })
   const getMediaIds = () => {
-    console.log("my image urls: ",image_urls)
+    console.log('my image urls: ', image_urls)
     productService
       .extractMediaIdfromUrl(image_urls)
       .then((response) => {
@@ -152,7 +152,7 @@ function ProductEdit() {
     console.log('videoMediaId', videoMediaId)
     const mIds = []
     for (let i = 0; i < mediaIds.length; i++) {
-      console.log("heh")
+      console.log('heh')
       mIds.push(mediaIds[i])
     }
     if (videoMediaId != '') {
@@ -181,6 +181,11 @@ function ProductEdit() {
         mediaIds
       )
       .then((data) => {
+        setValues({
+          ...values,
+          loading: false,
+          createdProduct: data.data.attributes.name,
+        })
         console.log('updated product: ', data)
       })
       .catch((err) => {
@@ -437,6 +442,7 @@ function ProductEdit() {
         <div className='col-3'>{userLinks()}</div>
         <div className='col-9'> */}
       <h3 className='card-header mb-3'>Edit your Ad</h3>
+      {showSuccess()}
       <div className='col-md-8 offset-md-2'>{newPostForm()}</div>
       {/* </div>
       </div> */}
