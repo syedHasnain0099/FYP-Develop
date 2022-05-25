@@ -12,6 +12,8 @@ function ReviewDetail() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [redirectToReferrer, setRedirectToReferrer] = useState(false)
+  const [createdProduct, setCreatedProduct] = useState(false)
+  const [createdProduct1, setCreatedProduct1] = useState(false)
   const redirectUser = () => {
     if (redirectToReferrer) {
       return <Redirect to='/review/reporting'></Redirect>
@@ -75,6 +77,7 @@ function ReviewDetail() {
       .deleteReasonOfReportingOfProducts(productId)
       .then((data) => {
         console.log('deleted reason: ', data)
+        setCreatedProduct1(data.data.attributes.name)
       })
       .catch((err) => {
         console.log(err)
@@ -86,14 +89,37 @@ function ReviewDetail() {
       .deleteProduct(productId)
       .then((data) => {
         console.log('deleted product: ', data)
+        setCreatedProduct(data.data.attributes.name)
       })
       .catch((err) => {
         console.log(err)
       })
   }
+  const showSuccess = () => (
+    <div
+      className='alert alert-danger'
+      style={
+        { height: '100px', display: createdProduct ? '' : 'none' }
+        // { height: '100px' }
+      }
+    >
+      <h2>{`${createdProduct}`} ad is Deleted</h2>
+    </div>
+  )
+  const showSuccess1 = () => (
+    <div
+      className='alert alert-danger'
+      style={
+        { height: '100px', display: createdProduct1 ? '' : 'none' }
+        // { height: '100px' }
+      }
+    >
+      <h2>Request by user is Deleted</h2>
+    </div>
+  )
   const showProduct3 = () =>
     data.map((product) => (
-      <div className='container single_product show'>
+      <div className='container single_product show' style={{ margin: '0px' }}>
         {loading ? (
           <Loading />
         ) : (
@@ -237,9 +263,9 @@ function ReviewDetail() {
 
   return (
     <div>
-      <div className='container my-5 py-5'>
+      <div className='container my-1 py-1'>
         <div className='row'>
-          <div className='col-12 mb-5'>
+          <div className='col-12'>
             <h1 className='display-6 fw-bolder text-center'>
               Product Description
             </h1>
@@ -248,6 +274,8 @@ function ReviewDetail() {
         </div>
 
         <div className='row justify-content-center'>
+          {showSuccess()}
+          {showSuccess1()}
           {loading ? <Loading /> : showProduct3()}
         </div>
       </div>

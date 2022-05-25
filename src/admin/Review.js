@@ -144,10 +144,6 @@ function Review() {
                     <h3 className='mb-0 font-weight-semibold'>
                       {product.reportingReason}
                     </h3>
-
-                    <Link to={`/reviewAds/${product.id}`}>
-                      <h6>Details</h6>
-                    </Link>
                   </div>
                 </div>
               </div>
@@ -159,9 +155,9 @@ function Review() {
   }
   return (
     <div>
-      <div className='container my-5 py-5'>
+      <div className='container my-1 py-1'>
         <div className='row'>
-          <div className='col-12 mb-5'>
+          <div className='col-12 '>
             <h1 className='display-6 fw-bolder text-center'>
               Review Reporting Ads
             </h1>
@@ -174,7 +170,7 @@ function Review() {
         </div>
         <br />
         <div className='row'>
-          <div className='col-12 mb-5'>
+          <div className='col-12'>
             <h1 className='display-6 fw-bolder text-center'>
               Review Reporting Reviews
             </h1>

@@ -143,18 +143,15 @@ function GetQuote() {
                       Rs {product.rent} / day
                     </h3>
 
-                    {product.reviews.length > 0 &&
+                    {/* {product.reviews.length > 0 &&
                       Array(product.reviews[0].rating)
                         .fill()
                         .map((_, i) => (
                           <span style={{ color: '#ffd700' }}>&#9733;</span>
-                        ))}
+                        ))} */}
                     <div className='text-muted mb-3'>
                       {product.reviews.length} reviews
                     </div>
-                    <Link to={`/products/${product.id}`}>
-                      <h6>Details</h6>
-                    </Link>
                   </div>
                 </div>
               </div>

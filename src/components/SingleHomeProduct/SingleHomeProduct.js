@@ -227,7 +227,7 @@ function SingleHomeProduct() {
   }
   const showProduct3 = () =>
     data.map((product) => (
-      <div className='container single_product show'>
+      <div className='container single_product show' style={{ margin: '0px' }}>
         {loading ? (
           <Loading />
         ) : (
@@ -602,9 +602,9 @@ function SingleHomeProduct() {
 
   return (
     <div>
-      <div className='container my-5 py-5'>
+      <div className='container my-1 py-1'>
         <div className='row'>
-          <div className='col-12 mb-5'>
+          <div className='col-12'>
             <h1 className='display-6 fw-bolder text-center'>
               Product Description
             </h1>
@@ -615,16 +615,16 @@ function SingleHomeProduct() {
           {loading ? <Loading /> : showProduct3()}
         </div>
       </div>
-      <div className='container my-5 py-5'>
+      <div className='container my-1 py-1'>
         <div className='row'>
-          <div className='col-12 mb-5'>
+          <div className='col-12'>
             <h1 className='display-6 fw-bolder text-center'>
               Related Products
             </h1>
             <hr />
           </div>
         </div>
-        <h2 className='mt-4 mb-4'>
+        <h2 className='mt-1 mb-1'>
           {searchMessage(searched, relatedProducts)}
         </h2>
         <div className='row justify-content-center'>
