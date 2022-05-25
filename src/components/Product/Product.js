@@ -11,6 +11,8 @@ function Product() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [redirectToReferrer, setRedirectToReferrer] = useState(false)
+  const [createdProduct, setCreatedProduct] = useState(false)
+  const [createdProduct1, setCreatedProduct1] = useState(false)
   const getProducts = (productId) => {
     setLoading(true)
     productService
@@ -49,7 +51,10 @@ function Product() {
         data[0].supplier.id,
         image_ids
       )
-      .then((data) => console.log('congratulations your post is added ', data))
+      .then((data) => {
+        setCreatedProduct(data.data.attributes.name)
+        console.log('congratulations your post is added ', data)
+      })
       .catch((err) => console.log(err))
     //delete request from requested ads
     productService
@@ -62,10 +67,12 @@ function Product() {
   }
   const disapproveHandleChange = () => {
     const { id } = data[0]
+    console.log('id of disapprove', id)
     //send user notification
     productService
       .addRejectedAd(data[0], data[0].supplier.id)
       .then((data) => {
+        setCreatedProduct1(data)
         console.log(`the rejected ad: ${data}`)
         setRedirectToReferrer(true)
       })
@@ -81,6 +88,28 @@ function Product() {
       return <Redirect to='/approve/ad'></Redirect>
     }
   }
+  const showSuccess = () => (
+    <div
+      className='alert alert-info'
+      style={
+        { height: '100px', display: createdProduct ? '' : 'none' }
+        // { height: '100px' }
+      }
+    >
+      <h2>{`${createdProduct}`} ad has been Approved</h2>
+    </div>
+  )
+  const showSuccess1 = () => (
+    <div
+      className='alert alert-danger'
+      style={
+        { height: '100px', display: createdProduct1 ? '' : 'none' }
+        // { height: '100px' }
+      }
+    >
+      <h2>Request by user to post ad is Disapproved</h2>
+    </div>
+  )
   const Loading = () => {
     return (
       <>
@@ -97,14 +126,6 @@ function Product() {
           <Skeleton height={350} />
         </div>
       </>
-    )
-  }
-
-  const showStock = (quantity) => {
-    return quantity > 0 ? (
-      <span className='badge badge-primary badge-pill'>In Stock</span>
-    ) : (
-      <span className='badge badge-primary badge-pill'>Out of Stock</span>
     )
   }
 
@@ -133,7 +154,10 @@ function Product() {
         {data.map((product) => {
           return (
             <>
-              <div className='container single_product show'>
+              <div
+                className='container single_product show'
+                style={{ margin: '0px' }}
+              >
                 {loading ? (
                   <Loading />
                 ) : (
@@ -223,86 +247,15 @@ function Product() {
       </>
     )
   }
-  const ShowProducts = () => {
-    return (
-      <div className='show'>
-        {data.map((item) => (
-          <div className='details' key={item.id}>
-            <div
-              style={{
-                // height: '100vh',
-                display: 'flex',
-                // alignItems: 'center',
-                // justifyContent: 'center',
-              }}
-            >
-              <div
-                style={{
-                  width: '500px',
-                  backgroundColor: '#fff',
-                  padding: '20px',
-                }}
-              >
-                <ProductImagesSlider images={item.image_urls} />
-                <br />
-                <span className='description-form-input-login'>
-                  <NavLink
-                    to={{
-                      pathname: '/product/video',
-                      state: { video: item.image_urls },
-                    }}
-                    exact
-                  >
-                    Watch video of product
-                  </NavLink>
-                </span>
-              </div>
-            </div>
-            {/* <div className='big-img'>
-              <ProductImagesSlider images={item.image_urls} />
-              <img src={item.image_urls[0]} alt='' />
-            </div> */}
-
-            <div className='box'>
-              <div className='row'>
-                <h2>{item.name}</h2>
-                <span>Rs{item.rent}/ per day</span>
-              </div>
-              <p>{item.description}</p>
-              <p>Availability of Product for rent: {item.duration} days</p>
-              <p>Product Category: {item.categoryType}</p>
-              <p>Added on {moment(item.createdAt).fromNow()}</p>
-              <br />
-
-              <p class='lead mt-2'>Supplier information</p>
-              <p class='card-text'>Name: {item.supplier.username}</p>
-              <p class='card-text'>Email: {item.supplier.email}</p>
-              <p class='card-text'>
-                Contact number: 0{item.supplier.contact_number}
-              </p>
-              {/* <Colors colors={item.colors} /> */}
-
-              {/* <p>{item.content}</p> */}
-
-              {/* <Details
-              Thumb images={item.src} tab={this.handleTab} myRef={this.myRef} /> */}
-              <br />
-              {showApproveButton()}
-            </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
 
   useEffect(() => {
     getProducts(productId)
   }, [])
   return (
     <div>
-      <div className='container my-5 py-5'>
+      <div className='container my-1 py-1'>
         <div className='row'>
-          <div className='col-12 mb-5'>
+          <div className='col-12'>
             <h1 className='display-6 fw-bolder text-center'>
               Product Description
             </h1>
@@ -311,10 +264,11 @@ function Product() {
         </div>
 
         <div className='row justify-content-center'>
+          {showSuccess1()}
+          {showSuccess()}
           {loading ? <Loading /> : <ShowProduct3 />}
         </div>
       </div>
-      {redirectUser()}
     </div>
   )
 }

@@ -108,7 +108,7 @@ function ReviewDetail() {
   )
   const showSuccess1 = () => (
     <div
-      className='alert alert-danger'
+      className='alert alert-info'
       style={
         { height: '100px', display: createdProduct1 ? '' : 'none' }
         // { height: '100px' }

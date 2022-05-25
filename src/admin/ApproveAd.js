@@ -62,7 +62,7 @@ function ApproveAd() {
                     <div className='mb-2'>
                       <h5 className='font-weight-bold mb-2'>
                         <Link
-                          to={`/products/${product.id}`}
+                          to={`/approveAds/${product.id}`}
                           className='text-default mb-2'
                           data-abc='true'
                         >
@@ -76,48 +76,6 @@ function ApproveAd() {
                     <h3 className='mb-0 font-weight-semibold'>
                       Rs {product.rent} / day
                     </h3>
-
-                    <Link to={`/approveAds/${product.id}`}>
-                      <h6>Details</h6>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </>
-          )
-        })}
-      </>
-    )
-  }
-  const ShowProducts = () => {
-    return (
-      <>
-        {data.map((product) => {
-          return (
-            <>
-              <div className='col-4 mb-3' key={product.id}>
-                <div class='card h-100 text-center p-4'>
-                  <img
-                    class='card-img-top'
-                    src={product.image_urls[0]}
-                    alt={product.name}
-                    height='250px'
-                    //style={{ maxHeight: '100%', maxWidth: '100%' }}
-                  />
-                  <div class='card-body'>
-                    <h5
-                      class='card-title mb-1
-                     lead fw-bold'
-                    >
-                      {product.name}
-                    </h5>
-                    <p class='lead mt-2'>{product.description}...</p>
-                    <p class='card-text'>Rs {product.rent} / day</p>
-                    <Link to={`/approveAds/${product.id}`}>
-                      <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
-                        View Product
-                      </button>
-                    </Link>
                   </div>
                 </div>
               </div>
