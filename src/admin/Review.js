@@ -67,7 +67,7 @@ function Review() {
                   <div className="card-body">
                     <div className="card-img-actions">
                       <img
-                        src={review.reviewsData.productDetails.image_urls[0]}
+                        src={review.reviewData.productDetails.image_urls[0]}
                         // src={product.image_urls[0]}
                         className="card-img-top"
                         // width='96'
@@ -85,11 +85,11 @@ function Review() {
                           className="text-default mb-2"
                           data-abc="true"
                         >
-                          {review.reviewsData.productDetails.name}
+                          {review.reviewData.productDetails.name}
                         </Link>
                       </h5>
                       <p class="text-muted">
-                        {review.reviewsData.productDetails.description.substring(
+                        {review.reviewData.productDetails.description.substring(
                           0,
                           20
                         )}
@@ -139,15 +139,15 @@ function Review() {
                           className="text-default mb-2"
                           data-abc="true"
                         >
-                          {product.name}
+                          {product.productData.name}
                         </Link>
                       </h5>
                       <p class="text-muted">
-                        {product.description.substring(0, 20)}...
+                        {product.productData.description.substring(0, 20)}...
                       </p>
                     </div>
                     <h3 className="mb-0 font-weight-semibold">
-                      {product.reportingReason}
+                      {product.reason}
                     </h3>
                   </div>
                 </div>
