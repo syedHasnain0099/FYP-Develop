@@ -121,16 +121,5 @@ class ReportingService extends GenericService {
     }
     return { id, reason, productData };
   };
-
-  extractCategory = (data) => {
-    const { id, attributes } = data;
-    const { name } = attributes;
-    return { id, name };
-  };
-  extractCategoryList = (data) => {
-    const { id, attributes } = data;
-    const { name } = attributes;
-    return { id, name };
-  };
 }
 export default ReportingService;

@@ -1,13 +1,12 @@
 // import jwtDecode from 'jwt-decode';
-import qs from 'qs'
-import GenericService from './GenericService'
-import axios from 'axios'
-axios.defaults.baseURL ='http://localhost:1337/api/'
+import qs from "qs";
+import GenericService from "./GenericService";
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:1337/api/";
 // axios.defaults.baseURL =
 //   'http://erental-env.eba-wphbuc4y.ap-south-1.elasticbeanstalk.com/api/'
-const herokuLink = 'https://strapi-project-deployement.herokuapp.com/api/'
+const herokuLink = "https://strapi-project-deployement.herokuapp.com/api/";
 class UserService extends GenericService {
-  
   loginUser = (ID, Password) =>
     new Promise((resolve, reject) => {
       this.post(`auth/local`, {
@@ -15,31 +14,31 @@ class UserService extends GenericService {
         password: Password,
       })
         .then((data) => {
-          localStorage.setItem('token', data.jwt)
-          this.tokenUpdate()
-          localStorage.setItem('user', JSON.stringify(data.user))
-          console.log("data of user",JSON.stringify(data.user))
-          localStorage.setItem('user_password', JSON.stringify(Password))
+          localStorage.setItem("token", data.jwt);
+          this.tokenUpdate();
+          localStorage.setItem("user", JSON.stringify(data.user));
+          console.log("data of user", JSON.stringify(data.user));
+          localStorage.setItem("user_password", JSON.stringify(Password));
           // console.log("password: ",JSON.stringify(Password))
-          resolve(data.user)
+          resolve(data.user);
         })
         .catch((err) => {
-          console.log(err)
-          reject(err)
-        })
-    })
+          console.log(err);
+          reject(err);
+        });
+    });
 
   forgetPassword = (email) =>
     new Promise((resolve, reject) => {
-      this.tokenUpdate()
+      this.tokenUpdate();
       this.post(`auth/forgot-password`, {
         email,
       })
         .then((data) => {
-          resolve(data)
+          resolve(data);
         })
         .catch((err) => {
-          console.log('PLease provide a valid email address')
+          console.log("PLease provide a valid email address");
           // this.findUser()
           // .then((res)=> {
           //   console.log()
@@ -52,53 +51,56 @@ class UserService extends GenericService {
           // if (user.blocked) {
           //   console.log('This user is disabled');
           // }
-          reject(err)
-        })
-    })
+          reject(err);
+        });
+    });
 
   resetPassword = (code, password) =>
     new Promise((resolve, reject) => {
-      this.tokenUpdate()
+      this.tokenUpdate();
       this.post(`auth/reset-password`, {
         code,
         password,
         passwordConfirmation: password,
       })
         .then((data) => {
-          console.log('confirmation email has been set')
-          resolve(data)
+          console.log("confirmation email has been set");
+          resolve(data);
         })
         .catch((err) => {
-          reject(err)
-        })
-    })
+          reject(err);
+        });
+    });
 
   logout = async () => {
-    await localStorage.removeItem('token')
-    await localStorage.removeItem('user')
-    console.log('removed')
-    this.tokenUpdate()
-  }
+    await localStorage.removeItem("token");
+    await localStorage.removeItem("user");
+    console.log("removed");
+    this.tokenUpdate();
+  };
 
   getLoggedInUser = () => {
     new Promise((resolve, reject) => {
-      const user = localStorage.getItem('user')
-      if (user) resolve(JSON.parse(user))
+      const user = localStorage.getItem("user");
+      if (user) resolve(JSON.parse(user));
       else {
-        localStorage.removeItem('token')
-        this.tokenUpdate()
-        reject(new Error('Not Logged In'))
+        localStorage.removeItem("token");
+        this.tokenUpdate();
+        reject(new Error("Not Logged In"));
       }
-    })
-  }
-  updateProfile = (id,first_name,
-      last_name,
-      username,
-      email,
-      contact_number,
-      image,
-      password) => {
-    this.passwordUpdate(password)
+    });
+  };
+  updateProfile = (
+    id,
+    first_name,
+    last_name,
+    username,
+    email,
+    contact_number,
+    image,
+    password
+  ) => {
+    this.passwordUpdate(password);
     return this.put(`users/${id}`, {
       first_name,
       last_name,
@@ -106,30 +108,30 @@ class UserService extends GenericService {
       email,
       contact_number,
       image,
-      password
-    })
-  }
+      password,
+    });
+  };
   getUser = (ID) =>
     new Promise((resolve, reject) => {
       this.get(`users/${ID}`, {})
         .then((user) => {
-          resolve(user)
+          resolve(user);
         })
         .catch((err) => {
-          reject(err)
-        })
-    })
+          reject(err);
+        });
+    });
   getUserDP = (imageID) =>
     new Promise((resolve, reject) => {
       this.get(`upload/files/${imageID}`, {})
         .then((data) => {
-          resolve(data.url)
+          resolve(data.url);
         })
         .catch((err) => {
-          reject(err)
-        })
-    })
-  
+          reject(err);
+        });
+    });
+
   addUser = (
     username,
     email,
@@ -139,7 +141,7 @@ class UserService extends GenericService {
     contact_number,
     type
   ) => {
-    this.tokenUpdate()
+    this.tokenUpdate();
     return this.post(`auth/local/register`, {
       username,
       email,
@@ -148,8 +150,8 @@ class UserService extends GenericService {
       last_name,
       contact_number,
       type,
-    })
-  }
+    });
+  };
 
   findUserbyName = (name) =>
     new Promise((resolve, reject) => {
@@ -159,16 +161,16 @@ class UserService extends GenericService {
             $eq: name,
           },
         },
-      })
+      });
       this.get(`users?${query}`, {})
         .then((response) => {
-          if (response.length > 0) return resolve(true)
-          resolve(false)
+          if (response.length > 0) return resolve(true);
+          resolve(false);
         })
         .catch((err) => {
-          reject(err)
-        })
-    })
+          reject(err);
+        });
+    });
   //   findUserbyEmail = (email) =>
   // new Promise((resolve, reject) => {
   //   const query = qs.stringify({
@@ -190,9 +192,7 @@ class UserService extends GenericService {
   //       reject(err)
   //     })
   // })
-    getUserAds = (userId) => {
-
-    }
+  getUserAds = (userId) => {};
   userExists = (email) =>
     new Promise((resolve, reject) => {
       const query = qs.stringify({
@@ -201,26 +201,26 @@ class UserService extends GenericService {
             $eq: email,
           },
         },
-      })
+      });
       this.get(`users?${query}`, {})
         .then((response) => {
-          if (response.length > 0) return resolve(true)
-          resolve(false)
+          if (response.length > 0) return resolve(true);
+          resolve(false);
         })
         .catch((err) => {
-          reject(err)
-        })
-    })
+          reject(err);
+        });
+    });
 
   lock = (ID) =>
     this.put(`users/${ID}`, {
       blocked: true,
-    })
+    });
 
   unlock = (ID) =>
     this.put(`users/${ID}`, {
       blocked: false,
-    })
+    });
 
   // isLoggedInToken = () =>
   //   typeof localStorage.getItem('token') === 'undefined' ||
@@ -238,4 +238,4 @@ class UserService extends GenericService {
   //   })
 }
 
-export default UserService
+export default UserService;
