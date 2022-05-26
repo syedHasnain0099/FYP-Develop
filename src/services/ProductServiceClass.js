@@ -358,10 +358,20 @@ class ProductService extends GenericService {
     if (result == "jpeg") {
       return "image";
     }
+<<<<<<< HEAD
     if (result == "png") {
       return "image";
     } else if (result == "mp4") {
       return "video";
+=======
+    if (result == 'png') {
+      return 'image'
+    }
+    if (result == 'webp') {
+      return 'image'
+    } else if (result == 'mp4') {
+      return 'video'
+>>>>>>> f77b04c4925e8d284d8e5bf7c05fb736b3660dba
     }
   };
   getProductsByCategory = (categoryListName) => {
