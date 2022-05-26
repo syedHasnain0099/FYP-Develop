@@ -66,11 +66,11 @@ class ReportingService extends GenericService {
     return new Promise((resolve, reject) => {
       const query = qs.stringify({
         populate: this.populate,
-        filters: {
-          review: {
-            $notNull: true,
-          },
-        },
+        // filters: {
+        //   review: {
+        //     $notNull: true,
+        //   },
+        // },
       });
       this.get(`reported-contents/${id}?${query}`, {})
         .then((response) => {
@@ -101,7 +101,7 @@ class ReportingService extends GenericService {
     let reviewData = {};
     const { id, attributes } = data;
     const { reason, review } = attributes;
-    if (review) {
+    if (Object.keys(review).length !== 0) {
       const { data } = review;
       if (data) {
         reviewData = productService.extractReviews(data);

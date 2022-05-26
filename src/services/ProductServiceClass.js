@@ -360,6 +360,9 @@ class ProductService extends GenericService {
     }
     if (result == 'png') {
       return 'image'
+    }
+    if (result == 'webp') {
+      return 'image'
     } else if (result == 'mp4') {
       return 'video'
     }
