@@ -7,10 +7,11 @@ import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
 import Search from '../Search/Search'
 import Rating from '../Rating/Rating'
-function Products() {
+function BiddingProducts() {
   const { id, username, email } = userData()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
+
   const getData = () => {
     console.log('running in getData')
     setLoading(true)
@@ -68,7 +69,7 @@ function Products() {
                     <div className='mb-2'>
                       <h5 className='font-weight-bold mb-2'>
                         <Link
-                          to={`/products/${product.id}`}
+                          to={`/bidProduct/${product.id}`}
                           className='text-default mb-2'
                           data-abc='true'
                         >
@@ -82,20 +83,14 @@ function Products() {
                     <h3 className='mb-0 font-weight-semibold'>
                       Rs {product.rent} / day
                     </h3>
-                    {/* 
-                    {product.reviews.length > 0 &&
-                      Array(product.reviews[0].rating)
-                        .fill()
-                        .map((_, i) => (
-                          <span style={{ color: '#ffd700' }}>&#9733;</span>
-                        ))} */}
+
                     <div className='text-muted mb-3'>
                       {product.reviews.length} reviews
                     </div>
 
-                    <Link to={`/getQuote/${product.id}`}>
+                    <Link to={`/bidItem/${product.id}`}>
                       <button className='btn bg-cart mt-2 mb-2 mr-2'>
-                        Get Quote
+                        Bid on an item
                       </button>
                     </Link>
                   </div>
@@ -108,15 +103,21 @@ function Products() {
     )
   }
   return (
+    // <div className='container  justify-content-center mb-50'>
+    //   <div className='row' style={{ paddingTop: '102px' }}>
+    //     {<ShowProducts1 />}
+    //   </div>
+    // </div>
     <div>
       <div className='container my-1 py-1'>
         <div className='row'>
           <div className='col-12'>
-            <h1 className='display-6 fw-bolder text-center'>Products</h1>
+            <h1 className='display-6 fw-bolder text-center'>
+              Bidding Products
+            </h1>
             <hr />
           </div>
         </div>
-        <Search />
         <div className='row justify-content-center'>
           {loading ? <Loading /> : <ShowProducts1 />}
         </div>
@@ -125,4 +126,4 @@ function Products() {
   )
 }
 
-export default Products
+export default BiddingProducts

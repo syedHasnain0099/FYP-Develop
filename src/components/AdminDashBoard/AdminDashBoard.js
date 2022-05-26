@@ -42,6 +42,11 @@ function AdminDashBoard() {
             </Link>
           </li>
           <li class='list-group-item'>
+            <Link className='nav-link' to='/approve/bid'>
+              Approve bidding of an item
+            </Link>
+          </li>
+          <li class='list-group-item'>
             <Link className='nav-link' to='/review/reporting'>
               Review Reporting
             </Link>

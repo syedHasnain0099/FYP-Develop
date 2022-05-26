@@ -13,7 +13,7 @@ function Profile() {
   let { userId } = useParams()
   const { id } = userData()
   var pass = userPassword()
-  console.log("my own pass",pass)
+  console.log('my own pass', pass)
   const [passwordButton, setPasswordButton] = useState(false)
   const [imageFile, setImageFile] = useState({
     file: [null],
@@ -129,7 +129,18 @@ function Profile() {
               Post an ad
             </Link>
           </li>
-
+          <li class='list-group-item'>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to='/create/bidItem'
+              role='tab'
+              aria-controls='home'
+            >
+              Post an bidding item
+            </Link>
+          </li>
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '

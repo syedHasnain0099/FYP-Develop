@@ -74,6 +74,15 @@ function Header({ history }) {
           <li class='nav-item'>
             <Link
               class='nav-link'
+              to='/bidding/products'
+              style={isActive(history, '/bidding/products')}
+            >
+              Bidding Products
+            </Link>
+          </li>
+          <li class='nav-item'>
+            <Link
+              class='nav-link'
               to='/about'
               style={isActive(history, '/about')}
             >
