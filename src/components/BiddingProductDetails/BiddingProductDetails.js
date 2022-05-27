@@ -433,7 +433,7 @@ function BiddingProductDetails() {
                     <h6>Product # {product.id}</h6>
                   </span>
                   <hr />
-                  <h1>Rs {product.rent} / day</h1>
+                  <h1>Bidding Amount: {product.rent}</h1>
                 </div>
                 <Link to={`/bidItem/${product.id}`}>
                   <button className='btn bg-cart mt-2 mb-2 mr-2'>

@@ -81,7 +81,7 @@ function BiddingProducts() {
                       </p>
                     </div>
                     <h3 className='mb-0 font-weight-semibold'>
-                      Rs {product.rent} / day
+                      Bidding Amount: {product.rent}
                     </h3>
 
                     <div className='text-muted mb-3'>
