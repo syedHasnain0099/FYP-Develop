@@ -7,7 +7,7 @@ import productService from '../../services/ProductService'
 import ReactPlayer from 'react-player'
 import { fileObj, fileArray, videofileObj, videofileArray } from '../../auth'
 import './AddProduct.css'
-function AddProduct() {
+function AddBidItem() {
   const [imageFile, setImageFile] = useState({
     file: [null],
   })
@@ -78,8 +78,8 @@ function AddProduct() {
   const [values, setValues] = useState({
     productname: '',
     description: '',
-    rent: '',
-    duration: '',
+    bidPrice: '',
+
     subcategory: '',
     category: '',
     quantity: '',
@@ -91,8 +91,8 @@ function AddProduct() {
   const {
     productname,
     description,
-    rent,
-    duration,
+    bidPrice,
+
     category,
     quantity,
     subcategory,
@@ -136,7 +136,7 @@ function AddProduct() {
     console.log('values', values)
     console.log('mIds', mIds)
     postAd(
-      { productname, description, rent, duration, subcategory, quantity, id },
+      { productname, description, bidPrice, subcategory, quantity, id },
       mIds
     )
   }
@@ -145,8 +145,8 @@ function AddProduct() {
       .postAd(
         props.productname,
         props.description,
-        props.rent,
-        props.duration,
+        props.bidPrice,
+
         props.subcategory,
         props.quantity,
         props.id,
@@ -160,10 +160,10 @@ function AddProduct() {
           description: '',
           photo: '',
           video: '',
-          rent: '',
+          bidPrice: '',
           category: '',
           subcategory: '',
-          duration: '',
+
           quantity: '',
           error: false,
           loading: false,
@@ -248,27 +248,16 @@ function AddProduct() {
         />
       </div>
       <div className='form-group'>
-        <label className='text-muted'>Estimated Rent Per Day</label>
+        <label className='text-muted'>Bidding starting price</label>
         <input
-          onChange={handleChange('rent')}
-          value={rent}
+          onChange={handleChange('bidPrice')}
+          value={bidPrice}
           type='number'
           min='0'
           className='form-control'
         />
       </div>
-      <div className='form-group'>
-        <label className='text-muted'>
-          Max availability of Product for Rent
-        </label>
-        <input
-          onChange={handleChange('duration')}
-          value={duration}
-          type='number'
-          min='0'
-          className='form-control'
-        />
-      </div>
+
       <div className='form-group'>
         <label className='text-muted'>Category</label>
         <select
@@ -341,11 +330,6 @@ function AddProduct() {
       <div className='card'>
         <h4 className='card-header'>User Links</h4>
         <ul class='list-group list-group-flush'>
-          {/* <li class='list-group-item list-group-item-action active'>
-              <Link className='nav-link' to='/myAds'>
-                My Ads
-              </Link>
-            </li> */}
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -370,14 +354,10 @@ function AddProduct() {
               Update Profile
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-              <Link className='nav-link' to={`/profile/${id}`}>
-                Update Profile
-              </Link>
-            </li> */}
+
           <li class='list-group-item'>
             <Link
-              class='list-group-item list-group-item-action active'
+              class='list-group-item list-group-item-action'
               id='list-home-list'
               data-toggle='list'
               to='/create/product'
@@ -389,7 +369,7 @@ function AddProduct() {
           </li>
           <li class='list-group-item'>
             <Link
-              class='list-group-item list-group-item-action '
+              class='list-group-item list-group-item-action active '
               id='list-home-list'
               data-toggle='list'
               to='/create/bidItem'
@@ -399,11 +379,7 @@ function AddProduct() {
               Post an bidding item
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-              <Link className='nav-link' to='/create/product'>
-                Post an ad
-              </Link>
-            </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -416,11 +392,7 @@ function AddProduct() {
               Recieved Requests
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-              <Link className='nav-link' to='/pending/requests'>
-                Recieved Requests
-              </Link>
-            </li> */}
+
           <li class='list-group-item'>
             <Link
               class='list-group-item list-group-item-action '
@@ -433,11 +405,6 @@ function AddProduct() {
               Recieved Responses
             </Link>
           </li>
-          {/* <li class='list-group-item'>
-              <Link className='nav-link' to='/acceptedRequests'>
-                Recieved Responses
-              </Link>
-            </li> */}
         </ul>
       </div>
     )
@@ -447,14 +414,11 @@ function AddProduct() {
       <div className='row'>
         <div className='col-3'>{userLinks()}</div>
         <div className='col-9'>
-          <h3 className='card-header mb-3'>Post an ad</h3>
-          {/* <div className='col-md-8 offset-md-2'> */}
+          <h3 className='card-header mb-3'>Post an bidding item</h3>
           {showLoading()}
-          {console.log(imageFile)}
           {showSuccess()}
           {showError()}
           {newPostForm()}
-          {/* </div> */}
         </div>
       </div>
     </div>
@@ -473,4 +437,4 @@ function AddProduct() {
   )
 }
 
-export default AddProduct
+export default AddBidItem

@@ -32,6 +32,11 @@ import ReviewDetail from './components/ReviewDetail/ReviewDetail'
 import ReportReviews from './components/ReportReview/ReportReviews'
 import AdminShowOrders from './admin/AdminShowOrders'
 import StripeButton from './components/StripeButton/StripeButton'
+import AddBidItem from './components/AddBidItem/AddBidItem'
+import ApproveBidding from './admin/ApproveBidding'
+import BiddingProducts from './components/BiddingProducts/BiddingProducts'
+import BiddingProductDetails from './components/BiddingProductDetails/BiddingProductDetails'
+import BidItemQuote from './components/BidItemQuote/BidItemQuote'
 function Routes() {
   return (
     <BrowserRouter>
@@ -64,6 +69,10 @@ function Routes() {
           <AdminRoute path='/approve/ad'>
             <Header />
             <ApproveAd />
+          </AdminRoute>
+          <AdminRoute path='/approve/bid'>
+            <Header />
+            <ApproveBidding />
           </AdminRoute>
           <AdminRoute path='/reportReviews/:productId'>
             <Header />
@@ -109,6 +118,10 @@ function Routes() {
             <Header />
             <AcceptedRequests />
           </PrivateRoute>
+          <PrivateRoute path='/bidItem/:productId'>
+            <Header />
+            <BidItemQuote />
+          </PrivateRoute>
           <PrivateRoute path='/getQuote/:productId'>
             <Header />
             <GetQuote></GetQuote>
@@ -125,7 +138,15 @@ function Routes() {
             <Header />
             <AddProduct />
           </PrivateRoute>
+          <PrivateRoute path='/create/bidItem'>
+            <Header />
+            <AddBidItem />
+          </PrivateRoute>
 
+          <Route path='/bidProduct/:productId'>
+            <Header />
+            <BiddingProductDetails />
+          </Route>
           <Route path='/products/:productId'>
             <Header />
             <SingleHomeProduct />
@@ -138,18 +159,16 @@ function Routes() {
             <Header />
             <Products />
           </Route>
-          {/* <Route path='/ResetPageForm/:id'>
+          <Route path='/bidding/products'>
             <Header />
-            <ResetPageForm></ResetPageForm>
-          </Route> */}
+            <BiddingProducts />
+          </Route>
+
           <Route path='/ResetPageForm'>
             <Header />
             <ResetPageForm></ResetPageForm>
           </Route>
-          {/* <Route path='/getQuote/:productId'>
-            <Header />
-            <GetQuote></GetQuote>
-          </Route> */}
+
           <Route path='/SignUp'>
             <Header />
             <SignUp></SignUp>
