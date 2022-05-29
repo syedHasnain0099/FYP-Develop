@@ -58,6 +58,8 @@ function ForgotPassword(callback) {
   };
   const recoverPassword = (email) => {
     console.log("it is working");
+    // const resetPasswordToken = crypto.randomBytes(64).toString("hex");
+    // console.log("token: ", resetPasswordToken);
     userService
       .recoverPassword(email)
       .then((message) => {
