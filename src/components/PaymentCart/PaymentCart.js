@@ -16,7 +16,9 @@ function PaymentCart() {
   const [orders, setOrders] = useState([]);
   const [paymentProductData, setPaymentProductData] = useState([]);
   const [paymentShippingData, setPaymentShippingData] = useState([]);
-  const [quote, setQuote] = useState("");
+  let quote = "";
+  let total = "";
+  // const [quote, setQuote] = useState('')
 
   // const handleBuy = async () => {
   //   const stripe = await stripePromise;
@@ -47,6 +49,17 @@ function PaymentCart() {
   //     console.log(err);
   //   };
   // };
+  const detailsOfQuote = () => {
+    quoteService
+      .getProductOfQuote(quote_Id, "accepted")
+      .then((data) => {
+        console.log("product details: ", data);
+        setPaymentProductData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const getOrders = () => {
     orderService
       .getOrders(id, "paid")
@@ -84,26 +97,14 @@ function PaymentCart() {
   };
   useEffect(() => {
     getDetails();
+  }, []);
+  useEffect(() => {
     getOrders();
   }, []);
-  // useEffect(() => {
-  //   showAcceptedRequests()
-  // }, [])
   useEffect(() => {
     detailsOfQuote();
   }, []);
-  const detailsOfQuote = () => {
-    quoteService
-      .getProductOfQuote(quote_Id, "accepted")
-      .then((data) => {
-        console.log("product details: ", data);
-        setPaymentProductData(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  // let quote = "";
+
   return (
     <>
       <div className="container wrapper_add_to_Cart">
@@ -125,7 +126,7 @@ function PaymentCart() {
                     </div>
 
                     <div className="colcart">
-                      <h6>Rs.{setQuote(("0" + item.quote).slice(-2))} </h6>
+                      <h6>Rs. {(quote = item.quote)}</h6>
                     </div>
                   </div>
                 ))}
@@ -173,7 +174,8 @@ function PaymentCart() {
                   {/* ${cart.taxPrice} */}
                 </div>
                 <div className="">
-                  <b>Total: Rs.{quote + 500 + 1000}</b>
+                  <b>Total: Rs.{(total = quote + 500 + 1000)}</b>
+                  {/* {(total = ('0' + total).slice(-2))} */}
                 </div>
                 <div className="">
                   <img
@@ -185,7 +187,7 @@ function PaymentCart() {
                 <div className="addbtnstrip">
                   <span className="addtocart ">
                     {/* <StripeCheckoutButton price={(0 + 200).slice(-2)} /> */}
-                    <StripeCheckoutButton price={(0 + quote).slice(-2)} />
+                    <StripeCheckoutButton price={total} />
                   </span>
                 </div>
               </div>
