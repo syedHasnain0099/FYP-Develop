@@ -185,7 +185,7 @@ function PaymentCart() {
                 <div className="addbtnstrip">
                   <span className="addtocart ">
                     {/* <StripeCheckoutButton price={(0 + 200).slice(-2)} /> */}
-                    <StripeCheckoutButton price={quote} />
+                    <StripeCheckoutButton price={(0 + quote).slice(-2)} />
                   </span>
                 </div>
               </div>

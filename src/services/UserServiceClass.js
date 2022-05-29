@@ -55,6 +55,23 @@ class UserService extends GenericService {
         });
     });
 
+  recoverPassword = (email) =>
+    new Promise((resolve, reject) => {
+      this.tokenUpdate();
+      this.post(`auth/returnPassword`, {
+        data: {
+          to: email,
+        },
+      })
+        .then((message) => {
+          resolve(message);
+        })
+        .catch((err) => {
+          console.log("PLease provide a valid email address");
+          reject(err);
+        });
+    });
+
   resetPassword = (code, password) =>
     new Promise((resolve, reject) => {
       this.tokenUpdate();
@@ -171,27 +188,27 @@ class UserService extends GenericService {
           reject(err);
         });
     });
-  //   findUserbyEmail = (email) =>
-  // new Promise((resolve, reject) => {
-  //   const query = qs.stringify({
-  //     filters: {
-  //       email: {
-  //         $eq: email,
-  //       },
-  //     },
-  //   })
-  //   this.get(`users?${query}`, {})
-  //     .then((user) => {
-  //       if (user.length > 0) {
-  //         return resolve(user[0])
-  //       }
+  findUserbyEmail = (email) =>
+    new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
+          email: {
+            $eq: email,
+          },
+        },
+      });
+      this.get(`users?${query}`, {})
+        .then((user) => {
+          if (user.length > 0) {
+            return resolve(user[0]);
+          }
 
-  //       reject(new Error('User not found'))
-  //     })
-  //     .catch((err) => {
-  //       reject(err)
-  //     })
-  // })
+          reject(new Error("User not found"));
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   getUserAds = (userId) => {};
   userExists = (email) =>
     new Promise((resolve, reject) => {

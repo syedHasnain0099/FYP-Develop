@@ -20,10 +20,10 @@ const StripeCheckoutButton = ({ price }) => {
 
   // const publishablekey =
   //   "pk_test_51L21M9CkQckw00WvUtYFfgcAmm9NQzQ8pI4JlVRLlIoH8jrQV9bFOuN6XBJtNFvaXbMcUueCaU2IotdF1zabgWqy00xR8aRYtZ";
+  const [sessionId, setSessionId] = useState("");
   const [productData, setProductData] = useState([]);
   const [clientSecretKey, setclientSecretKey] = useState("");
   const stripePromise = loadStripe(publishablekey);
-  const [token, setToken] = useState(null);
   // const stripe = {};
 
   const getProductData = () => {
@@ -42,6 +42,7 @@ const StripeCheckoutButton = ({ price }) => {
       .postOrder(productId, priceForStripe, id, shippId)
       .then((data) => {
         console.log("data:", data.id);
+        setSessionId(data.id);
         stripe.redirectToCheckout({
           sessionId: data.id,
         });
@@ -90,11 +91,11 @@ const StripeCheckoutButton = ({ price }) => {
     // collectAccountDetails();
     // confirmPayment();
   }, []);
-  const onToken = (token) => {
-    setToken(token);
-    console.log(token);
-    // alert("payment success");
-  };
+  // const onToken = (token) => {
+  //   setToken('token');
+  //   console.log(token);
+  //   // alert("payment success");
+  // };
 
   // const cart = useSelector((state) => state.cart)
   // const { cartItems } = cart
@@ -135,7 +136,7 @@ const StripeCheckoutButton = ({ price }) => {
       description={`Your total is $${price}`}
       amount={priceForStripe}
       panelLabel="Pay Now"
-      token={onToken}
+      token={"onToken"}
       stripeKey={publishablekey}
     />
   );

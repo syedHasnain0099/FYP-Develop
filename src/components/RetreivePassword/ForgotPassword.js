@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./ForgotPassword.css";
 import validateInfo1 from "./validatInfo1";
 import userService from "../../services/UserService";
-
 function ForgotPassword(callback) {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,7 +34,20 @@ function ForgotPassword(callback) {
       .userExists(email)
       .then((res) => {
         if (res === true) {
-          forgetPassword(email);
+          userService
+            .findUserbyEmail(email)
+            .then((user) => {
+              console.log("user type: ", user.type);
+              if (user.type === "admin") {
+                console.log("admin wants recovery");
+                recoverPassword(email);
+              } else {
+                console.log(
+                  "the provided email doesn't corresponds to the admin"
+                );
+              }
+            })
+            .catch((err) => console.log(err));
           setError("");
         } else {
           setError("Email doesn't exists");
@@ -44,13 +56,13 @@ function ForgotPassword(callback) {
       })
       .catch((err) => console.log(err));
   };
-  const forgetPassword = (email) => {
+  const recoverPassword = (email) => {
     console.log("it is working");
     userService
-      .forgetPassword(email)
-      .then((data) => {
-        console.log("Your user received an email");
-        setSuccess("User has received an email");
+      .recoverPassword(email)
+      .then((message) => {
+        console.log(message);
+        setSuccess("Admin has received an email");
       })
       .catch((err) => {
         setError(`An error occurred: ${err.response}`);
@@ -95,7 +107,7 @@ function ForgotPassword(callback) {
           {errors.email && <p>{errors.email}</p>}
         </div>
         <button type="submit" className="forgot-form-input-btn">
-          Reset Password
+          Recover Password
         </button>
       </form>
       {showError()}
