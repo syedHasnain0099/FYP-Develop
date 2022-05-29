@@ -6,6 +6,13 @@ class OrderService extends GenericService {
     super();
     this.populate = ["user", "product"];
   }
+  confirmOrder = (checkout_session) => {
+    return this.post(`orders/confirm`, {
+      data: {
+        checkout_session,
+      },
+    });
+  };
   postOrder = (product, total, user, shipping_detail) => {
     return this.post(`orders`, {
       data: {

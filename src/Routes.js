@@ -5,7 +5,6 @@ import React from "react";
 import ForgotPasswordForm from "./components/ForgotPassword/ForgotPasswordForm";
 import ResetPageForm from "./components/ForgotPassword/ResetPageForm";
 import ForgotPasswordF from "./components/RetreivePassword/ForgotPasswordForm";
-import ResetPageF from "./components/RetreivePassword/ResetPageForm";
 import SignUp from "./components/SignUp/SignUp";
 import Login from "./components/Login/Login";
 import Products from "./components/Products/Products";
@@ -33,7 +32,7 @@ import Review from "./admin/Review";
 import ReviewDetail from "./components/ReviewDetail/ReviewDetail";
 import ReportReviews from "./components/ReportReview/ReportReviews";
 import AdminShowOrders from "./admin/AdminShowOrders";
-import StripeButton from "./components/StripeButton/StripeButton";
+import PaymentSuccess from "./components/ConfirmPayment/PaymentSuccess";
 import AddBidItem from "./components/AddBidItem/AddBidItem";
 import ApproveBidding from "./admin/ApproveBidding";
 import BiddingProducts from "./components/BiddingProducts/BiddingProducts";
@@ -88,9 +87,9 @@ function Routes() {
             <Header />
             <Product />
           </AdminRoute>
-          <PrivateRoute path="/test">
+          <PrivateRoute path="/payment/success">
             <Header />
-            <StripeButton />
+            <PaymentSuccess />
           </PrivateRoute>
           <PrivateRoute path="/product/:productId">
             <Header />
@@ -168,7 +167,7 @@ function Routes() {
 
           <Route path="/ResetPageForm">
             <Header />
-            <ResetPageF></ResetPageF>
+            <ResetPageForm></ResetPageForm>
           </Route>
 
           <Route path="/SignUp">

@@ -93,10 +93,15 @@ function Login(callback) {
           err_msg = "Error occured please try later";
         } else if (err_msg == "Invalid identifier or password") {
           err_msg = err_msg.replace("identifier", "email");
+        } else if (err_msg == "Your account email is not confirmed") {
+          err_msg =
+            "You have not verified your email yet. Please verify it first!";
+        } else {
+          err_msg = "User with these credentials doesn't exists";
         }
         setValues({
           ...values,
-          error: "User with these credentials doesn't exists",
+          error: err_msg,
         });
       });
   };
