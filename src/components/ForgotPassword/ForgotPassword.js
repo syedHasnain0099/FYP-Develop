@@ -35,7 +35,21 @@ function ForgotPassword(callback) {
       .userExists(email)
       .then((res) => {
         if (res === true) {
-          forgetPassword(email);
+          userService
+            .findUserbyEmail(email)
+            .then((user) => {
+              console.log("user type: ", user.type);
+              if (user.type === "user") {
+                console.log("user wants reset");
+                forgetPassword(email);
+                setError("");
+              } else {
+                console.log(
+                  "the provided email doesn't corresponds to the admin"
+                );
+              }
+            })
+            .catch((err) => console.log(err));
           setError("");
         } else {
           setError("Email doesn't exists");
