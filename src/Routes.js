@@ -154,7 +154,7 @@ function Routes() {
           </Route>
           <Route path="/ForgotPasswordForm">
             <Header />
-            <ForgotPasswordF></ForgotPasswordF>
+            <ForgotPasswordForm></ForgotPasswordForm>
           </Route>
           <Route path="/products">
             <Header />
