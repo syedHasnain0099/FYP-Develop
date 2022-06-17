@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import productService from '../../services/ProductService'
 import quoteService from '../../services/QuoteService'
+import { addItem } from '../../auth'
 function MyAds() {
   console.log('accpeted requests.js')
   const [acceptedRequestsData, setAcceptedRequestsData] = useState([])
@@ -223,7 +224,7 @@ function MyAds() {
                     <p class='lead mt-2'>Duration</p>
                     <p class='card-text'>Start Date:{item.startDate}</p>
                     <p class='card-text'>End Date:{item.endDate}</p>
-                    <NavLink
+                    {/* <NavLink
                       to={{
                         pathname: '/shipping',
                         state: { productId: item.id },
@@ -233,7 +234,10 @@ function MyAds() {
                       <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
                         Proceed to Payment
                       </button>
-                    </NavLink>
+                    </NavLink> */}
+                    <button className='btn btn-outline-primary mt-2 mb-2 mr-2'>
+                      Add to cart
+                    </button>
                     <button
                       className='btn btn-outline-danger mt-2 mb-2 mr-2'
                       onClick={(e) => {
