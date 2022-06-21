@@ -1,51 +1,68 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
-import orderService from '../../services/OrderService'
+import React from "react";
+import { useEffect, useState } from "react";
+import orderService from "../../services/OrderService";
 
 function PaymentSuccess() {
   // const [checkoutSession, setCheckoutSession] = useState("");
-  const resetCode = window.location.href
+  const [prodId, setProdId] = useState("");
+  const [prodQuantity, setProdQuantity] = useState("");
+  const resetCode = window.location.href;
   const myArray = resetCode.split(
-    'http://localhost:3000/payment/success?session_id='
-  )
-  console.log(myArray[1])
+    "http://localhost:3000/payment/success?session_id="
+  );
+  console.log(myArray[1]);
   const confirmPayment = async () => {
     const checkoutSession =
-      'cs_test_a1FMOcnLEYKcZxy9F7w9FfFesKgZuyBvg9DrU8rftmgNsfDBB9a8fliCze'
-    console.log('checkout_session: ', checkoutSession)
+      "cs_test_a1FMOcnLEYKcZxy9F7w9FfFesKgZuyBvg9DrU8rftmgNsfDBB9a8fliCze";
+    console.log("checkout_session: ", checkoutSession);
     orderService
       .confirmOrder(checkoutSession)
       .then((res) => {
-        console.log(res)
+        console.log(res);
+        if (res.data.attributes.status === "paid") {
+          orderService
+            .getOneOrder(res.data.id)
+            .then((orderData) => {
+              setProdId(orderData.request_quote.product.id);
+              setProdQuantity(orderData.request_quote.product.quantity);
+            })
+            .catch((err) => console.log(err));
+          orderService
+            .subtractQuantity(prodId, prodQuantity)
+            .then((data) => {
+              console.log("quantity of product deducted!", data.quantity);
+            })
+            .catch((err) => console.log(err));
+        }
       })
-      .catch((err) => console.log(err))
-  }
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
-    confirmPayment()
-  }, [])
+    confirmPayment();
+  }, []);
   return (
     <>
-      <div className='container' style={{ padding: '100px 0' }}>
-        <h1 className='text-center'>Order Confirmation</h1>
-        <div className='bg'>
-          <div className='card' style={{ paddingTop: '66px' }}>
-            <span className='card__success'>
-              <i className='fa fa-check'></i>
+      <div className="container" style={{ padding: "100px 0" }}>
+        <h1 className="text-center">Order Confirmation</h1>
+        <div className="bg">
+          <div className="card" style={{ paddingTop: "66px" }}>
+            <span className="card__success">
+              <i className="fa fa-check"></i>
             </span>
 
-            <h1 className='card__msg'>Payment Complete</h1>
-            <h2 className='card__submsg'>Thank you for choosing us!</h2>
+            <h1 className="card__msg">Payment Complete</h1>
+            <h2 className="card__submsg">Thank you for choosing us!</h2>
 
-            <div className='card__body'></div>
+            <div className="card__body"></div>
 
-            <div className='card__tags'>
-              <span className='card__tag'>completed</span>
+            <div className="card__tags">
+              <span className="card__tag">completed</span>
             </div>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default PaymentSuccess
+export default PaymentSuccess;
