@@ -5,17 +5,15 @@ import quoteService from "./QuoteService";
 class OrderService extends GenericService {
   constructor() {
     super();
-    this.populate = ["user", "request_quote.*"];
+    this.populate = ["user", "request_quote.product"];
   }
-  subtractQuantity = (productId, quantity) => {
-    if (quantity >= 1) {
-      const updatedQuantity = quantity - 1;
-      return this.put(`products/${productId}`, {
-        data: {
-          quantity: updatedQuantity,
-        },
-      });
-    }
+  subtractQuantity = (productId, quoteQuantity, prodQuantity) => {
+    const updatedQuantity = prodQuantity - quoteQuantity;
+    return this.put(`products/${productId}`, {
+      data: {
+        quantity: updatedQuantity,
+      },
+    });
   };
   confirmOrder = (checkout_session) => {
     return this.post(`orders/confirm`, {
