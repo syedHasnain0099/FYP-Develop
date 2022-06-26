@@ -17,6 +17,13 @@ const UserOrderHistory = ({ history }) => {
       .getOrders(userId, "paid")
       .then((order) => {
         console.log("order data!", order);
+        order.id,
+        order.request_quote.start_date,
+        order.request_quote.end_date,
+        order.total,
+        order.status,
+        order.delivered,
+        order.created_at,
       })
       .catch((err) => console.log(err));
 

@@ -36,7 +36,6 @@ class OrderService extends GenericService {
         total,
         user,
         shipping_detail,
-        delivered: "no",
       },
     });
   };
@@ -91,6 +90,7 @@ class OrderService extends GenericService {
       user,
       createdAt,
       delivered,
+      updatedAt,
     } = attributes;
     var order = {
       id: "",
@@ -101,12 +101,14 @@ class OrderService extends GenericService {
       currentUser: {},
       created_at: "",
       delivered: "",
+      updated_at: "",
     };
     order.id = id;
     order.status = status;
     order.total = total;
     order.checkout_session = checkout_session;
     order.created_at = new Date(createdAt).toLocaleDateString("en-EN");
+    order.updated_at = new Date(updatedAt).toLocaleDateString("en-EN");
     order.delivered = delivered;
     if (request_quote) {
       const { data } = request_quote;
