@@ -6,13 +6,14 @@ import { userData } from '../../auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { saveShippingAddress } from '../../action/cartAction'
 import Footer from '../Footer/footer'
+import { useEffect } from 'react'
 function ShippingCard() {
   const { shippingAddress } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
   //product id
   const { id } = userData()
-  let location = useLocation()
-  console.log(location.state)
+  // let location = useLocation()
+  // console.log(location.state)
 
   const [fullName, setFullName] = useState('')
   const [address, setAddress] = useState('')
@@ -21,6 +22,13 @@ function ShippingCard() {
   const [city, setCity] = useState('')
   const [postalCode, setPostalCode] = useState('')
   const [redirectToReferrer, setRedirectToReferrer] = useState(false)
+  const getShippingAddress = () => {
+    console.log('user id', id)
+    //execute here
+  }
+  useEffect(() => {
+    getShippingAddress()
+  }, [])
   const handleSubmitShipping = (e) => {
     e.preventDefault()
     console.log('clicked')
@@ -79,7 +87,6 @@ function ShippingCard() {
   // }
   const redirectUser = () => {
     if (redirectToReferrer) {
-      console.log(location)
       return (
         <Redirect
           to={{
