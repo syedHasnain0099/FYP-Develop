@@ -9,7 +9,7 @@ import Footer from "../Footer/footer";
 import { useEffect } from "react";
 function ShippingCard() {
   const { shippingAddress } = useSelector((state) => state.cart);
-  // const [shippingData, setShippingData] = {};
+  const [shippingData, setShippingData] = useState({});
   const dispatch = useDispatch();
   //product id
   const { id } = userData();
@@ -38,6 +38,7 @@ function ShippingCard() {
     shippingService
       .getShippingDetail(id)
       .then((data) => {
+        setShippingData(data);
         setValues(data);
         console.log("shipping details: ", data);
       })
@@ -65,8 +66,7 @@ function ShippingCard() {
         postalCode,
       })
     );
-    console.log(values.id);
-    if (Object.keys(values).length === 0) {
+    if (Object.keys(shippingData).length === 0) {
       shippingService
         .addShippingDetail(
           fullName,
