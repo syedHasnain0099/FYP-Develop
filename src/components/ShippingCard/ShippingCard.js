@@ -96,24 +96,6 @@ function ShippingCard() {
           console.log(err);
         });
     }
-
-    shippingService
-      .addShippingDetail(
-        fullName,
-        address,
-        cellPhone,
-        country,
-        city,
-        postalCode,
-        id
-      )
-      .then((data) => {
-        console.log("congratulations your shipping detail is added ", data);
-        setRedirectToReferrer(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     //setRedirectToReferrer(true)
     //props.history.push('/payment');
   };
