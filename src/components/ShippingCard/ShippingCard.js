@@ -9,27 +9,35 @@ import Footer from "../Footer/footer";
 import { useEffect } from "react";
 function ShippingCard() {
   const { shippingAddress } = useSelector((state) => state.cart);
+  const [shippingData, useShippingData] = {};
   const dispatch = useDispatch();
   //product id
   const { id } = userData();
   // let location = useLocation()
   // console.log(location.state)
 
-  const [fullName, setFullName] = useState("");
-  const [address, setAddress] = useState("");
-  const [cellPhone, setCellPhone] = useState("");
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [shippingData, setShippingData] = useState({});
+  // const [fullName, setFullName] = useState('')
+  // const [address, setAddress] = useState('')
+  // const [cellPhone, setCellPhone] = useState('')
+  // const [country, setCountry] = useState('')
+  // const [city, setCity] = useState('')
+  // const [postalCode, setPostalCode] = useState('')
   const [redirectToReferrer, setRedirectToReferrer] = useState(false);
+  const [values, setValues] = useState({
+    fullName: "",
+    address: "",
+    cellPhone: "",
+    country: "",
+    city: "",
+    postalCode: "",
+  });
   const getShippingAddress = () => {
     console.log("user id", id);
     //execute here
     shippingService
       .getShippingDetail(id)
       .then((data) => {
-        setShippingData(data);
+        setValues(data);
         console.log("shipping details: ", data);
       })
       .catch((err) => {
@@ -39,6 +47,10 @@ function ShippingCard() {
   useEffect(() => {
     getShippingAddress();
   }, []);
+  const handleChange = (names) => async (event) => {
+    setValues({ ...values, [names]: event.target.value });
+  };
+  const { fullName, address, cellPhone, country, city, postalCode } = values;
   const handleSubmitShipping = (e) => {
     e.preventDefault();
     console.log("clicked");
@@ -89,32 +101,28 @@ function ShippingCard() {
           console.log(err);
         });
     }
+
+    shippingService
+      .addShippingDetail(
+        fullName,
+        address,
+        cellPhone,
+        country,
+        city,
+        postalCode,
+        id
+      )
+      .then((data) => {
+        console.log("congratulations your shipping detail is added ", data);
+        setRedirectToReferrer(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     //setRedirectToReferrer(true)
     //props.history.push('/payment');
   };
-  // const handleSubmitShipping = (e) => {
-  //   e.preventDefault()
-  //   console.log('clicked')
-  //   //run your backend api
-  //   shippingService
-  //     .addShippingDetail(
-  //       fullName,
-  //       address,
-  //       cellPhone,
-  //       country,
-  //       city,
-  //       postalCode,
-  //       id
-  //     )
-  //     .then((data) => {
-  //       console.log('congratulations your shipping detail is added ', data)
-  //       setRedirectToReferrer(true)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err)
-  //     })
-  //   //success setRedirectToReferrer(true)
-  // }
+
   const redirectUser = () => {
     if (redirectToReferrer) {
       return (
@@ -146,7 +154,7 @@ function ShippingCard() {
                 Fullname
               </label>
               <input
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={handleChange("fullName")}
                 type="text"
                 id="form4Example1"
                 className="form-control"
@@ -160,7 +168,7 @@ function ShippingCard() {
                 Address
               </label>
               <input
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={handleChange("address")}
                 type="text"
                 id="form4Example2"
                 className="form-control"
@@ -174,7 +182,7 @@ function ShippingCard() {
                 Cellphone
               </label>
               <input
-                onChange={(e) => setCellPhone(e.target.value)}
+                onChange={handleChange("cellPhone")}
                 type="tel"
                 id="form4Example2"
                 className="form-control"
@@ -188,7 +196,7 @@ function ShippingCard() {
                 Country
               </label>
               <input
-                onChange={(e) => setCountry(e.target.value)}
+                onChange={handleChange("country")}
                 type="text"
                 id="form4Example3"
                 className="form-control"
@@ -202,7 +210,7 @@ function ShippingCard() {
                 City
               </label>
               <input
-                onChange={(e) => setCity(e.target.value)}
+                onChange={handleChange("city")}
                 type="text"
                 id="form4Example3"
                 className="form-control"
@@ -216,7 +224,7 @@ function ShippingCard() {
                 Postal Code
               </label>
               <input
-                onChange={(e) => setPostalCode(e.target.value)}
+                onChange={handleChange("postalCode")}
                 type="text"
                 id="form4Example3"
                 className="form-control"
