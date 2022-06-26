@@ -7,11 +7,20 @@ class OrderService extends GenericService {
     super();
     this.populate = ["user", "request_quote.product.image"];
   }
-  updateOrderStatus = (status, orderId) => {
+  updateDeliveryStatus = (status, orderId) => {
     return this.put(`orders/${orderId}`, {
       data: {
-        delivery_status: status,
+        delivered: status,
       },
+    });
+  };
+  deleteOrder = (orderId) => {
+    return new Promise((resolve, reject) => {
+      this.delete(`orders/${orderId}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
     });
   };
   subtractQuantity = (productId, quoteQuantity, prodQuantity) => {
