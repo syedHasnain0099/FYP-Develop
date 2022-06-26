@@ -79,21 +79,21 @@ function PaymentCart() {
     console.log('user id: ', id)
     console.log('total: ', priceForStripe)
     console.log('quote id: ', quoteId)
-    const shippId = paymentShippingData[0].shippingId
+    const shippId = paymentShippingData.shippingId
     console.log('shipp id: ', shippId)
-    // orderService
-    //   .postOrder(productId, priceForStripe, id, shippId)
-    //   .then((data) => {
-    //     console.log('data:', data.id)
-    //     stripe.redirectToCheckout({
-    //       sessionId: data.id,
-    //     })
+    orderService
+      .postOrder(productId, priceForStripe, id, shippId)
+      .then((data) => {
+        console.log('data:', data.id)
+        stripe.redirectToCheckout({
+          sessionId: data.id,
+        })
 
-    //     // setclientSecretKey(data.paymentIntent.client_secret);
-    //     // console.log("client secret id: ", clientSecretKey);
-    //   }).catch = (err) => {
-    //   console.log(err)
-    // }
+        // setclientSecretKey(data.paymentIntent.client_secret);
+        // console.log("client secret id: ", clientSecretKey);
+      }).catch = (err) => {
+      console.log(err)
+    }
   }
   // const detailsOfQuote = () => {
   //   quoteService
