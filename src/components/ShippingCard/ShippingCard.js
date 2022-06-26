@@ -9,7 +9,7 @@ import Footer from "../Footer/footer";
 import { useEffect } from "react";
 function ShippingCard() {
   const { shippingAddress } = useSelector((state) => state.cart);
-  const [shippingData, useShippingData] = {};
+  // const [shippingData, setShippingData] = {};
   const dispatch = useDispatch();
   //product id
   const { id } = userData();
@@ -64,7 +64,7 @@ function ShippingCard() {
         postalCode,
       })
     );
-    if (Object.keys(shippingData).length === 0) {
+    if (Object.keys(values).length === 0) {
       shippingService
         .addShippingDetail(
           fullName,
@@ -86,7 +86,7 @@ function ShippingCard() {
       shippingService
         .updateShippingDetail(
           { fullName, address, cellPhone, country, city, postalCode },
-          shippingData.id
+          values.id
         )
         .then((data) => {
           console.log("congratulations your shipping detail is updated ", data);
