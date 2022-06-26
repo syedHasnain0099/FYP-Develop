@@ -4,7 +4,9 @@ import SearchIcon from '@mui/icons-material/Search'
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket'
 import { Link, Redirect } from 'react-router-dom'
 import { useStateValue } from '../StateProvider/StateProvider'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import userService from '../../services/UserService'
+import { useSelector, useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { isAuthenticated, userData } from '../../auth'
 import { withRouter } from 'react-router-dom'
@@ -16,9 +18,11 @@ const isActive = (history, path) => {
   }
 }
 function Header({ history }) {
+  const { cartItems } = useSelector((state) => state.cart)
+  //const dispatch = useDispatch()
   const { type } = userData()
   const [redirectToReferrer, setRedirectToReferrer] = useState(false)
-  const [{ basket, user }, dispatch] = useStateValue()
+  //const [{ basket, user }, dispatch] = useStateValue()
   const signOut = () => {
     userService
       .logout()
@@ -115,6 +119,16 @@ function Header({ history }) {
             <Link to='/'>
               <span onClick={signOut} className='btn btn-outline-dark ms-2'>
                 <i className='fa fa-sign-out me-1'></i> Sign Out
+              </span>
+            </Link>
+          )}
+          {isAuthenticated() && type === 'user' && (
+            <Link className='text-reset  ms-2' to='/cart'>
+              {/* <FontAwesomeIcon icon='fas fa-shopping-cart' /> */}
+              <i className='fas fa-shopping-cart'></i>
+              <span style={{ fontSize: '12px' }}>Cart </span>{' '}
+              <span className='cart_style'>
+                {cartItems.length > 0 ? cartItems.length : 0}
               </span>
             </Link>
           )}

@@ -9,17 +9,33 @@ import productService from '../../services/ProductService'
 import stripeCreditCard from '../images/stripe.png'
 import shippingService from '../../services/ShippingService'
 import { loadStripe } from '@stripe/stripe-js'
+import { orderCreate } from '../../action/orderAction'
+import Footer from '../Footer/footer'
+import { useSelector } from 'react-redux'
 import StripeCheckoutButton from '../StripeCheckoutButton/StripeCheckoutButton'
 function PaymentCart() {
+  const cart = useSelector((state) => state.cart)
+  const { shippingAddress, cartItems } = cart
+  const twoDecimalsNumber = (num) =>
+    Math.round(num * 100 + Number.EPSILON) / 100
+  cart.itemsPrice = twoDecimalsNumber(
+    cart.cartItems.reduce((a, c) => a + c.price, 0)
+  )
+  cart.shippingPrice = twoDecimalsNumber(cart.itemsPrice > 200 ? 0 : 25)
+  cart.taxPrice = twoDecimalsNumber(cart.itemsPrice * 0.05)
+  cart.totalPrice = twoDecimalsNumber(
+    cart.itemsPrice + cart.shippingPrice + cart.taxPrice
+  )
+
   const { id } = userData()
-  let quote_Id
-  let location1 = useLocation()
-  quote_Id = location1.state.productId
-  const [orders, setOrders] = useState([])
-  const [paymentProductData, setPaymentProductData] = useState([])
+  // let quote_Id
+  // let location1 = useLocation()
+  // quote_Id = location1.state.productId
+  // const [orders, setOrders] = useState([])
+  // const [paymentProductData, setPaymentProductData] = useState([])
   const [paymentShippingData, setPaymentShippingData] = useState([])
-  let quote = ''
-  let total = ''
+  // let quote = ''
+  // let total = ''
   // const [quote, setQuote] = useState('')
 
   // const handleBuy = async () => {
@@ -56,12 +72,12 @@ function PaymentCart() {
   const stripePromise = loadStripe(publishablekey)
   const handleBuy = async () => {
     const stripe = await stripePromise
-    const priceForStripe = total
-    const productId = paymentProductData[0].id
+    const priceForStripe = cart.totalPrice
+    const productId = cartItems[0].product
     console.log('product id: ', productId)
     console.log('user id: ', id)
     console.log('total: ', priceForStripe)
-    const shippId = paymentShippingData.shippingId
+    const shippId = paymentShippingData[0].shippingId
     console.log('shipp id: ', shippId)
     orderService
       .postOrder(productId, priceForStripe, id, shippId)
@@ -71,47 +87,48 @@ function PaymentCart() {
           sessionId: data.id,
         })
 
-        //     // setclientSecretKey(data.paymentIntent.client_secret);
-        //     // console.log("client secret id: ", clientSecretKey);
+        // setclientSecretKey(data.paymentIntent.client_secret);
+        // console.log("client secret id: ", clientSecretKey);
       }).catch = (err) => {
       console.log(err)
     }
   }
-  const detailsOfQuote = () => {
-    quoteService
-      .getProductOfQuote(quote_Id, 'accepted')
-      .then((data) => {
-        console.log('product details: ', data)
-        setPaymentProductData(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-  const getOrders = () => {
-    orderService
-      .getOrders(id, 'paid')
-      .then((data) => {
-        console.log('order details: ', data)
-        setOrders(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
+  // const detailsOfQuote = () => {
+  //   quoteService
+  //     .getProductOfQuote(quote_Id, 'accepted')
+  //     .then((data) => {
+  //       console.log('product details: ', data)
+  //       setPaymentProductData(data)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
+  // const getOrders = () => {
+  //   orderService
+  //     .getOrders(id, 'paid')
+  //     .then((data) => {
+  //       console.log('order details: ', data)
+  //       setOrders(data)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  // }
   const getDetails = () => {
-    console.log('quote id: ', quote_Id)
-    quoteService
-      .getProductOfQuote(quote_Id, 'accepted')
-      .then((data) => {
-        console.log('product details: ', data)
-        setPaymentProductData(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    console.log(id)
+    //   console.log('quote id: ', quote_Id)
+    //   quoteService
+    //     .getProductOfQuote(quote_Id, 'accepted')
+    //     .then((data) => {
+    //       console.log('product details: ', data)
+    //       setPaymentProductData(data)
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
 
-    console.log('quote id: ', quote_Id)
+    //   console.log('quote id: ', quote_Id)
 
     shippingService
       .getShippingDetail(id)
@@ -126,12 +143,12 @@ function PaymentCart() {
   useEffect(() => {
     getDetails()
   }, [])
-  useEffect(() => {
-    getOrders()
-  }, [])
-  useEffect(() => {
-    detailsOfQuote()
-  }, [])
+  // useEffect(() => {
+  //   getOrders()
+  // }, [])
+  // useEffect(() => {
+  //   detailsOfQuote()
+  // }, [])
 
   return (
     <>
@@ -142,11 +159,11 @@ function PaymentCart() {
           <h2 className='signup_title '> Details Summaries</h2>
           <div className='row'>
             <div className='col-sm-8'>
-              {paymentProductData &&
-                paymentProductData.map((item) => (
+              {cartItems &&
+                cartItems.map((item) => (
                   <div className='row_loop' key={item.id}>
                     <div className='colcart'>
-                      <img src={item.image_urls[0]} className='small' />
+                      <img src={item.image} className='small' />
                     </div>
 
                     <div className='colcart'>
@@ -154,7 +171,7 @@ function PaymentCart() {
                     </div>
 
                     <div className='colcart'>
-                      <h6>Rs. {(quote = item.quote)}</h6>
+                      <h6>Rs. {item.price}</h6>
                     </div>
                   </div>
                 ))}
@@ -163,46 +180,38 @@ function PaymentCart() {
               <div className='shipping_details text-center pt-3'>
                 <h4>Shipping</h4>
                 <div className='te'>
-                  <b>Name:</b>
-                  {paymentShippingData.fullName}
+                  <b>Name:</b> {shippingAddress.fullName}
                 </div>
                 <div className=''>
-                  <b>Address:</b>
-                  {paymentShippingData.address}
+                  <b>Address:</b> {shippingAddress.address}
                 </div>
                 <div className=''>
-                  <b>Cellphone:</b>
-                  {paymentShippingData.cellno}
+                  <b>Cellphone:</b> {shippingAddress.cellPhone}
                 </div>
                 <div className=''>
-                  <b>Country:</b>
-                  {paymentShippingData.country}
+                  <b>Country:</b> {shippingAddress.country}
                 </div>
                 <div className=''>
-                  <b>City:</b>
-                  {paymentShippingData.city}
+                  <b>City:</b> {shippingAddress.city}
                 </div>
                 <div className=''>
-                  <b>Postal Code:</b>
-                  {paymentShippingData.postalCode}
+                  <b>Postal Code:</b> {shippingAddress.postalCode}
                 </div>
               </div>
 
               <div className='shipping_details text-center pt-3 mt-3'>
                 <h4>Order Summary</h4>
                 <div className='te'>
-                  <b>Items price: Rs.{quote}</b>
+                  <b>Items price:</b> ${cart.itemsPrice}
                 </div>
                 <div className=''>
-                  <b>Shipping Price: Rs.1000</b>
-                  {/* ${cart.shippingPrice} */}
+                  <b>Shipping Price:</b>${cart.shippingPrice}
                 </div>
                 <div className=''>
-                  <b>Tax price: Rs.500</b>
-                  {/* ${cart.taxPrice} */}
+                  <b>Tax price:</b>${cart.taxPrice}
                 </div>
                 <div className=''>
-                  <b>Total: Rs.{(total = quote + 500 + 1000)}</b>
+                  <b>Total: </b>${cart.totalPrice}
                   {/* {(total = ('0' + total).slice(-2))} */}
                 </div>
                 <div className=''>

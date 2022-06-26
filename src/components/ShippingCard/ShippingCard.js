@@ -3,7 +3,12 @@ import CheckOutSteps from '../CheckOutSteps/CheckOutSteps'
 import shippingService from '../../services/ShippingService'
 import { Redirect, useLocation } from 'react-router-dom'
 import { userData } from '../../auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { saveShippingAddress } from '../../action/cartAction'
+import Footer from '../Footer/footer'
 function ShippingCard() {
+  const { shippingAddress } = useSelector((state) => state.cart)
+  const dispatch = useDispatch()
   //product id
   const { id } = userData()
   let location = useLocation()
@@ -19,7 +24,16 @@ function ShippingCard() {
   const handleSubmitShipping = (e) => {
     e.preventDefault()
     console.log('clicked')
-    //run your backend api
+    dispatch(
+      saveShippingAddress({
+        fullName,
+        address,
+        cellPhone,
+        country,
+        city,
+        postalCode,
+      })
+    )
     shippingService
       .addShippingDetail(
         fullName,
@@ -37,9 +51,32 @@ function ShippingCard() {
       .catch((err) => {
         console.log(err)
       })
-    //success setRedirectToReferrer(true)
-    
+    //setRedirectToReferrer(true)
+    //props.history.push('/payment');
   }
+  // const handleSubmitShipping = (e) => {
+  //   e.preventDefault()
+  //   console.log('clicked')
+  //   //run your backend api
+  //   shippingService
+  //     .addShippingDetail(
+  //       fullName,
+  //       address,
+  //       cellPhone,
+  //       country,
+  //       city,
+  //       postalCode,
+  //       id
+  //     )
+  //     .then((data) => {
+  //       console.log('congratulations your shipping detail is added ', data)
+  //       setRedirectToReferrer(true)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
+  //   //success setRedirectToReferrer(true)
+  // }
   const redirectUser = () => {
     if (redirectToReferrer) {
       console.log(location)
@@ -47,7 +84,7 @@ function ShippingCard() {
         <Redirect
           to={{
             pathname: '/payment',
-            state: { productId: location.state.productId },
+            // state: { productId: location.state.productId },
           }}
           exact
         ></Redirect>
@@ -158,6 +195,7 @@ function ShippingCard() {
         </div>
         {redirectUser()}
       </div>
+      <Footer />
     </>
   )
 }

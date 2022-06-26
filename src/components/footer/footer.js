@@ -1,14 +1,23 @@
 import React from 'react'
 
-function Footer() {
+const Footer = () => {
   return (
-    <div className='footer'>
-      <p>copyright @2020</p>
-      <div className='social'>
-        <i className='fa fa-facebook'></i>
-        <i className='fa fa-instagram'></i>
+    <>
+      <div
+        className='text-center p-4 footer'
+        style={{ backgroundColor: '#fafafa' }}
+      >
+        © 2022 Copyright:{' '}
+        <a
+          className='text-reset fw-bold'
+          target='_blank'
+          rel='noreferrer'
+          href='https://github.com/syedHasnain0099/FYP-Develop'
+        >
+          ERental electronics Ltd.
+        </a>
       </div>
-    </div>
+    </>
   )
 }
 

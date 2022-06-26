@@ -5,10 +5,12 @@ import './index.css'
 import App from './App'
 import { StateProvider } from './components/StateProvider/StateProvider'
 import reducer, { initialState } from './components/StateProvider/reducer'
+import { Provider } from 'react-redux'
+import store from './store'
 
 ReactDOM.render(
-  <StateProvider initialState={initialState} reducer={reducer}>
+  <Provider store={store}>
     <App />
-  </StateProvider>,
+  </Provider>,
   document.getElementById('root')
 )

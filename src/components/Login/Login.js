@@ -12,7 +12,7 @@ axios.defaults.baseURL = 'http://localhost:1337/api/'
 // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
 function Login(callback) {
-  const [{}, dispatch] = useStateValue()
+  //const [{}, dispatch] = useStateValue()
   const [errors, setErrors] = useState({})
   const [serverError, setServerError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)

@@ -39,6 +39,7 @@ import BiddingProducts from './components/BiddingProducts/BiddingProducts'
 import BiddingProductDetails from './components/BiddingProductDetails/BiddingProductDetails'
 import BidItemQuote from './components/BidItemQuote/BidItemQuote'
 import ForgotPasswordFormAdmin from './components/RetreivePassword/ForgotPasswordFormAdmin'
+import AddToCart from './components/Cart/AddToCart'
 function Routes() {
   return (
     <BrowserRouter>
@@ -99,6 +100,10 @@ function Routes() {
           <PrivateRoute path='/payment'>
             <Header />
             <PaymentCart />
+          </PrivateRoute>
+          <PrivateRoute path='/cart'>
+            <Header />
+            <AddToCart />
           </PrivateRoute>
           <PrivateRoute path='/shipping'>
             <Header />
