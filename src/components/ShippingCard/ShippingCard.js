@@ -30,6 +30,7 @@ function ShippingCard() {
     country: "",
     city: "",
     postalCode: "",
+    id: "",
   });
   const getShippingAddress = () => {
     console.log("user id", id);
@@ -64,6 +65,7 @@ function ShippingCard() {
         postalCode,
       })
     );
+    console.log(values.id);
     if (Object.keys(values).length === 0) {
       shippingService
         .addShippingDetail(

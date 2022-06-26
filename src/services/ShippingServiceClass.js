@@ -58,17 +58,20 @@ class ShippingService extends GenericService {
       this.get(`shipping-details?${query}`, {})
         .then((response) => {
           //extract last element of array
-
           const { data } = response;
-          console.log(data[data.length - 1]);
-          shippingDetail = this.extractShippingDetail(data[data.length - 1]);
-          resolve(shippingDetail);
+          if (data[data.length - 1]) {
+            console.log(data[data.length - 1]);
+            shippingDetail = this.extractShippingDetail(data[data.length - 1]);
+            resolve(shippingDetail);
+          }
+          resolve(data);
         })
         .catch((err) => reject(err));
     });
   };
   extractShippingDetail = (shData) => {
     var shippingDetail = {
+      id: "",
       shippingId: "",
       fullName: "",
       address: "",
@@ -95,6 +98,7 @@ class ShippingService extends GenericService {
     shippingDetail.fullName = full_name;
     shippingDetail.country = country;
     shippingDetail.city = city;
+    shippingDetail.id = id;
     shippingDetail.postalCode = postal_code;
     shippingDetail.cellPhone = "+92" + contact_number;
     shippingDetail.address = address;
