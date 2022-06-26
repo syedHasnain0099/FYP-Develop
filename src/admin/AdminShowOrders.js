@@ -15,17 +15,19 @@ const AdminShowOrders = () => {
 
   //show orders
   const displayAdminOrders = async () => {
-    try {
-      const { data } = await axios.get(
-        `/api/orders/all?pageNumber=${pageNumber}`
-      );
-      if (data) {
-        setOrd(data.orders);
-        setTotalItem(data.count);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+     orderService
+      .getAllOrders("paid")
+      .then((order) => {
+        console.log("order data!", order);
+        order.id,
+        order.request_quote.start_date,
+        order.request_quote.end_date,
+        order.total,
+        order.status,
+        order.delivered,
+        order.created_at,
+      })
+      .catch((err) => console.log(err));
     singleOrderAdmin();
   };
 
@@ -35,72 +37,62 @@ const AdminShowOrders = () => {
 
   //display single order for admin
   const singleOrderAdmin = async (id) => {
-    if (id) {
-      try {
-        const { data } = await axios.get(`/api/ordersingle/admin/${id}`);
-        if (data) {
-          setSingleOrder(data.singleOrder.orderItems);
-          setShippingAddressload(data.singleOrder.shippingAddress);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    orderService
+      .getOneOrder(orderId)
+      .then((order) => {
+        console.log("order data!", order);
+        order.id,
+        order.request_quote.start_date,
+        order.request_quote.end_date,
+        order.total,
+        order.status,
+        order.delivered,
+        order.created_at,
+      })
+      .catch((err) => console.log(err));
   };
 
   //Deleting an order
   const deleteOrder = (id) => {
     if (window.confirm(`Do you want to delete Order: ${id}`)) {
       //console.log(`current user ID: ${id} / ${name}`);
-      axios
-        .delete(`/api/orderdelete/admin/${id}`)
-
-        .then((result) => {
-          if (result) {
-            //console.log("User deleted");
-            displayAdminOrders();
-            toast.success(`current order ID: ${id}  deleted`);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+       orderService
+      .deleteOrder(orderId)
+      .then((order) => {
+        console.log("order deleted!", order);
+      })
+      .catch((err) => console.log(err));
     }
   };
 
   //confirm payment an order
-  const confirmOrderPayment = (id) => {
-    if (window.confirm(`Do you want to confirm Order payment: ${id}`)) {
-      //console.log(`current user ID: ${id} / ${name}`);
-      axios
-        .put(`/api/orderupdate/admin/pay/${id}`)
-        .then((result) => {
-          if (result) {
-            toast.success(`current order ID: ${id}  paid`);
-            displayAdminOrders();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+  // const confirmOrderPayment = (id) => {
+  //   if (window.confirm(`Do you want to confirm Order payment: ${id}`)) {
+  //     //console.log(`current user ID: ${id} / ${name}`);
+  //     axios
+  //       .put(`/api/orderupdate/admin/pay/${id}`)
+  //       .then((result) => {
+  //         if (result) {
+  //           toast.success(`current order ID: ${id}  paid`);
+  //           displayAdminOrders();
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   }
+  // };
 
   //confirm delivered order
-  const orderDeliveredHome = (id) => {
-    if (window.confirm(`Do you want to confirm Order : ${id} delivery?`)) {
+  const orderDeliveredHome = (orderId) => {
+    if (window.confirm(`Do you want to confirm Order : ${orderId} delivery?`)) {
       //console.log(`current user ID: ${id} / ${name}`);
-      axios
-        .put(`/api/orderdelivered/admin/${id}`)
-        .then((result) => {
-          if (result) {
-            toast.success(`current order ID: ${id}  is delivered!`);
-            displayAdminOrders();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+       orderService
+      .updateDeliveryStatus(status,orderId)
+      .then((order) => {
+        console.log("order status updateds!", order);
+      })
+      .catch((err) => console.log(err));
     }
   };
 
