@@ -29,7 +29,7 @@ class ShippingService extends GenericService {
       },
     });
   };
-  updateShippingDetail = ({ shD }, user) => {
+  updateShippingDetail = (shD, user) => {
     return this.put(`shipping-details/${user}`, {
       data: {
         full_name: shD.fullName,
