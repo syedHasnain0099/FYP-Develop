@@ -82,7 +82,7 @@ function ShippingCard() {
           id
         )
         .then((data) => {
-          console.log("congratulations your shipping detail is added ", data);
+          console.log("congratulations your shipping detail is updated ", data);
           setRedirectToReferrer(true);
         })
         .catch((err) => {
