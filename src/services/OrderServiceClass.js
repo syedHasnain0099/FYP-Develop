@@ -5,7 +5,7 @@ import quoteService from "./QuoteService";
 class OrderService extends GenericService {
   constructor() {
     super();
-    this.populate = ["user", "request_quote.product"];
+    this.populate = ["user", "request_quote.product.image"];
   }
   updateOrderStatus = (status, orderId) => {
     return this.put(`orders/${orderId}`, {
