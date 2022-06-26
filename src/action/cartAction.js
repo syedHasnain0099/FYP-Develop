@@ -24,6 +24,7 @@ export const addItemToCart = (id, quantity) => async (dispatch, getState) => {
   dispatch({
     type: ADD_TO_CART,
     payload: {
+      quote_id: id,
       product: quoteData[0].id,
       name: quoteData[0].name,
       price: quoteData[0].quote,

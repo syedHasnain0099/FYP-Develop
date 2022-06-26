@@ -145,11 +145,6 @@ function Login(callback) {
             Forgot Password? User click Here
           </NavLink>
         </span>
-        <span className='signup-form-input-login'>
-          <NavLink to='/ForgotPasswordFormAdmin'>
-            Forgot Password? Admin click Here
-          </NavLink>
-        </span>
       </form>
       {showError()}
       {redirectUser()}
