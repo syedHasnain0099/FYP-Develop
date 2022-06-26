@@ -79,6 +79,28 @@ class OrderService extends GenericService {
         .catch((err) => reject(err));
     });
   };
+  getAllOrders = (status) => {
+    const orders = [];
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        populate: this.populate,
+        filters: {
+          status: {
+            $eq: status,
+          },
+        },
+      });
+      this.get(`orders?${query}`, {})
+        .then((response) => {
+          const { data } = response;
+          for (let ord of data) {
+            orders.push(this.extractOrders(ord));
+          }
+          resolve(orders);
+        })
+        .catch((err) => reject(err));
+    });
+  };
 
   extractOrders = (req) => {
     const { id, attributes } = req;
