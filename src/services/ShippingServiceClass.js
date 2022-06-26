@@ -29,12 +29,12 @@ class ShippingService extends GenericService {
       },
     });
   };
-  updateShippingDetail = (shD, user) => {
-    return this.put(`shipping-details/${user}`, {
+  updateShippingDetail = (shD, shipId) => {
+    return this.put(`shipping-details/${shipId}`, {
       data: {
         full_name: shD.fullName,
         address: shD.address,
-        contact_number: shD.cellno,
+        contact_number: shD.cellPhone,
         country: shD.country,
         city: shD.city,
         postal_code: shD.postalCode,
