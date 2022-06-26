@@ -7,6 +7,7 @@ function PendingRequest() {
   const [pendingRequestsData, setPendingRequestsData] = useState([]);
   const [acceptedRequestsData, setAcceptedRequestsData] = useState([]);
   const { id, username, email } = userData();
+  const [status, setStatus] = useState("");
   const getPendingRequests = () => {
     console.log("user id: ", id);
     quoteService
@@ -25,6 +26,14 @@ function PendingRequest() {
       .getRequestQuotes(id, "accepted")
       .then((data) => {
         console.log("accepted requests: ", data);
+
+        data.map((quote) => {
+          if (quote.order.status) {
+            setStatus(quote.order.status);
+          } else {
+            setStatus("unpaid");
+          }
+        });
         setAcceptedRequestsData(data);
       })
       .catch((err) => {
@@ -281,9 +290,7 @@ function PendingRequest() {
                     <p class="lead mt-2">Duration: {item.duration} days</p>
                     <p class="card-text">Start Date:{item.startDate}</p>
                     <p class="card-text">End Date:{item.endDate}</p>
-                    <p class="lead mt-2 text-danger">
-                      Status: {item.order.status}
-                    </p>
+                    <p class="lead mt-2 text-danger">Status: {status}</p>
                   </div>
                 </div>
               </div>

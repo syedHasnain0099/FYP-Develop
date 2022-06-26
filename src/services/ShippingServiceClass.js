@@ -100,7 +100,7 @@ class ShippingService extends GenericService {
     shippingDetail.city = city;
     shippingDetail.id = id;
     shippingDetail.postalCode = postal_code;
-    shippingDetail.cellPhone = "+92" + contact_number;
+    shippingDetail.cellPhone = contact_number;
     shippingDetail.address = address;
     shippingDetail.shippingId = id;
 

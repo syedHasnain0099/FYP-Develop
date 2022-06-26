@@ -1,52 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
-import axios from 'axios'
+import axios from "axios";
 
-import 'antd/dist/antd.css'
-import { Pagination } from 'antd'
-import { toast } from 'react-toastify'
+import "antd/dist/antd.css";
+import { Pagination } from "antd";
+import { toast } from "react-toastify";
 
 const AdminShowOrders = () => {
-  const [ord, setOrd] = useState([])
-  const [singleOrder, setSingleOrder] = useState([])
-  const [pageNumber, setPageNumber] = useState(1)
-  const [totalItem, setTotalItem] = useState(0)
-  const [shippingAddressload, setShippingAddressload] = useState({})
+  const [ord, setOrd] = useState([]);
+  const [singleOrder, setSingleOrder] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalItem, setTotalItem] = useState(0);
+  const [shippingAddressload, setShippingAddressload] = useState({});
 
   //show orders
   const displayAdminOrders = async () => {
     try {
       const { data } = await axios.get(
         `/api/orders/all?pageNumber=${pageNumber}`
-      )
+      );
       if (data) {
-        setOrd(data.orders)
-        setTotalItem(data.count)
+        setOrd(data.orders);
+        setTotalItem(data.count);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    singleOrderAdmin()
-  }
+    singleOrderAdmin();
+  };
 
   useEffect(() => {
-    displayAdminOrders()
-  }, [pageNumber, totalItem])
+    displayAdminOrders();
+  }, [pageNumber, totalItem]);
 
   //display single order for admin
   const singleOrderAdmin = async (id) => {
     if (id) {
       try {
-        const { data } = await axios.get(`/api/ordersingle/admin/${id}`)
+        const { data } = await axios.get(`/api/ordersingle/admin/${id}`);
         if (data) {
-          setSingleOrder(data.singleOrder.orderItems)
-          setShippingAddressload(data.singleOrder.shippingAddress)
+          setSingleOrder(data.singleOrder.orderItems);
+          setShippingAddressload(data.singleOrder.shippingAddress);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
-  }
+  };
 
   //Deleting an order
   const deleteOrder = (id) => {
@@ -58,15 +58,15 @@ const AdminShowOrders = () => {
         .then((result) => {
           if (result) {
             //console.log("User deleted");
-            displayAdminOrders()
-            toast.success(`current order ID: ${id}  deleted`)
+            displayAdminOrders();
+            toast.success(`current order ID: ${id}  deleted`);
           }
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     }
-  }
+  };
 
   //confirm payment an order
   const confirmOrderPayment = (id) => {
@@ -76,15 +76,15 @@ const AdminShowOrders = () => {
         .put(`/api/orderupdate/admin/pay/${id}`)
         .then((result) => {
           if (result) {
-            toast.success(`current order ID: ${id}  paid`)
-            displayAdminOrders()
+            toast.success(`current order ID: ${id}  paid`);
+            displayAdminOrders();
           }
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     }
-  }
+  };
 
   //confirm delivered order
   const orderDeliveredHome = (id) => {
@@ -94,37 +94,37 @@ const AdminShowOrders = () => {
         .put(`/api/orderdelivered/admin/${id}`)
         .then((result) => {
           if (result) {
-            toast.success(`current order ID: ${id}  is delivered!`)
-            displayAdminOrders()
+            toast.success(`current order ID: ${id}  is delivered!`);
+            displayAdminOrders();
           }
         })
         .catch((error) => {
-          console.log(error)
-        })
+          console.log(error);
+        });
     }
-  }
+  };
 
   return (
     <>
       <div
-        className='order_user_history paddingTB container'
+        className="order_user_history paddingTB container"
         style={{
-          paddingLeft: '150px',
-          paddingTop: '100px',
-          minHeight: '550px',
+          paddingLeft: "150px",
+          paddingTop: "100px",
+          minHeight: "550px",
         }}
       >
         <h2>Orders</h2>
-        <table className='table'>
-          <thead className='thead-dark'>
+        <table className="table">
+          <thead className="thead-dark">
             <tr>
-              <th scope='col'>OrderID</th>
-              <th scope='col'>User</th>
-              <th scope='col'>Total</th>
-              <th scope='col'>Paid</th>
-              <th scope='col'>Delivered</th>
-              <th scope='col'>Delivered At</th>
-              <th scope='col'>Actions </th>
+              <th scope="col">OrderID</th>
+              <th scope="col">User</th>
+              <th scope="col">Total</th>
+              <th scope="col">Paid</th>
+              <th scope="col">Delivered</th>
+              <th scope="col">Delivered At</th>
+              <th scope="col">Actions </th>
             </tr>
           </thead>
           <tbody>
@@ -133,62 +133,62 @@ const AdminShowOrders = () => {
 
               ord.map((order) => (
                 <tr key={order._id}>
-                  <th scope='col'>{order._id}</th>
-                  <th scope='col'>{order.user.name}</th>
-                  <th scope='col'>{order.itemsPrice.toFixed(2)}</th>
-                  <th scope='col'>
+                  <th scope="col">{order._id}</th>
+                  <th scope="col">{order.user.name}</th>
+                  <th scope="col">{order.itemsPrice.toFixed(2)}</th>
+                  <th scope="col">
                     {order.isPaid ? (
-                      <span style={{ color: 'green' }}>Paid</span>
+                      <span style={{ color: "green" }}>Paid</span>
                     ) : (
-                      <span style={{ color: '#ffc107' }}>Processing</span>
+                      <span style={{ color: "#ffc107" }}>Processing</span>
                     )}
                   </th>
-                  <th scope='col'>
-                    {' '}
+                  <th scope="col">
+                    {" "}
                     {order.isDelivered ? (
-                      <span style={{ color: 'green' }}>Yes</span>
+                      <span style={{ color: "green" }}>Yes</span>
                     ) : (
-                      <span style={{ color: '#ffc107' }}>No</span>
+                      <span style={{ color: "#ffc107" }}>No</span>
                     )}
                   </th>
-                  <th scope='col'>
-                    {order.isPaid && order.isDelivered ? order.deliveredAt : ''}
+                  <th scope="col">
+                    {order.isPaid && order.isDelivered ? order.deliveredAt : ""}
                   </th>
 
-                  <th scope='col'>
+                  <th scope="col">
                     <td>
-                      {' '}
+                      {" "}
                       <i
-                        data-mdb-toggle='modal'
-                        data-mdb-target='#exampleModal'
-                        style={{ cursor: 'pointer' }}
+                        data-mdb-toggle="modal"
+                        data-mdb-target="#exampleModal"
+                        style={{ cursor: "pointer" }}
                         onClick={() => singleOrderAdmin(order._id)}
-                        className='fa-regular fa-eye'
+                        className="fa-regular fa-eye"
                       ></i>
                     </td>
                     <td>
                       <i
                         onClick={() => confirmOrderPayment(order._id)}
-                        class='fa-solid fa-dollar-sign'
+                        class="fa-solid fa-dollar-sign"
                         style={{
-                          cursor: 'pointer',
-                          paddingLeft: '20px',
-                          color: 'green',
+                          cursor: "pointer",
+                          paddingLeft: "20px",
+                          color: "green",
                         }}
                       ></i>
                     </td>
                     <td>
                       <i
                         onClick={() => orderDeliveredHome(order._id)}
-                        class='fa-solid fa-house-chimney'
-                        style={{ cursor: 'pointer', marginLeft: '20px' }}
+                        class="fa-solid fa-house-chimney"
+                        style={{ cursor: "pointer", marginLeft: "20px" }}
                       ></i>
                     </td>
                     <td>
                       <i
                         onClick={() => deleteOrder(order._id)}
-                        class='far fa-trash-alt btn-danger'
-                        style={{ cursor: 'pointer', marginLeft: '20px' }}
+                        class="far fa-trash-alt btn-danger"
+                        style={{ cursor: "pointer", marginLeft: "20px" }}
                       ></i>
                     </td>
                   </th>
@@ -199,56 +199,56 @@ const AdminShowOrders = () => {
         </table>
 
         <div
-          className='modal fade'
-          id='exampleModal'
-          tabIndex='-1'
-          aria-labelledby='exampleModalLabel'
-          aria-hidden='true'
+          className="modal fade"
+          id="exampleModal"
+          tabIndex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
         >
-          <div className='modal-dialog'>
-            <div className='modal-content'>
-              <div className='modal-header'>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
                 <h5
-                  style={{ color: 'white' }}
-                  className='modal-title'
-                  id='exampleModalLabel'
+                  style={{ color: "white" }}
+                  className="modal-title"
+                  id="exampleModalLabel"
                 >
                   Purchase Details
                 </h5>
                 <button
-                  type='button'
-                  className='btn-close'
-                  data-mdb-dismiss='modal'
-                  aria-label='Close'
+                  type="button"
+                  className="btn-close"
+                  data-mdb-dismiss="modal"
+                  aria-label="Close"
                 ></button>
               </div>
-              <div className='modal-body'>
-                <table className='table'>
-                  <thead className='thead-dark'>
+              <div className="modal-body">
+                <table className="table">
+                  <thead className="thead-dark">
                     <tr>
-                      <th scope='col'>Name</th>
-                      <th scope='col'>Price </th>
-                      <th scope='col'>image</th>
-                      <th scope='col'>Quantity</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Price </th>
+                      <th scope="col">image</th>
+                      <th scope="col">Quantity</th>
                     </tr>
                   </thead>
-                  <tbody className='ordersdetailsBody'>
+                  <tbody className="ordersdetailsBody">
                     {
                       //  orders && orders.length === 0 ? <><h2>Your don't have any purcharse</h2></> :
 
                       singleOrder &&
                         singleOrder.map((det) => (
                           <tr key={det._id}>
-                            <th scope='col'>{det.name}</th>
-                            <th scope='col'>${det.price}</th>
-                            <th scope='col'>
+                            <th scope="col">{det.name}</th>
+                            <th scope="col">${det.price}</th>
+                            <th scope="col">
                               <img
-                                style={{ maxWidth: '40%' }}
+                                style={{ maxWidth: "40%" }}
                                 src={det.image}
                                 alt={det.name}
                               />
                             </th>
-                            <th scope='col'>{det.quantity}</th>
+                            <th scope="col">{det.quantity}</th>
                           </tr>
                         ))
                     }
@@ -256,28 +256,28 @@ const AdminShowOrders = () => {
                 </table>
                 <hr />
 
-                <div className='shipping_details_info'>
+                <div className="shipping_details_info">
                   <h6>shipping info: </h6>
                   <ul>
                     <li>
-                      <b>Complete name: </b> {shippingAddressload.fullName}{' '}
+                      <b>Complete name: </b> {shippingAddressload.fullName}{" "}
                     </li>
                     <li>
-                      <b>Address: </b> {shippingAddressload.address},{' '}
-                      {shippingAddressload.city}, {shippingAddressload.country},{' '}
+                      <b>Address: </b> {shippingAddressload.address},{" "}
+                      {shippingAddressload.city}, {shippingAddressload.country},{" "}
                       {shippingAddressload.postalCode}
                     </li>
                     <li>
-                      <b>cellphone: </b> {shippingAddressload.cellPhone}{' '}
+                      <b>cellphone: </b> {shippingAddressload.cellPhone}{" "}
                     </li>
                   </ul>
                 </div>
               </div>
-              <div className='modal-footer'>
+              <div className="modal-footer">
                 <button
-                  type='button'
-                  className='btn btn-primary'
-                  data-mdb-dismiss='modal'
+                  type="button"
+                  className="btn btn-primary"
+                  data-mdb-dismiss="modal"
                 >
                   Close
                 </button>
@@ -292,7 +292,7 @@ const AdminShowOrders = () => {
         /> */}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AdminShowOrders
+export default AdminShowOrders;

@@ -28,8 +28,12 @@ class ProductService extends GenericService {
       this.get(`products?${query}`, {})
         .then((response) => {
           const { data } = response;
+          var currProduct = {};
           for (let ad of data) {
-            allProducts.push(this.extractProducts(ad));
+            currProduct = this.extractProducts(ad);
+            if (currProduct.quantity >= 1) {
+              allProducts.push(currProduct);
+            }
           }
           resolve(allProducts);
         })

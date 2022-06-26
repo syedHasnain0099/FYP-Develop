@@ -32,18 +32,17 @@ function PaymentSuccess() {
               setProdQuantity(orderData.request_quote.product.quantity);
             })
             .catch((err) => console.log(err));
-          // productService
-          //   .findOneProduct(prodId)
-          //   .then((prod) => {
-          //     setProdQuantity(prod.quantity);
-          //   })
-          //   .catch((err) => console.log(err));
-          console.log("prodQuantity: ", prodQuantity);
-          console.log("quoteQuantity: ", Quantity);
           orderService
             .subtractQuantity(prodId, Quantity, prodQuantity)
             .then((data) => {
               console.log("quantity of product deducted!", data.quantity);
+              if (data.quantity > 1) {
+                console.log("product is deleted if i uncomment the below code");
+                // productService
+                //   .deleteProduct(data.id)
+                //   .then((prod) => console.log("product deleted! ", prod))
+                //   .catch((err) => console.log(err));
+              }
             })
             .catch((err) => console.log(err));
         }
