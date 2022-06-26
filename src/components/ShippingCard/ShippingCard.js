@@ -21,6 +21,7 @@ function ShippingCard() {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
+  const [shippingData, setShippingData] = useState({});
   const [redirectToReferrer, setRedirectToReferrer] = useState(false);
   const getShippingAddress = () => {
     console.log("user id", id);
@@ -28,6 +29,7 @@ function ShippingCard() {
     shippingService
       .getShippingDetail(id)
       .then((data) => {
+        setShippingData(data);
         console.log("shipping details: ", data);
       })
       .catch((err) => {
@@ -50,23 +52,43 @@ function ShippingCard() {
         postalCode,
       })
     );
-    shippingService
-      .addShippingDetail(
-        fullName,
-        address,
-        cellPhone,
-        country,
-        city,
-        postalCode,
-        id
-      )
-      .then((data) => {
-        console.log("congratulations your shipping detail is added ", data);
-        setRedirectToReferrer(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (Object.keys(shippingData).length === 0) {
+      shippingService
+        .addShippingDetail(
+          fullName,
+          address,
+          cellPhone,
+          country,
+          city,
+          postalCode,
+          id
+        )
+        .then((data) => {
+          console.log("congratulations your shipping detail is added ", data);
+          setRedirectToReferrer(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      shippingService
+        .addShippingDetail(
+          fullName,
+          address,
+          cellPhone,
+          country,
+          city,
+          postalCode,
+          id
+        )
+        .then((data) => {
+          console.log("congratulations your shipping detail is added ", data);
+          setRedirectToReferrer(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
     //setRedirectToReferrer(true)
     //props.history.push('/payment');
   };

@@ -7,6 +7,13 @@ class OrderService extends GenericService {
     super();
     this.populate = ["user", "request_quote.product"];
   }
+  updateOrderStatus = (status, orderId) => {
+    return this.put(`orders/${orderId}`, {
+      data: {
+        delivery_status: status,
+      },
+    });
+  };
   subtractQuantity = (productId, quoteQuantity, prodQuantity) => {
     const updatedQuantity = prodQuantity - quoteQuantity;
     return this.put(`products/${productId}`, {
@@ -22,13 +29,14 @@ class OrderService extends GenericService {
       },
     });
   };
-  postOrder = (product, total, user, shipping_detail) => {
+  postOrder = (request_quote, total, user, shipping_detail) => {
     return this.post(`orders`, {
       data: {
-        product,
+        request_quote,
         total,
         user,
         shipping_detail,
+        delivery_status: "pending",
       },
     });
   };
@@ -75,8 +83,15 @@ class OrderService extends GenericService {
 
   extractOrders = (req) => {
     const { id, attributes } = req;
-    const { status, total, checkout_session, request_quote, user, createdAt } =
-      attributes;
+    const {
+      status,
+      total,
+      checkout_session,
+      request_quote,
+      user,
+      createdAt,
+      delivery_status,
+    } = attributes;
     var order = {
       id: "",
       status: "",
@@ -85,13 +100,14 @@ class OrderService extends GenericService {
       request_quote: {},
       currentUser: {},
       created_at: "",
+      delivery_status: "",
     };
     order.id = id;
     order.status = status;
     order.total = total;
     order.checkout_session = checkout_session;
     order.created_at = new Date(createdAt).toLocaleDateString("en-EN");
-
+    order.delivery_status = delivery_status;
     if (request_quote) {
       const { data } = request_quote;
       order.request_quote = quoteService.extractRequests(data);

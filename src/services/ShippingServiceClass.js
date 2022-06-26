@@ -25,7 +25,19 @@ class ShippingService extends GenericService {
         country: country,
         city: city,
         postal_code: postalCode,
-        users_permissions_user: renter,
+        user: renter,
+      },
+    });
+  };
+  updateShippingDetail = ({ shD }, user) => {
+    return this.put(`shipping-details/${user}`, {
+      data: {
+        full_name: shD.fullName,
+        address: shD.address,
+        contact_number: shD.cellno,
+        country: shD.country,
+        city: shD.city,
+        postal_code: shD.postalCode,
       },
     });
   };
@@ -60,7 +72,7 @@ class ShippingService extends GenericService {
       shippingId: "",
       fullName: "",
       address: "",
-      cellno: "",
+      cellPhone: "",
       country: "",
       postalCode: "",
       user: {},
