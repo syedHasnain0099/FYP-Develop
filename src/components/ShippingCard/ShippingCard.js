@@ -84,14 +84,9 @@ function ShippingCard() {
         });
     } else {
       shippingService
-        .addShippingDetail(
-          fullName,
-          address,
-          cellPhone,
-          country,
-          city,
-          postalCode,
-          id
+        .updateShippingDetail(
+          { fullName, address, cellPhone, country, city, postalCode },
+          shippingData.id
         )
         .then((data) => {
           console.log("congratulations your shipping detail is updated ", data);
