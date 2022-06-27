@@ -17,13 +17,6 @@ const UserOrderHistory = ({ history }) => {
       .then((order) => {
         console.log('order data!', order)
         setOrders(order)
-        // order.id,
-        // order.request_quote.start_date,
-        // order.request_quote.end_date,
-        // order.total,
-        // order.status,
-        // order.delivered,
-        // order.created_at,
       })
       .catch((err) => console.log(err))
 
@@ -31,12 +24,15 @@ const UserOrderHistory = ({ history }) => {
   }
 
   // single order details
-  const fetchSingleOrderDetails = async (id) => {
-    //and execute here
-    // order.request_quote.product.name,
-    //   order.request_quote.product.image,
-    //   order.request_quote.quantity,
-    //   order.request_quote.quote
+  const fetchSingleOrderDetails = async (orderID) => {
+    var size = Object.keys(orders).length
+    console.log('size', size)
+    for (let step = 0; step < size; step++) {
+      if (orders[step].id === orderID) {
+        setOrderDetails([orders[step]])
+        console.log(orders[step])
+      }
+    }
   }
 
   useEffect(() => {
@@ -78,13 +74,13 @@ const UserOrderHistory = ({ history }) => {
 
                 orders.map((res) => (
                   <tr key={res._id}>
-                    <th scope='col'>{res._id}</th>
+                    <th scope='col'>{res.id}</th>
                     <th scope='col'>
-                      {new Date(res.createdAt).toLocaleDateString()}
+                      {new Date(res.created_at).toLocaleDateString()}
                     </th>
-                    <th scope='col'>${res.itemsPrice.toFixed(2)}</th>
+                    <th scope='col'>Rs. {res.total}</th>
                     <th scope='col'>
-                      {res.isPaid ? (
+                      {res.status === 'paid' ? (
                         <span style={{ color: 'green' }}>Paid</span>
                       ) : (
                         <span style={{ color: '#ffc107' }}>Processing</span>
@@ -92,18 +88,18 @@ const UserOrderHistory = ({ history }) => {
                     </th>
                     <th scope='col'>
                       {' '}
-                      {res.isDelivered ? (
+                      {res.delivered === 'yes' ? (
                         <span style={{ color: 'green' }}>Yes</span>
                       ) : (
                         <span style={{ color: '#ffc107' }}>No</span>
                       )}
                     </th>
                     <th scope='col'>
-                      {res.isPaid && res.isDelivered ? res.deliveredAt : ''}
+                      {res.status && res.delivered ? res.deliveredAt : ''}
                     </th>
                     <th scope='col'>
                       <button
-                        onClick={() => fetchSingleOrderDetails(res._id)}
+                        onClick={() => fetchSingleOrderDetails(res.id)}
                         type='button'
                         className='btn btn-primary'
                         data-mdb-toggle='modal'
@@ -135,6 +131,7 @@ const UserOrderHistory = ({ history }) => {
                 <h5 className='modal-title' id='exampleModalLabel'>
                   Purchase Details
                 </h5>
+                {console.log('is is working')}
                 <button
                   type='button'
                   className='btn-close'
@@ -157,17 +154,19 @@ const UserOrderHistory = ({ history }) => {
                       //  orders && orders.length === 0 ? <><h2>Your don't have any purcharse</h2></> :
 
                       orderDetails.map((det) => (
-                        <tr key={det.product}>
-                          <th scope='col'>{det.name}</th>
-                          <th scope='col'>${det.price}</th>
+                        <tr key={det.request_quote.product.name}>
+                          <th scope='col'>{det.request_quote.product.name}</th>
+                          <th scope='col'>
+                            Rs. {det.request_quote.product.rent}
+                          </th>
                           <th scope='col'>
                             <img
                               style={{ maxWidth: '40%' }}
-                              src={det.image}
+                              src={det.request_quote.product.image_urls[0]}
                               alt={det.name}
                             />
                           </th>
-                          <th scope='col'>{det.quantity}</th>
+                          <th scope='col'>{det.request_quote.quantity}</th>
                         </tr>
                       ))
                     }
