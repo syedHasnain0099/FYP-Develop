@@ -143,7 +143,9 @@ class OrderService extends GenericService {
     order.delivered = delivered;
     if (request_quote) {
       const { data } = request_quote;
-      order.request_quote = quoteService.extractRequests(data);
+      if (data) {
+        order.request_quote = quoteService.extractRequests(data);
+      }
     }
     if (user) {
       const { data } = user;

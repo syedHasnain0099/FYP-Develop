@@ -30,6 +30,21 @@ class BiddingService extends GenericService {
       },
     });
   };
+  getOneBiddingItem = (biddingId) => {
+    const filteredItem = [];
+    const query = qs.stringify({
+      populate: this.populate,
+    });
+    return new Promise((resolve, reject) => {
+      this.get(`bidding-items/${biddingId}?${query}`)
+        .then((response) => {
+          const { data } = response;
+          filteredItem.push(this.extractBiddingProducts(data));
+          resolve(filteredItem);
+        })
+        .catch((err) => reject(err));
+    });
+  };
   getAllBiddingItems = (userId) => {
     const allBiddingProducts = [];
     return new Promise((resolve, reject) => {
@@ -86,6 +101,34 @@ class BiddingService extends GenericService {
         });
     });
   };
+  getRelatedProducts = (subCategory, existingProductName) => {
+    const filteredProducts = [];
+    let query;
+    return new Promise((resolve, reject) => {
+      query = qs.stringify({
+        populate: this.populate,
+        filters: {
+          category_list: {
+            name: {
+              $eq: subCategory,
+            },
+          },
+          name: {
+            $notContains: existingProductName,
+          },
+        },
+      });
+      this.get(`bidding-items?${query}`)
+        .then((response) => {
+          const { data } = response;
+          for (let ad of data) {
+            filteredProducts.push(this.extractBiddingProducts(ad));
+          }
+          resolve(filteredProducts);
+        })
+        .catch((err) => reject(err));
+    });
+  };
   extractBiddingProducts = (item) => {
     const { id, attributes } = item;
     const {
@@ -140,7 +183,7 @@ class BiddingService extends GenericService {
 
     if (users_permissions_user) {
       const { data } = users_permissions_user;
-      product.supplier = this.extractUser(data);
+      product.supplier = productService.extractUser(data);
     }
     return product;
   };
