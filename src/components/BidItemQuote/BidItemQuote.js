@@ -52,7 +52,7 @@ function BidItemQuote() {
   const postQuote = (getQuoteData) => {
     // here to run or connect with backend
     biddingService
-      .updateBid(enteredQuantity, productId)
+      .updateBid(enteredQuantity, productId, id)
       .then((data) => {
         console.log("congratualtions your bid is updated!", data);
         setCreatedProduct(data.data.attributes.city);
@@ -115,7 +115,7 @@ function BidItemQuote() {
                       </p>
                     </div>
                     <h3 className="mb-0 font-weight-semibold">
-                      Rs {product.rent} / day
+                      Rs {product.bid}
                     </h3>
 
                     {/* {product.reviews.length > 0 &&
@@ -125,7 +125,7 @@ function BidItemQuote() {
                           <span style={{ color: '#ffd700' }}>&#9733;</span>
                         ))} */}
                     <div className="text-muted mb-3">
-                      {product.reviews.length} reviews
+                      {/* {product.reviews.length} reviews */}
                     </div>
                   </div>
                 </div>

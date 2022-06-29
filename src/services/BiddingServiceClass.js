@@ -6,7 +6,12 @@ import axios from "axios";
 class BiddingService extends GenericService {
   constructor() {
     super();
-    this.populate = ["image", "users_permissions_user", "category_list"];
+    this.populate = [
+      "image",
+      "users_permissions_user",
+      "category_list",
+      "highest_bidder",
+    ];
   }
 
   postBiddingItem = (
@@ -134,25 +139,26 @@ class BiddingService extends GenericService {
     const {
       name,
       description,
-      rent,
-      duration,
+      bid,
       image,
       users_permissions_user,
       quantity,
       category_list,
       createdAt,
+      highest_bidder,
     } = attributes;
     // const { price, duration } = estimated_price
     var product = {
       id: "",
       name: "",
       description: "",
-      rent: "",
+      bid: "",
       duration: "",
       quantity: "",
       reviews: [],
       image_urls: [],
       supplier: {},
+      highestBidder: {},
       subCategory: "",
       subCategoryId: "",
       createdAt: "",
@@ -160,10 +166,9 @@ class BiddingService extends GenericService {
     product.id = id;
     product.name = name;
     product.description = description;
-    product.duration = duration;
     product.createdAt = createdAt.slice(0, 10);
     product.quantity = quantity;
-    product.rent = rent;
+    product.bid = bid;
 
     if (category_list) {
       const { data } = category_list;
@@ -185,12 +190,18 @@ class BiddingService extends GenericService {
       const { data } = users_permissions_user;
       product.supplier = productService.extractUser(data);
     }
+    console.log("bidder data: ", highest_bidder);
+    if (highest_bidder) {
+      const { data } = highest_bidder;
+      product.highestBidder = productService.extractUser(data);
+    }
     return product;
   };
-  updateBid = (bid, bidId) => {
+  updateBid = (bid, bidId, bidder) => {
     return this.put(`bidding-items/${bidId}`, {
       data: {
         bid,
+        highest_bidder: bidder,
       },
     });
   };

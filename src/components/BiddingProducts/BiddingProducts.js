@@ -81,11 +81,11 @@ function BiddingProducts() {
                       </p>
                     </div>
                     <h3 className="mb-0 font-weight-semibold">
-                      Bidding Amount: {product.rent}
+                      Latest bid: {product.bid} Rs.
                     </h3>
 
                     <div className="text-muted mb-3">
-                      {product.reviews.length} reviews
+                      {/* {product.reviews.length} reviews */}
                     </div>
 
                     <Link to={`/bidItem/${product.id}`}>
