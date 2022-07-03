@@ -150,7 +150,7 @@ const AdminShowOrders = () => {
                         data-mdb-toggle='modal'
                         data-mdb-target='#exampleModal'
                         style={{ cursor: 'pointer' }}
-                        onClick={() => singleOrderAdmin(order._id)}
+                        onClick={() => singleOrderAdmin(order.id)}
                         className='fa-regular fa-eye'
                       ></i>
                     </td>
