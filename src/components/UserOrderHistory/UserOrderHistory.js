@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react'
-
 import Footer from '../Footer/footer'
 import orderService from '../../services/OrderService'
 import { useSelector } from 'react-redux'
 import { userData } from '../../auth'
 const UserOrderHistory = ({ history }) => {
   const { id } = userData()
-
   const [orders, setOrders] = useState([])
   const [orderDetails, setOrderDetails] = useState([])
-
   const fetchOrders = async () => {
-    //execute here
     orderService
       .getOrders(id, 'paid')
       .then((order) => {
@@ -19,14 +15,11 @@ const UserOrderHistory = ({ history }) => {
         setOrders(order)
       })
       .catch((err) => console.log(err))
-
     fetchSingleOrderDetails()
   }
-
-  // single order details
   const fetchSingleOrderDetails = async (orderID) => {
     var size = Object.keys(orders).length
-    console.log('size', size)
+    console.log('size of order', size)
     for (let step = 0; step < size; step++) {
       if (orders[step].id === orderID) {
         setOrderDetails([orders[step]])
@@ -131,7 +124,6 @@ const UserOrderHistory = ({ history }) => {
                 <h5 className='modal-title' id='exampleModalLabel'>
                   Purchase Details
                 </h5>
-                {console.log('is is working')}
                 <button
                   type='button'
                   className='btn-close'
@@ -152,9 +144,12 @@ const UserOrderHistory = ({ history }) => {
                   <tbody className='ordersdetailsBody'>
                     {
                       //  orders && orders.length === 0 ? <><h2>Your don't have any purcharse</h2></> :
-
                       orderDetails.map((det) => (
                         <tr key={det.request_quote.product.name}>
+                          {console.log(
+                            'data at details',
+                            det.request_quote.product.name
+                          )}
                           <th scope='col'>{det.request_quote.product.name}</th>
                           <th scope='col'>
                             Rs. {det.request_quote.product.rent}

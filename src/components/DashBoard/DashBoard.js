@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import userService from '../../services/UserService'
 import productService from '../../services/ProductService'
 import Avatar from '@material-ui/core/Avatar'
+//import UserOrderHistory from '../UserOrderHistory/UserOrderHistory'
 function DashBoard() {
   const [imageurl, setImageurl] = useState('')
   const [data, setData] = useState([])
@@ -206,28 +207,12 @@ function DashBoard() {
       </div>
     )
   }
-  const rentedHistory = () => {
-    return (
-      <div className='card mb-5'>
-        <h3 className='card-header'>Rented History</h3>
-        <div class='card-body'>
-          <ul class='list-group list-group-flush'>
-            <li class='list-group-item'>Cras justo odio</li>
-            <li class='list-group-item'>Dapibus ac facilisis in</li>
-            <li class='list-group-item'>Vestibulum at eros</li>
-          </ul>
-        </div>
-      </div>
-    )
-  }
+
   return (
     <div className='container-fluid mt-4'>
       <div className='row'>
         <div className='col-3'>{userLinks()}</div>
-        <div className='col-9'>
-          {userInfo()}
-          {rentedHistory()}
-        </div>
+        <div className='col-9'>{userInfo()}</div>
       </div>
     </div>
   )

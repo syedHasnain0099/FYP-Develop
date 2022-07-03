@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react'
-
-import axios from 'axios'
-
 import 'antd/dist/antd.css'
 import { Pagination } from 'antd'
 import { toast } from 'react-toastify'
@@ -12,13 +9,13 @@ const AdminShowOrders = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const [totalItem, setTotalItem] = useState(0)
   const [shippingAddressload, setShippingAddressload] = useState({})
-
   //show orders
   const displayAdminOrders = async () => {
     orderService
       .getAllOrders('paid')
       .then((order) => {
         console.log('order data!', order)
+        setOrd(order)
         // order.id,
         // order.request_quote.start_date,
         // order.request_quote.end_date,
@@ -28,7 +25,6 @@ const AdminShowOrders = () => {
         // order.created_at,
       })
       .catch((err) => console.log(err))
-    singleOrderAdmin()
   }
 
   useEffect(() => {
@@ -124,12 +120,12 @@ const AdminShowOrders = () => {
               // orders && orders.length === 0 ? <><h2>Your don't have any purcharse</h2></> :
 
               ord.map((order) => (
-                <tr key={order._id}>
-                  <th scope='col'>{order._id}</th>
-                  <th scope='col'>{order.user.name}</th>
-                  <th scope='col'>{order.itemsPrice.toFixed(2)}</th>
+                <tr key={order.id}>
+                  <th scope='col'>{order.id}</th>
+                  <th scope='col'>{order.currentUser.username}</th>
+                  <th scope='col'>{order.total}</th>
                   <th scope='col'>
-                    {order.isPaid ? (
+                    {order.status === 'paid' ? (
                       <span style={{ color: 'green' }}>Paid</span>
                     ) : (
                       <span style={{ color: '#ffc107' }}>Processing</span>
@@ -137,7 +133,7 @@ const AdminShowOrders = () => {
                   </th>
                   <th scope='col'>
                     {' '}
-                    {order.isDelivered ? (
+                    {order.delivered === 'yes' ? (
                       <span style={{ color: 'green' }}>Yes</span>
                     ) : (
                       <span style={{ color: '#ffc107' }}>No</span>
