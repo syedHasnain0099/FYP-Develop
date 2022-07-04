@@ -6,19 +6,19 @@ import orderService from "../services/OrderService";
 const AdminShowOrders = () => {
   const [ord, setOrd] = useState([]);
   const [supplier, setSupplier] = useState("");
+  const [renter, setRenter] = useState("");
   const [singleOrder, setSingleOrder] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalItem, setTotalItem] = useState(0);
   const [shippingAddressload, setShippingAddressload] = useState({});
   //show orders
-  const setRecievedBackStatus = async () => {};
   const displayAdminOrders = async () => {
     orderService
       .getAllOrders("paid")
       .then((order) => {
         console.log("order data!", order);
         setOrd(order);
-        setSupplier(order.request_quote.product.users_permissions_user);
+
         // order.id,
         // order.request_quote.start_date,
         // order.request_quote.end_date,
@@ -40,6 +40,8 @@ const AdminShowOrders = () => {
       .getOneOrder(id)
       .then((order) => {
         console.log("order data!", order);
+        setSupplier(order.request_quote.product.users_permissions_user.id);
+        setRenter(order.user.id);
         // order.id,
         // order.request_quote.start_date,
         // order.request_quote.end_date,
@@ -98,7 +100,7 @@ const AdminShowOrders = () => {
     if (window.confirm(`Do you want to confirm Order : ${orderId} delivery?`)) {
       //console.log(`current user ID: ${id} / ${name}`);
       orderService
-        .updateRecivedBackStatus(status, orderId, renter, supplier)
+        .updateRecivedBackStatus("yes", orderId, renter, supplier)
         .then((order) => {
           console.log("order status updateds!", order);
         })
