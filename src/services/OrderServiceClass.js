@@ -18,9 +18,18 @@ class OrderService extends GenericService {
       },
     });
   };
-  updateRecievedBackStatus = (status, orderId) => {
+  sendAmountBack = (renter, supplier, totalAmount) => {
+    console.log("ok");
+  };
+  updateRecievedBackStatus = (
+    status,
+    orderId,
+    renter,
+    supplier,
+    totalAmount
+  ) => {
     if (status === "yes") {
-      sendAmountBack();
+      this.sendAmountBack(renter, supplier, totalAmount);
     }
     return this.put(`orders/${orderId}`, {
       data: {
@@ -125,12 +134,12 @@ class OrderService extends GenericService {
     });
   };
 
-  sendAmountBack = () => {};
   extractOrders = (req) => {
     const { id, attributes } = req;
     const {
       status,
       total,
+      total_amount,
       checkout_session,
       request_quote,
       user,
@@ -142,6 +151,7 @@ class OrderService extends GenericService {
       id: "",
       status: "",
       total: "",
+      totalAmount: {},
       checkout_session: "",
       request_quote: {},
       currentUser: {},
@@ -156,6 +166,7 @@ class OrderService extends GenericService {
     order.created_at = new Date(createdAt).toLocaleDateString("en-EN");
     order.updated_at = new Date(updatedAt).toLocaleDateString("en-EN");
     order.delivered = delivered;
+    order.totalAmount = total_amount;
     if (request_quote) {
       const { data } = request_quote;
       if (data) order.request_quote = quoteService.extractRequests(data);

@@ -7,6 +7,7 @@ const AdminShowOrders = () => {
   const [ord, setOrd] = useState([]);
   const [supplier, setSupplier] = useState("");
   const [renter, setRenter] = useState("");
+  const [totalAmount, setTotalAmount] = useState({});
   const [singleOrder, setSingleOrder] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalItem, setTotalItem] = useState(0);
@@ -42,6 +43,7 @@ const AdminShowOrders = () => {
         console.log("order data!", order);
         setSupplier(order.request_quote.product.users_permissions_user.id);
         setRenter(order.user.id);
+        setTotalAmount(order.totalAmount);
         // order.id,
         // order.request_quote.start_date,
         // order.request_quote.end_date,
@@ -89,18 +91,18 @@ const AdminShowOrders = () => {
     if (window.confirm(`Do you want to confirm Order : ${orderId} delivery?`)) {
       //console.log(`current user ID: ${id} / ${name}`);
       // orderService
-      //   .updateDeliveryStatus(status, orderId)
+      //   .updateDeliveryStatus("yes", orderId)
       //   .then((order) => {
       //     console.log('order status updateds!', order)
       //   })
       //   .catch((err) => console.log(err))
     }
   };
-  const orderRecievedBack = (orderId, status) => {
+  const orderRecievedBack = (orderId) => {
     if (window.confirm(`Do you want to confirm Order : ${orderId} delivery?`)) {
       //console.log(`current user ID: ${id} / ${name}`);
       orderService
-        .updateRecivedBackStatus(status, orderId, renter, supplier)
+        .updateRecivedBackStatus("yes", orderId, renter, supplier, totalAmount)
         .then((order) => {
           console.log("order status updateds!", order);
         })
