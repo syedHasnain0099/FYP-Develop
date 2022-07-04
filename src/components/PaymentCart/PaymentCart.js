@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { Redirect, useLocation } from "react-router-dom";
-import CheckOutSteps from "../CheckOutSteps/CheckOutSteps";
-import { userData } from "../../auth";
-import PaymentIcon from "@mui/icons-material/Payment";
-import quoteService from "../../services/QuoteService";
-import orderService from "../../services/OrderService";
-import productService from "../../services/ProductService";
-import stripeCreditCard from "../images/stripe.png";
-import shippingService from "../../services/ShippingService";
-import { loadStripe } from "@stripe/stripe-js";
-import { orderCreate } from "../../action/orderAction";
-import Footer from "../Footer/footer";
-import { useSelector } from "react-redux";
-import StripeCheckoutButton from "../StripeCheckoutButton/StripeCheckoutButton";
+import React, { useEffect, useState } from 'react'
+import { Redirect, useLocation } from 'react-router-dom'
+import CheckOutSteps from '../CheckOutSteps/CheckOutSteps'
+import { userData } from '../../auth'
+import PaymentIcon from '@mui/icons-material/Payment'
+import quoteService from '../../services/QuoteService'
+import orderService from '../../services/OrderService'
+import productService from '../../services/ProductService'
+import stripeCreditCard from '../images/stripe.png'
+import shippingService from '../../services/ShippingService'
+import { loadStripe } from '@stripe/stripe-js'
+import { orderCreate } from '../../action/orderAction'
+import Footer from '../Footer/footer'
+import { useSelector } from 'react-redux'
+import StripeCheckoutButton from '../StripeCheckoutButton/StripeCheckoutButton'
 function PaymentCart() {
-  const cart = useSelector((state) => state.cart);
-  const { shippingAddress, cartItems } = cart;
+  const cart = useSelector((state) => state.cart)
+  const { shippingAddress, cartItems } = cart
   const twoDecimalsNumber = (num) =>
-    Math.round(num * 100 + Number.EPSILON) / 100;
+    Math.round(num * 100 + Number.EPSILON) / 100
   cart.itemsPrice = twoDecimalsNumber(
     cart.cartItems.reduce((a, c) => a + c.price, 0)
-  );
+  )
   cart.securityFee = twoDecimalsNumber(
     cart.itemsPrice > 200 ? 0 : (25 / 100) * cart.itemsPrice
-  );
-  cart.shippingPrice = twoDecimalsNumber(cart.itemsPrice > 200 ? 0 : 25);
-  cart.taxPrice = twoDecimalsNumber(cart.itemsPrice * 0.05);
+  )
+  cart.shippingPrice = twoDecimalsNumber(cart.itemsPrice > 200 ? 0 : 500)
+  cart.taxPrice = twoDecimalsNumber(cart.itemsPrice * 0.05)
   cart.totalPrice = twoDecimalsNumber(
-    cart.itemsPrice + cart.shippingPrice + cart.taxPrice
-  );
+    cart.itemsPrice + cart.shippingPrice + cart.taxPrice + cart.securityFee
+  )
 
-  const { id } = userData();
+  const { id } = userData()
   // let quote_Id
   // let location1 = useLocation()
   // quote_Id = location1.state.productId
   // const [orders, setOrders] = useState([])
   // const [paymentProductData, setPaymentProductData] = useState([])
-  const [paymentShippingData, setPaymentShippingData] = useState([]);
+  const [paymentShippingData, setPaymentShippingData] = useState([])
   // let quote = ''
   // let total = ''
   // const [quote, setQuote] = useState('')
@@ -71,19 +71,19 @@ function PaymentCart() {
   //   };
   // };
   const publishablekey =
-    "pk_test_51L21M9CkQckw00WvUtYFfgcAmm9NQzQ8pI4JlVRLlIoH8jrQV9bFOuN6XBJtNFvaXbMcUueCaU2IotdF1zabgWqy00xR8aRYtZ";
-  const stripePromise = loadStripe(publishablekey);
+    'pk_test_51L21M9CkQckw00WvUtYFfgcAmm9NQzQ8pI4JlVRLlIoH8jrQV9bFOuN6XBJtNFvaXbMcUueCaU2IotdF1zabgWqy00xR8aRYtZ'
+  const stripePromise = loadStripe(publishablekey)
   const handleBuy = async () => {
-    const stripe = await stripePromise;
-    const priceForStripe = cart.totalPrice;
-    const productId = cartItems[0].product;
-    const quoteId = cartItems[0].quote_id;
-    console.log("product id: ", productId);
-    console.log("user id: ", id);
-    console.log("total: ", priceForStripe);
-    console.log("quote id: ", quoteId);
-    const shippId = paymentShippingData.shippingId;
-    console.log("shipp id: ", shippId);
+    const stripe = await stripePromise
+    const priceForStripe = cart.totalPrice
+    const productId = cartItems[0].product
+    const quoteId = cartItems[0].quote_id
+    console.log('product id: ', productId)
+    console.log('user id: ', id)
+    console.log('total: ', priceForStripe)
+    console.log('quote id: ', quoteId)
+    const shippId = paymentShippingData.shippingId
+    console.log('shipp id: ', shippId)
     orderService
       .postOrder(
         quoteId,
@@ -95,17 +95,17 @@ function PaymentCart() {
         cart.taxPrice
       )
       .then((data) => {
-        console.log("data:", data.id);
+        console.log('data:', data.id)
         stripe.redirectToCheckout({
           sessionId: data.id,
-        });
+        })
 
         // setclientSecretKey(data.paymentIntent.client_secret);
         // console.log("client secret id: ", clientSecretKey);
       }).catch = (err) => {
-      console.log(err);
-    };
-  };
+      console.log(err)
+    }
+  }
   // const detailsOfQuote = () => {
   //   quoteService
   //     .getProductOfQuote(quote_Id, 'accepted')
@@ -129,7 +129,7 @@ function PaymentCart() {
   //     })
   // }
   const getDetails = () => {
-    console.log(id);
+    console.log(id)
     //   console.log('quote id: ', quote_Id)
     //   quoteService
     //     .getProductOfQuote(quote_Id, 'accepted')
@@ -146,16 +146,16 @@ function PaymentCart() {
     shippingService
       .getShippingDetail(id)
       .then((data) => {
-        console.log("shipping details: ", data);
-        setPaymentShippingData(data);
+        console.log('shipping details: ', data)
+        setPaymentShippingData(data)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
   useEffect(() => {
-    getDetails();
-  }, []);
+    getDetails()
+  }, [])
   // useEffect(() => {
   //   getOrders()
   // }, [])
@@ -165,77 +165,80 @@ function PaymentCart() {
 
   return (
     <>
-      <div className="container wrapper_add_to_Cart">
+      <div className='container wrapper_add_to_Cart'>
         <CheckOutSteps step1 step2 step3></CheckOutSteps>
 
-        <div className="container custom_class">
-          <h2 className="signup_title "> Details Summaries</h2>
-          <div className="row">
-            <div className="col-sm-8">
+        <div className='container custom_class'>
+          <h2 className='signup_title '> Details Summaries</h2>
+          <div className='row'>
+            <div className='col-sm-8'>
               {cartItems &&
                 cartItems.map((item) => (
-                  <div className="row_loop" key={item.id}>
-                    <div className="colcart">
-                      <img src={item.image} className="small" />
+                  <div className='row_loop' key={item.id}>
+                    <div className='colcart'>
+                      <img src={item.image} className='small' />
                     </div>
 
-                    <div className="colcart">
+                    <div className='colcart'>
                       <h6>{item.name}</h6>
                     </div>
 
-                    <div className="colcart">
+                    <div className='colcart'>
                       <h6>Rs. {item.price}</h6>
                     </div>
                   </div>
                 ))}
             </div>
-            <div className="col-sm-4">
-              <div className="shipping_details text-center pt-3">
+            <div className='col-sm-4'>
+              <div className='shipping_details text-center pt-3'>
                 <h4>Shipping</h4>
-                <div className="te">
+                <div className='te'>
                   <b>Name:</b> {shippingAddress.fullName}
                 </div>
-                <div className="">
+                <div className=''>
                   <b>Address:</b> {shippingAddress.address}
                 </div>
-                <div className="">
+                <div className=''>
                   <b>Cellphone:</b> {shippingAddress.cellPhone}
                 </div>
-                <div className="">
+                <div className=''>
                   <b>Country:</b> {shippingAddress.country}
                 </div>
-                <div className="">
+                <div className=''>
                   <b>City:</b> {shippingAddress.city}
                 </div>
-                <div className="">
+                <div className=''>
                   <b>Postal Code:</b> {shippingAddress.postalCode}
                 </div>
               </div>
 
-              <div className="shipping_details text-center pt-3 mt-3">
+              <div className='shipping_details text-center pt-3 mt-3'>
                 <h4>Order Summary</h4>
-                <div className="te">
+                <div className='te'>
                   <b>Items price:</b> ${cart.itemsPrice}
                 </div>
-                <div className="">
+                <div className=''>
+                  <b>Shipping Price:</b>${cart.securityFee}
+                </div>
+                <div className=''>
                   <b>Shipping Price:</b>${cart.shippingPrice}
                 </div>
-                <div className="">
+                <div className=''>
                   <b>Tax price:</b>${cart.taxPrice}
                 </div>
-                <div className="">
+                <div className=''>
                   <b>Total: </b>${cart.totalPrice}
                   {/* {(total = ('0' + total).slice(-2))} */}
                 </div>
-                <div className="">
+                <div className=''>
                   <img
-                    className="img-fluid imgstripe_style"
+                    className='img-fluid imgstripe_style'
                     src={stripeCreditCard}
-                    alt="stripe payment"
+                    alt='stripe payment'
                   />
                 </div>
-                <div className="addbtnstrip">
-                  <span className="addtocart " onClick={handleBuy}>
+                <div className='addbtnstrip'>
+                  <span className='addtocart ' onClick={handleBuy}>
                     Pay
                     <PaymentIcon></PaymentIcon>
                     {/* <StripeCheckoutButton price={(0 + 200).slice(-2)} /> */}
@@ -248,7 +251,7 @@ function PaymentCart() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default PaymentCart;
+export default PaymentCart

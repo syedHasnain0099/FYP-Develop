@@ -106,9 +106,9 @@ function Header({ history }) {
 
         <div className='buttons'>
           {isAuthenticated() && type === 'user' && (
-            <Link className='text-reset  ms-2' to='/cart'>
+            <Link className='text-reset  ms-2 btn btn-outline-dark' to='/cart'>
               {/* <FontAwesomeIcon icon='fas fa-shopping-cart' /> */}
-              <i className='fas fa-shopping-cart'></i>
+              <i className='fas fa-shopping-cart '></i>
               <span style={{ fontSize: '12px' }}>Cart </span>{' '}
               <span className='cart_style'>
                 {cartItems.length > 0 ? cartItems.length : 0}
