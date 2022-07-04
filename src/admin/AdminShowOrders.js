@@ -104,7 +104,12 @@ const AdminShowOrders = () => {
       orderService
         .updateRecivedBackStatus("yes", orderId, renter, supplier, totalAmount)
         .then((order) => {
-          console.log("order status updateds!", order);
+          console.log(
+            `renter security deposit: ${order.total_amount.security_fee} is been set on process on sending back to id: ${ord.user.username}`
+          );
+          console.log(
+            `supplier's amount: ${order.total_amount.item_price} is been set on process on sending back to id: ${ord.request_quote.product.users_permissions_user.username}`
+          );
         })
         .catch((err) => console.log(err));
     }

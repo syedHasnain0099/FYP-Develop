@@ -27,7 +27,7 @@ function PaymentCart() {
   cart.shippingPrice = twoDecimalsNumber(cart.itemsPrice > 200 ? 0 : 25);
   cart.taxPrice = twoDecimalsNumber(cart.itemsPrice * 0.05);
   cart.totalPrice = twoDecimalsNumber(
-    cart.itemsPrice + cart.shippingPrice + cart.taxPrice
+    cart.itemsPrice + cart.shippingPrice + cart.taxPrice + cart.securityFee
   );
 
   const { id } = userData();
@@ -87,12 +87,13 @@ function PaymentCart() {
     orderService
       .postOrder(
         quoteId,
-        priceForStripe,
+        cart.itemsPrice,
         id,
         shippId,
-        cart.securityFee,
         cart.shippingPrice,
-        cart.taxPrice
+        cart.taxPrice,
+        cart.securityFee,
+        priceForStripe
       )
       .then((data) => {
         console.log("data:", data.id);
