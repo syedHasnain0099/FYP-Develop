@@ -24,7 +24,7 @@ function PaymentCart() {
   cart.securityFee = twoDecimalsNumber(
     cart.itemsPrice > 200 ? 0 : (25 / 100) * cart.itemsPrice
   );
-  cart.shippingPrice = twoDecimalsNumber(cart.itemsPrice > 200 ? 0 : 25);
+  cart.shippingPrice = twoDecimalsNumber(cart.itemsPrice > 200 ? 0 : 500);
   cart.taxPrice = twoDecimalsNumber(cart.itemsPrice * 0.05);
   cart.totalPrice = twoDecimalsNumber(
     cart.itemsPrice + cart.shippingPrice + cart.taxPrice + cart.securityFee
@@ -217,6 +217,9 @@ function PaymentCart() {
                 <h4>Order Summary</h4>
                 <div className="te">
                   <b>Items price:</b> ${cart.itemsPrice}
+                </div>
+                <div className="">
+                  <b>Shipping Price:</b>${cart.securityFee}
                 </div>
                 <div className="">
                   <b>Shipping Price:</b>${cart.shippingPrice}

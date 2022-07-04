@@ -7,7 +7,7 @@ const AdminShowOrders = () => {
   const [ord, setOrd] = useState([]);
   const [supplier, setSupplier] = useState("");
   const [renter, setRenter] = useState("");
-  const [totalAmount, setTotalAmount] = useState({});
+  const [totalAmount, setTotalAmount] = useState("");
   const [singleOrder, setSingleOrder] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalItem, setTotalItem] = useState(0);
@@ -37,6 +37,7 @@ const AdminShowOrders = () => {
 
   //display single order for admin
   const singleOrderAdmin = async (id) => {
+    console.log("order id", id);
     orderService
       .getOneOrder(id)
       .then((order) => {
@@ -67,38 +68,19 @@ const AdminShowOrders = () => {
         .catch((err) => console.log(err));
     }
   };
-
-  //confirm payment an order
-  // const confirmOrderPayment = (id) => {
-  //   if (window.confirm(`Do you want to confirm Order payment: ${id}`)) {
-  //     //console.log(`current user ID: ${id} / ${name}`);
-  //     axios
-  //       .put(`/api/orderupdate/admin/pay/${id}`)
-  //       .then((result) => {
-  //         if (result) {
-  //           toast.success(`current order ID: ${id}  paid`);
-  //           displayAdminOrders();
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // };
-
   //confirm delivered order
   const orderDeliveredHome = (orderId) => {
+    console.log("orderId", orderId);
     if (window.confirm(`Do you want to confirm Order : ${orderId} delivery?`)) {
-      //console.log(`current user ID: ${id} / ${name}`);
-      // orderService
-      //   .updateDeliveryStatus("yes", orderId)
-      //   .then((order) => {
-      //     console.log('order status updateds!', order)
-      //   })
-      //   .catch((err) => console.log(err))
+      orderService
+        .updateDeliveryStatus(orderId)
+        .then((order) => {
+          console.log("order status updateds!", order);
+        })
+        .catch((err) => console.log(err));
     }
   };
-  const orderRecievedBack = (orderId) => {
+  const orderRecievedBack = (orderId, status) => {
     if (window.confirm(`Do you want to confirm Order : ${orderId} delivery?`)) {
       //console.log(`current user ID: ${id} / ${name}`);
       orderService
@@ -191,14 +173,14 @@ const AdminShowOrders = () => {
                     </td>
                     <td>
                       <i
-                        onClick={() => orderDeliveredHome(order._id)}
+                        onClick={() => orderDeliveredHome(order.id)}
                         class="fa-solid fa-house-chimney"
                         style={{ cursor: "pointer", marginLeft: "20px" }}
                       ></i>
                     </td>
                     <td>
                       <i
-                        onClick={() => deleteOrder(order._id)}
+                        onClick={() => deleteOrder(order.id)}
                         class="far fa-trash-alt btn-danger"
                         style={{ cursor: "pointer", marginLeft: "20px" }}
                       ></i>
