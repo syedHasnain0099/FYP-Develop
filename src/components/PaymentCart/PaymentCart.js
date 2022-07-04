@@ -21,9 +21,10 @@ function PaymentCart() {
   cart.itemsPrice = twoDecimalsNumber(
     cart.cartItems.reduce((a, c) => a + c.price, 0)
   );
-  cart.shippingPrice = twoDecimalsNumber(
+  cart.securityFee = twoDecimalsNumber(
     cart.itemsPrice > 200 ? 0 : (25 / 100) * cart.itemsPrice
   );
+  cart.shippingPrice = twoDecimalsNumber(cart.itemsPrice > 200 ? 0 : 25);
   cart.taxPrice = twoDecimalsNumber(cart.itemsPrice * 0.05);
   cart.totalPrice = twoDecimalsNumber(
     cart.itemsPrice + cart.shippingPrice + cart.taxPrice
@@ -89,6 +90,7 @@ function PaymentCart() {
         priceForStripe,
         id,
         shippId,
+        cart.securityFee,
         cart.shippingPrice,
         cart.taxPrice
       )

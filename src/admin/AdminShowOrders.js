@@ -96,11 +96,11 @@ const AdminShowOrders = () => {
       //   .catch((err) => console.log(err))
     }
   };
-  const orderRecievedBack = (orderId) => {
+  const orderRecievedBack = (orderId, status) => {
     if (window.confirm(`Do you want to confirm Order : ${orderId} delivery?`)) {
       //console.log(`current user ID: ${id} / ${name}`);
       orderService
-        .updateRecivedBackStatus("yes", orderId, renter, supplier)
+        .updateRecivedBackStatus(status, orderId, renter, supplier)
         .then((order) => {
           console.log("order status updateds!", order);
         })
