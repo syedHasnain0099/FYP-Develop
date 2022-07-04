@@ -42,8 +42,8 @@ const AdminShowOrders = () => {
       .getOneOrder(id)
       .then((order) => {
         console.log("order data!", order);
-        setSupplier(order.request_quote.product.users_permissions_user.id);
-        setRenter(order.user.id);
+        setSupplier(order.request_quote.product.supplier.id);
+        setRenter(order.currentUser.id);
         setTotalAmount(order.totalAmount);
         // order.id,
         // order.request_quote.start_date,
