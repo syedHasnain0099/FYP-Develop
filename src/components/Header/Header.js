@@ -105,6 +105,16 @@ function Header({ history }) {
         </ul>
 
         <div className='buttons'>
+          {isAuthenticated() && type === 'user' && (
+            <Link className='text-reset  ms-2' to='/cart'>
+              {/* <FontAwesomeIcon icon='fas fa-shopping-cart' /> */}
+              <i className='fas fa-shopping-cart'></i>
+              <span style={{ fontSize: '12px' }}>Cart </span>{' '}
+              <span className='cart_style'>
+                {cartItems.length > 0 ? cartItems.length : 0}
+              </span>
+            </Link>
+          )}
           {!isAuthenticated() && (
             <Fragment>
               <NavLink to='/login' className='btn btn-outline-dark'>
@@ -122,16 +132,7 @@ function Header({ history }) {
               </span>
             </Link>
           )}
-          {isAuthenticated() && type === 'user' && (
-            <Link className='text-reset  ms-2' to='/cart'>
-              {/* <FontAwesomeIcon icon='fas fa-shopping-cart' /> */}
-              <i className='fas fa-shopping-cart'></i>
-              <span style={{ fontSize: '12px' }}>Cart </span>{' '}
-              <span className='cart_style'>
-                {cartItems.length > 0 ? cartItems.length : 0}
-              </span>
-            </Link>
-          )}
+
           {isAuthenticated() && type === 'admin' && (
             <NavLink
               to='/admin/dashboard'

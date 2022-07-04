@@ -433,6 +433,18 @@ function AddProduct() {
               Recieved Responses
             </Link>
           </li>
+          <li class='list-group-item'>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
+              to='/orderHistory'
+              role='tab'
+              aria-controls='home'
+            >
+              Order History
+            </Link>
+          </li>
           {/* <li class='list-group-item'>
               <Link className='nav-link' to='/acceptedRequests'>
                 Recieved Responses
