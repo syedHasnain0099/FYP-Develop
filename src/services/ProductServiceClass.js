@@ -57,7 +57,6 @@ class ProductService extends GenericService {
       });
     });
   };
-
   postAd = (
     name,
     description,
@@ -124,7 +123,6 @@ class ProductService extends GenericService {
   deleteRequestedAd = (id) => {
     return this.delete(`requested-ads/${id}`);
   };
-
   uploadPost = (
     name,
     description,
@@ -468,7 +466,6 @@ class ProductService extends GenericService {
         .catch((err) => reject(err));
     });
   };
-
   getRelatedProducts = (subCategory, existingProductName) => {
     const filteredProducts = [];
     let query;

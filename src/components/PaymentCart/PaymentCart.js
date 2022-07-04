@@ -21,7 +21,9 @@ function PaymentCart() {
   cart.itemsPrice = twoDecimalsNumber(
     cart.cartItems.reduce((a, c) => a + c.price, 0)
   );
-  cart.shippingPrice = twoDecimalsNumber(cart.itemsPrice > 200 ? 0 : 25);
+  cart.shippingPrice = twoDecimalsNumber(
+    cart.itemsPrice > 200 ? 0 : (25 / 100) * cart.itemsPrice
+  );
   cart.taxPrice = twoDecimalsNumber(cart.itemsPrice * 0.05);
   cart.totalPrice = twoDecimalsNumber(
     cart.itemsPrice + cart.shippingPrice + cart.taxPrice
@@ -82,7 +84,14 @@ function PaymentCart() {
     const shippId = paymentShippingData.shippingId;
     console.log("shipp id: ", shippId);
     orderService
-      .postOrder(quoteId, priceForStripe, id, shippId)
+      .postOrder(
+        quoteId,
+        priceForStripe,
+        id,
+        shippId,
+        cart.shippingPrice,
+        cart.taxPrice
+      )
       .then((data) => {
         console.log("data:", data.id);
         stripe.redirectToCheckout({
