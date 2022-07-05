@@ -148,7 +148,7 @@ class BiddingService extends GenericService {
       highest_bidder,
     } = attributes;
     // const { price, duration } = estimated_price
-    var product = {
+    var biddingItem = {
       id: "",
       name: "",
       description: "",
@@ -163,18 +163,17 @@ class BiddingService extends GenericService {
       subCategoryId: "",
       createdAt: "",
     };
-    product.id = id;
-    product.name = name;
-    product.description = description;
-    product.createdAt = createdAt.slice(0, 10);
-    product.quantity = quantity;
-    product.bid = bid;
+    biddingItem.id = id;
+    biddingItem.name = name;
+    biddingItem.description = description;
+    biddingItem.quantity = quantity;
+    biddingItem.bid = bid;
 
     if (category_list) {
       const { data } = category_list;
       const extractedData = productService.extractSubcategoryName(data);
-      product.subCategory = extractedData.name;
-      product.subCategoryId = extractedData.id;
+      biddingItem.subCategory = extractedData.name;
+      biddingItem.subCategoryId = extractedData.id;
     }
 
     if (image) {
@@ -182,20 +181,22 @@ class BiddingService extends GenericService {
       for (let index = 0; index < data.length; index++) {
         const singleImage = data[index];
         const extractedData = productService.extractImage(singleImage);
-        product.image_urls.push(extractedData.url);
+        biddingItem.image_urls.push(extractedData.url);
       }
     }
 
     if (users_permissions_user) {
       const { data } = users_permissions_user;
-      product.supplier = productService.extractUser(data);
+      biddingItem.supplier = productService.extractUser(data);
     }
     console.log("bidder data: ", highest_bidder);
     if (highest_bidder) {
       const { data } = highest_bidder;
-      product.highestBidder = productService.extractUser(data);
+      if (data) {
+        biddingItem.highestBidder = productService.extractUser(data);
+      }
     }
-    return product;
+    return biddingItem;
   };
   updateBid = (bid, bidId, bidder) => {
     return this.put(`bidding-items/${bidId}`, {

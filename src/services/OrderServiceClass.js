@@ -146,30 +146,37 @@ class OrderService extends GenericService {
       createdAt,
       delivered,
       updatedAt,
+      recieved_back,
+      delivered_at,
     } = attributes;
+    console.log("total am: ", total_amount);
     var order = {
       id: "",
       status: "",
       total: "",
       totalAmount: {},
       checkout_session: "",
-      request_quote: {},
+      requestQuote: {},
       currentUser: {},
-      created_at: "",
+      createdAt: "",
       delivered: "",
-      updated_at: "",
+      deliveredAt: "",
+      updatedAt: "",
+      recievedBack: "",
     };
     order.id = id;
     order.status = status;
     order.total = total;
     order.checkout_session = checkout_session;
-    order.created_at = new Date(createdAt).toLocaleDateString("en-EN");
-    order.updated_at = new Date(updatedAt).toLocaleDateString("en-EN");
+    order.createdAt = new Date(createdAt).toLocaleDateString("en-EN");
+    order.updatedAt = new Date(updatedAt).toLocaleDateString("en-EN");
     order.delivered = delivered;
+    order.deliveredAt = delivered_at;
     order.totalAmount = total_amount;
+    order.recievedBack = recieved_back;
     if (request_quote) {
       const { data } = request_quote;
-      if (data) order.request_quote = quoteService.extractRequests(data);
+      if (data) order.requestQuote = quoteService.extractRequests(data);
     }
     if (user) {
       const { data } = user;
