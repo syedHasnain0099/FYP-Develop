@@ -66,11 +66,6 @@ class ReportingService extends GenericService {
     return new Promise((resolve, reject) => {
       const query = qs.stringify({
         populate: this.populate,
-        // filters: {
-        //   review: {
-        //     $notNull: true,
-        //   },
-        // },
       });
       this.get(`reported-contents/${id}?${query}`, {})
         .then((response) => {
