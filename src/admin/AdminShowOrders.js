@@ -148,7 +148,14 @@ const AdminShowOrders = () => {
                   <th scope='col'>
                     {order.isPaid && order.isDelivered ? order.deliveredAt : ''}
                   </th>
-
+                  <th scope='col'>
+                    {' '}
+                    {order.recievedBack === 'yes' ? (
+                      <span style={{ color: 'green' }}>Yes</span>
+                    ) : (
+                      <span style={{ color: '#ffc107' }}>No</span>
+                    )}
+                  </th>
                   <th scope='col'>
                     <td>
                       {' '}
@@ -162,7 +169,7 @@ const AdminShowOrders = () => {
                     </td>
                     <td>
                       <i
-                        // onClick={() => confirmOrderPayment(order._id)}
+                        onClick={() => orderRecievedBack(order.id)}
                         class='fa-solid fa-dollar-sign'
                         style={{
                           cursor: 'pointer',
