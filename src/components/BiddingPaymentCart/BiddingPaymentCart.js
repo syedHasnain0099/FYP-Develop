@@ -19,11 +19,11 @@ function BiddingPaymentCart() {
   let bidding_item = location1.state.bidding_item
   let bidding_price = location1.state.bidding_price
   let name = location1.state.name
-  console.log('name', name)
   let image = location1.state.image
   let shippingPrice = 1000
   let taxFee = 10 * (bidding_price / 100)
-  let totalPrice = bidding_price + shippingPrice + taxFee
+  let totalPrice =
+    parseFloat(bidding_price) + parseFloat(shippingPrice) + parseFloat(taxFee)
   const [paymentShippingData, setPaymentShippingData] = useState([])
   const publishablekey =
     'pk_test_51L21M9CkQckw00WvUtYFfgcAmm9NQzQ8pI4JlVRLlIoH8jrQV9bFOuN6XBJtNFvaXbMcUueCaU2IotdF1zabgWqy00xR8aRYtZ'
