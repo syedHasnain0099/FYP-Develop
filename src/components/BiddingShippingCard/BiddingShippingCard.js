@@ -13,8 +13,8 @@ function BiddingShippingCard() {
   const dispatch = useDispatch()
   //product id
   const { id } = userData()
-  // let location = useLocation()
-  // console.log(location.state)
+  let location = useLocation()
+  console.log(location.state)
 
   // const [fullName, setFullName] = useState('')
   // const [address, setAddress] = useState('')
@@ -108,7 +108,12 @@ function BiddingShippingCard() {
         <Redirect
           to={{
             pathname: '/bidding/payment',
-            // state: { productId: location.state.productId },
+            state: {
+              bidding_item: location.state.bidding_item,
+              bidding_price: location.state.bidding_price,
+              image: location.state.image,
+              name: location.state.name,
+            },
           }}
           exact
         ></Redirect>

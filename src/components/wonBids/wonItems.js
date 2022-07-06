@@ -253,7 +253,12 @@ function MyAds() {
                     <NavLink
                       to={{
                         pathname: '/bidding/shipping',
-                        // state: { productId: location.state.productId },
+                        state: {
+                          bidding_item: item.id,
+                          bidding_price: item.bid,
+                          image: item.image_urls[0],
+                          name: item.name,
+                        },
                       }}
                       exact
                     >
