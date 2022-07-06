@@ -46,6 +46,7 @@ import UserOrderHistory from './components/UserOrderHistory/UserOrderHistory'
 import BiddingAdDetails from './components/BiddingAdDetails/BiddingAdDetails'
 import BiddingShippingCard from './components/BiddingShippingCard/BiddingShippingCard'
 import BiddingPaymentCart from './components/BiddingPaymentCart/BiddingPaymentCart'
+import MyBiddingAds from './components/MyBiddingAds/MyBiddingAds'
 function Routes() {
   return (
     <BrowserRouter>
@@ -178,6 +179,10 @@ function Routes() {
           <PrivateRoute path='/create/bidItem'>
             <Header />
             <AddBidItem />
+          </PrivateRoute>
+          <PrivateRoute path='/myBiddingAds'>
+            <Header />
+            <MyBiddingAds />
           </PrivateRoute>
 
           <Route path='/bidProduct/:productId'>

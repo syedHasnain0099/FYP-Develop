@@ -63,7 +63,7 @@ function MyBiddingAds() {
         <ul class='list-group list-group-flush'>
           <li class='list-group-item'>
             <Link
-              class='list-group-item list-group-item-action active'
+              class='list-group-item list-group-item-action '
               id='list-home-list'
               data-toggle='list'
               to='/myAds'
@@ -71,6 +71,18 @@ function MyBiddingAds() {
               aria-controls='home'
             >
               My Ads
+            </Link>
+          </li>
+          <li class='list-group-item'>
+            <Link
+              class='list-group-item list-group-item-action active'
+              id='list-home-list'
+              data-toggle='list'
+              to='/myBiddingAds'
+              role='tab'
+              aria-controls='home'
+            >
+              My Bidding Ads
             </Link>
           </li>
           <li class='list-group-item'>
@@ -293,9 +305,6 @@ function MyBiddingAds() {
                       Rs {product.rent} / day
                     </h3>
                     <br />
-                    <Link to={`/bidProduct/${product.id}`}>
-                      <h6>Details</h6>
-                    </Link>
                   </div>
                 </div>
               </div>

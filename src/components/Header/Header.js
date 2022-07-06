@@ -84,7 +84,7 @@ function Header({ history }) {
               Bidding Products
             </Link>
           </li>
-          <li class='nav-item'>
+          {/* <li class='nav-item'>
             <Link
               class='nav-link'
               to='/about'
@@ -101,7 +101,7 @@ function Header({ history }) {
             >
               Contact
             </Link>
-          </li>
+          </li> */}
         </ul>
 
         <div className='buttons'>

@@ -78,6 +78,18 @@ function MyAds() {
               class='list-group-item list-group-item-action '
               id='list-home-list'
               data-toggle='list'
+              to='/myBiddingAds'
+              role='tab'
+              aria-controls='home'
+            >
+              My Bidding Ads
+            </Link>
+          </li>
+          <li class='list-group-item'>
+            <Link
+              class='list-group-item list-group-item-action '
+              id='list-home-list'
+              data-toggle='list'
               to={`/profile/${id}`}
               role='tab'
               aria-controls='home'
