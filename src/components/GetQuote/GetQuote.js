@@ -43,7 +43,7 @@ function GetQuote() {
   const [enteredLocation, setEnteredLocation] = useState('')
   const [enteredQuantity, setEnteredQuantity] = useState('')
   const [createdProduct, setCreatedProduct] = useState(false)
-  const [duration, setDuration] = useState('')
+
   const [data, setData] = useState([])
   const [maxValue, setmaxValue] = useState('')
   const [loading, setLoading] = useState(false)
@@ -76,8 +76,11 @@ function GetQuote() {
     // here to run or connect with backend
     var start = moment(getQuoteData.startDate, 'YYYY-MM-DD')
     var end = moment(getQuoteData.endDate, 'YYYY-MM-DD')
-    setDuration(moment.duration(end.diff(start)).asDays())
-    const quote = data.rent * duration * getQuoteData.quantity
+    var duration = moment.duration(end.diff(start)).asDays()
+    console.log(data[0].rent)
+    console.log('duration', duration)
+    console.log('getQuoteData.quantity', getQuoteData.quantity)
+    const quote = data[0].rent * duration * getQuoteData.quantity
 
     quoteService
       .sendRequestQuote(
