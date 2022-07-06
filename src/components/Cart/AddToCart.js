@@ -127,7 +127,7 @@ const AddToCart = ({ history }) => {
                   Unit(s)
                 </h5> */}
                 <h5>
-                  Total Price: $
+                  Total Price:Rs.{' '}
                   {cartItems.reduce((a, c) => a + c.price, 0).toFixed(2)}{' '}
                 </h5>
               </div>
