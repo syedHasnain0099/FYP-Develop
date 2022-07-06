@@ -139,7 +139,7 @@ function BiddingPaymentCart() {
                   />
                 </div>
                 <div className='addbtnstrip'>
-                  <span className='addtocart ' onClick={handleBuy()}>
+                  <span className='addtocart ' onClick={handleBuy}>
                     Pay
                     <PaymentIcon></PaymentIcon>
                     {/* <StripeCheckoutButton price={(0 + 200).slice(-2)} /> */}
