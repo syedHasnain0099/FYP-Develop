@@ -13,19 +13,13 @@ import 'react-virtualized/styles.css'
 import 'react-virtualized-select/styles.css'
 function GetQuote() {
   let city = cities()
+
   let today = new Date().toISOString().slice(0, 10)
 
   console.log(today)
   let { productId } = useParams()
+
   const { id, username, email } = userData()
-  const [enteredStartDate, setEnteredStartDate] = useState('')
-  const [enteredEndDate, setEnteredEndDate] = useState('')
-  const [enteredLocation, setEnteredLocation] = useState('')
-  const [enteredQuantity, setEnteredQuantity] = useState('')
-  const [createdProduct, setCreatedProduct] = useState(false)
-  const [duration, setDuration] = useState('')
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(false)
   const getProducts = (productId) => {
     setLoading(true)
     productService
@@ -33,6 +27,7 @@ function GetQuote() {
       .then((response) => {
         console.log(response)
         setData(response)
+        setmaxValue(response[0].quantity)
         setLoading(false)
       })
       .catch((err) => {
@@ -43,6 +38,16 @@ function GetQuote() {
   useEffect(() => {
     getProducts(productId)
   }, [])
+  const [enteredStartDate, setEnteredStartDate] = useState('')
+  const [enteredEndDate, setEnteredEndDate] = useState('')
+  const [enteredLocation, setEnteredLocation] = useState('')
+  const [enteredQuantity, setEnteredQuantity] = useState('')
+  const [createdProduct, setCreatedProduct] = useState(false)
+  const [duration, setDuration] = useState('')
+  const [data, setData] = useState([])
+  const [maxValue, setmaxValue] = useState('')
+  const [loading, setLoading] = useState(false)
+
   const startDateChangeHandler = (event) => {
     setEnteredStartDate(event.target.value)
   }
@@ -205,6 +210,7 @@ function GetQuote() {
               name='startdate'
               min={today}
               placeholder='Start'
+              required
               onChange={startDateChangeHandler}
             />
           </div>
@@ -217,6 +223,7 @@ function GetQuote() {
               id='enddate'
               className='getquote-form-input'
               name='enddate'
+              required
               placeholder='End'
               min={enteredStartDate}
               onChange={endDateChangeHandler}
@@ -230,6 +237,7 @@ function GetQuote() {
               options={city}
               onChange={(value) => setEnteredLocation(value)}
               value={enteredLocation}
+              required
             />
             {/* <input
               type='text'
@@ -244,16 +252,18 @@ function GetQuote() {
             <label htmlFor='quantity' className='getquote-form-label'>
               Quantity
             </label>
-
+            {console.log('max value', maxValue)}
             <input
               type='number'
               id='quantity'
               className='getquote-form-input'
               name='quantity'
               placeholder='Quantity'
+              required
               onChange={quantityChangeHandler}
               min='1'
-              max={data.quantity}
+              max={maxValue}
+              value={enteredQuantity}
             />
           </div>
 
