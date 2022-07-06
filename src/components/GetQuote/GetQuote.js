@@ -76,7 +76,7 @@ function GetQuote() {
     var start = moment(getQuoteData.startDate, "YYYY-MM-DD");
     var end = moment(getQuoteData.endDate, "YYYY-MM-DD");
     var duration = moment.duration(end.diff(start)).asDays();
-    console.log(data[0].rent);
+    console.log("rent", data[0].rent);
     console.log("duration", duration);
     console.log("getQuoteData.quantity", getQuoteData.quantity);
     const quote = data[0].rent * duration * getQuoteData.quantity;

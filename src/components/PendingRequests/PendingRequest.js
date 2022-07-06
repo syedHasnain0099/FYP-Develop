@@ -43,10 +43,10 @@ function PendingRequest() {
 
   const AcceptHandleChange = (index) => {
     console.log(index);
-    const { startDate, endDate, id, quantity } = pendingRequestsData[index];
+    // const { startDate, endDate, id, quantity } = pendingRequestsData[index];
     let reqId = id;
     console.log("reqId:", id);
-    const { rent } = pendingRequestsData[index].product;
+    // const { rent } = pendingRequestsData[index].product;
     // const productId = pendingRequestsData[index].product.id
     // var supplierId;
     // if(pendingRequestsData[index].product.supplier)
@@ -79,12 +79,12 @@ function PendingRequest() {
     // console.log('requesting user id: ', requestingUserId)
     console.log("request Quote id: ", reqId);
 
-    // quoteService
-    //   .updateQuote(quote, "accepted", reqId)
-    //   .then((res) => {
-    //     console.log("accepted request: ", res);
-    //   })
-    //   .catch((err) => console.log(err));
+    quoteService
+      .updateQuote("accepted", reqId)
+      .then((res) => {
+        console.log("accepted request: ", res);
+      })
+      .catch((err) => console.log(err));
     getPendingRequests();
   };
   const RejectHandleChange = (index) => {
@@ -93,7 +93,7 @@ function PendingRequest() {
     console.log("req id inside rejected ads: ", requestQuoteId);
     console.log("quote val: ", quote);
     quoteService
-      .updateQuote(quote, "rejected", requestQuoteId)
+      .updateQuote("rejected", requestQuoteId)
       .then((res) => {
         console.log("rejected requests: ", res);
       })

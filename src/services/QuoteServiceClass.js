@@ -47,10 +47,9 @@ class QuoteService extends GenericService {
       },
     });
   };
-  updateQuote = (quote, status, id) => {
+  updateQuote = (status, id) => {
     return this.put(`request-quotes/${id}`, {
       data: {
-        quote,
         status,
       },
     });
