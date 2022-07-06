@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import productService from '../../services/ProductService'
+import biddingService from '../../services/BiddingService'
 import { NavLink, Redirect, useParams } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import { Link } from 'react-router-dom'
@@ -15,8 +15,8 @@ function BiddingAdDetails() {
   const [createdProduct1, setCreatedProduct1] = useState(false)
   const getProducts = (productId) => {
     setLoading(true)
-    productService
-      .findOneRequestedAd(productId)
+    biddingService
+      .getOneRequestedBiddingItem(productId)
       .then((response) => {
         setData(response)
         console.log(response)
@@ -28,59 +28,21 @@ function BiddingAdDetails() {
       })
   }
   const approveHandleChange = () => {
-    const {
-      id,
-      categoryTypeId,
-      description,
-      duration,
-      image_ids,
-      name,
-      quantity,
-      rent,
-      supplier,
-    } = data[0]
-    console.log('supplier id: ', supplier.id)
-    productService
-      .uploadPost(
-        name,
-        description,
-        rent,
-        duration,
-        categoryTypeId,
-        quantity,
-        data[0].supplier.id,
-        image_ids
-      )
+    biddingService
+      .acceptBiddingItem(productId)
       .then((data) => {
         setCreatedProduct(data.data.attributes.name)
         console.log('congratulations your post is added ', data)
       })
       .catch((err) => console.log(err))
-    //delete request from requested ads
-    productService
-      .deleteRequestedAd(id)
+  }
+  const disapproveHandleChange = () => {
+    biddingService
+      .rejectBiddingItem(productId)
       .then((data) => {
         console.log(`the requested ad: ${data} has been deleted`)
         setRedirectToReferrer(true)
       })
-      .catch((err) => console.log(err))
-  }
-  const disapproveHandleChange = () => {
-    const { id } = data[0]
-    console.log('id of disapprove', id)
-    //send user notification
-    productService
-      .addRejectedAd(data[0], data[0].supplier.id)
-      .then((data) => {
-        setCreatedProduct1(data)
-        console.log(`the rejected ad: ${data}`)
-        setRedirectToReferrer(true)
-      })
-      .catch((err) => console.log(err))
-    // delete request from requested ads
-    productService
-      .deleteRequestedAd(id)
-      .then((data) => console.log(`the requested ad: ${data} has been deleted`))
       .catch((err) => console.log(err))
   }
   const redirectUser = () => {

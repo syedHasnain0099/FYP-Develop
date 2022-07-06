@@ -178,7 +178,6 @@ function BidItemQuote() {
               max='1000000'
             />
           </div>
-
           <button type='submit' className='getquote-form-input-btn'>
             Bid Item
           </button>
