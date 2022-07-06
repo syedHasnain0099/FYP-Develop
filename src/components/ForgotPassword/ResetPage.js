@@ -8,7 +8,7 @@ import userService from '../../services/UserService'
 function ResetPage(callback) {
   const resetCode = window.location.href
   console.log(resetCode)
-  const myArray = resetCode.split('http://localhost:3000/ResetPageForm/?code=')
+  const myArray = resetCode.split('http://localhost:3000/ResetPageForm?code=')
   console.log(myArray[1])
   const [enteredPassword, setEnteredPassword] = useState('')
   const [enteredPassword2, setEnteredPassword2] = useState('')
