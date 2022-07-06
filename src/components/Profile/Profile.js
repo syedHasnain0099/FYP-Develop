@@ -303,7 +303,6 @@ function Profile() {
           className='form-control'
           onChange={mediaHandleChange}
           accept='image/*'
-          required
         />
       </div>
       <div className='form-group'>

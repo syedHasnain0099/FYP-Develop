@@ -37,7 +37,7 @@ function ResetPage(callback) {
     error1 = validateInfo(values)
     if (Object.keys(error1).length === 0) {
       userService
-        .resetPassword(resetCode, values.password)
+        .resetPassword(myArray[1], values.password)
         .then((data) => {
           console.log("Your user's password has been reset.")
           setSuccess("Your user's password has been reset.")
