@@ -5,9 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { orderCreate } from "../../action/orderAction";
 import biddingService from "../../services/BiddingService";
 function PaymentSuccess() {
-  const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
-  const dispatch = useDispatch();
   // const [checkoutSession, setCheckoutSession] = useState("");
   const [prodId, setProdId] = useState("");
   const [Quantity, setQuantity] = useState("");
@@ -26,7 +23,6 @@ function PaymentSuccess() {
       .then((res) => {
         console.log("inside response", res);
         if (res.data.attributes.status === "paid") {
-          dispatch(orderCreate({ ...cart, orderItems: cart.cartItems }));
           console.log("inside if");
           biddingService
             .getOneBiddingItem(res.data.id)

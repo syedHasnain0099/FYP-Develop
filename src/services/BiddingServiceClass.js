@@ -141,6 +141,35 @@ class BiddingService extends GenericService {
         });
     });
   };
+  getUserDisapprovedItems = (userId) => {
+    const allItems = [];
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        filters: {
+          users_permissions_user: {
+            id: {
+              $eq: userId,
+            },
+          },
+          status: "disapproved",
+        },
+      });
+      this.get(
+        `bidding-items?populate=users_permissions_user,image&${query}`,
+        {}
+      )
+        .then((response) => {
+          const { data } = response;
+          for (let ad of data) {
+            allItems.push(this.extractBiddingProducts(ad));
+          }
+          resolve(allItems);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
   getUserWonItems = (userId) => {
     const allItems = [];
     return new Promise((resolve, reject) => {
