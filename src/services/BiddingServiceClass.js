@@ -304,16 +304,33 @@ class BiddingService extends GenericService {
       });
     });
   };
-
-  acceptBiddingItem = () => {
-    return this.put(`bidding-items`, {
+  getOneRequestedBiddingItem = (biddingId) => {
+    const filteredItem = [];
+    const query = qs.stringify({
+      populate: this.populate,
+      filters: {
+        status: "pending",
+      },
+    });
+    return new Promise((resolve, reject) => {
+      this.get(`bidding-items/${biddingId}?${query}`)
+        .then((response) => {
+          const { data } = response;
+          filteredItem.push(this.extractBiddingProducts(data));
+          resolve(filteredItem);
+        })
+        .catch((err) => reject(err));
+    });
+  };
+  acceptBiddingItem = (biddingItemId) => {
+    return this.put(`bidding-items/${biddingItemId}`, {
       data: {
         status: "approved",
       },
     });
   };
-  rejectBiddingItem = () => {
-    return this.put(`bidding-items`, {
+  rejectBiddingItem = (biddingItemId) => {
+    return this.put(`bidding-items/${biddingItemId}`, {
       data: {
         status: "disapproved",
       },
