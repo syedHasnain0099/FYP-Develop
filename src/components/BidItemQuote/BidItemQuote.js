@@ -26,7 +26,7 @@ function BidItemQuote() {
       .then((response) => {
         console.log(response)
         setData(response)
-        // setmaxValue(response[0].quantity)
+        setmaxValue(response[0].bid)
         setLoading(false)
       })
       .catch((err) => {
@@ -56,7 +56,7 @@ function BidItemQuote() {
       .updateBid(enteredQuantity, productId, id)
       .then((data) => {
         console.log('congratualtions your bid is updated!', data)
-        setCreatedProduct(data.data.attributes.city)
+        setCreatedProduct(data.data.attributes.name)
       })
       .catch((err) => console.log(err))
   }
@@ -145,7 +145,7 @@ function BidItemQuote() {
         // { height: '100px' }
       }
     >
-      <h2>Quote has been sent SuccessFully</h2>
+      <h2>Bid has been updated SuccessFully</h2>
     </div>
   )
 
@@ -172,10 +172,10 @@ function BidItemQuote() {
               className='getquote-form-input'
               name='quantity'
               placeholder='Bidding amount'
+              required
               onChange={quantityChangeHandler}
-              min='1'
-              // max={maxValue}
-              max='100000'
+              min={maxValue}
+              max='1000000'
             />
           </div>
 
