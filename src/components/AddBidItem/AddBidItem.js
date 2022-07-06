@@ -1,269 +1,263 @@
-import React, { Component, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { isAuthenticated } from '../../auth'
-import { userData } from '../../auth'
-import categoryService from '../../services/CategoryService'
-import productService from '../../services/ProductService'
-import ReactPlayer from 'react-player'
-import { fileObj, fileArray, videofileObj, videofileArray } from '../../auth'
-import './AddProduct.css'
+import React, { Component, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { isAuthenticated } from "../../auth";
+import { userData } from "../../auth";
+import categoryService from "../../services/CategoryService";
+import productService from "../../services/ProductService";
+import biddingService from "../../services/BiddingService";
+import ReactPlayer from "react-player";
+import { fileObj, fileArray, videofileObj, videofileArray } from "../../auth";
+import "./AddProduct.css";
 function AddBidItem() {
   const [imageFile, setImageFile] = useState({
     file: [null],
-  })
+  });
   const uploadMultipleFiles = (e) => {
-    console.log('my multiple files:', e.target.files)
+    console.log("my multiple files:", e.target.files);
     productService
       .uploadMedia(e.target.files)
       .then((res) => {
-        console.log(res)
-        console.log('id of uploaded image', res)
-        setMediaIds(res)
+        console.log(res);
+        console.log("id of uploaded image", res);
+        setMediaIds(res);
       })
       .catch((err) => {
-        console.log(err)
-      })
-    fileObj.push(e.target.files)
+        console.log(err);
+      });
+    fileObj.push(e.target.files);
 
     for (let i = 0; i < fileObj[0].length; i++) {
-      fileArray.push(URL.createObjectURL(fileObj[0][i]))
+      fileArray.push(URL.createObjectURL(fileObj[0][i]));
     }
-    setImageFile({ file: fileArray })
-  }
+    setImageFile({ file: fileArray });
+  };
   const [videoFile, setVideoFile] = useState({
     videofile: [null],
-  })
+  });
   const uploadVideoMultipleFiles = (e) => {
     productService
       .uploadMedia(e.target.files)
       .then((res) => {
-        console.log('id of uploaded video', res)
-        setVideoMediaId(res)
+        console.log("id of uploaded video", res);
+        setVideoMediaId(res);
       })
-      .catch((err) => console.log(err))
-    videofileObj.push(e.target.files)
+      .catch((err) => console.log(err));
+    videofileObj.push(e.target.files);
     for (let i = 0; i < videofileObj[0].length; i++) {
-      videofileArray.push(URL.createObjectURL(videofileObj[0][i]))
+      videofileArray.push(URL.createObjectURL(videofileObj[0][i]));
     }
-    setVideoFile({ videofile: videofileArray })
-  }
+    setVideoFile({ videofile: videofileArray });
+  };
 
-  const { id } = userData()
-  const [categories, setCategories] = useState([])
-  const [mediaIds, setMediaIds] = useState('')
-  const [videoMediaId, setVideoMediaId] = useState('')
-  const [subCategories, setSubCategories] = useState([])
+  const { id } = userData();
+  const [categories, setCategories] = useState([]);
+  const [mediaIds, setMediaIds] = useState("");
+  const [videoMediaId, setVideoMediaId] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
 
   const init = () => {
     categoryService
       .getCategories()
       .then((response) => {
-        setCategories(response)
+        setCategories(response);
       })
       .catch((err) => {
-        setValues({ ...values, error: err })
-      })
-  }
+        setValues({ ...values, error: err });
+      });
+  };
   const init1 = () => {
     categoryService
       .getCategoryList(category)
       .then((resolve) => {
-        setSubCategories(resolve)
+        setSubCategories(resolve);
       })
       .catch((err) => {
-        setValues({ ...values, error: err })
-      })
-  }
+        setValues({ ...values, error: err });
+      });
+  };
 
   const [values, setValues] = useState({
-    productname: '',
-    description: '',
-    bidPrice: '',
+    productname: "",
+    description: "",
+    bidPrice: "",
 
-    subcategory: '',
-    category: '',
-    quantity: '',
+    subcategory: "",
+    category: "",
     loading: false,
-    error: '',
-    createdProduct: '',
-  })
+    error: "",
+    createdProduct: "",
+  });
 
   const {
     productname,
     description,
     bidPrice,
-
     category,
-    quantity,
     subcategory,
     loading,
     error,
     createdProduct,
-  } = values
+  } = values;
   useEffect(() => {
-    init()
-  }, [])
+    init();
+  }, []);
   useEffect(() => {
-    init1()
-  }, [category])
+    init1();
+  }, [category]);
 
   const subCategoryHandleChange = (event) => {
-    const index = event.target.selectedIndex
-    const el = event.target.childNodes[index]
-    const option = el.getAttribute('id')
-    setValues({ ...values, subcategory: option })
-  }
+    const index = event.target.selectedIndex;
+    const el = event.target.childNodes[index];
+    const option = el.getAttribute("id");
+    setValues({ ...values, subcategory: option });
+  };
 
   const handleChange = (name) => async (event) => {
-    const value = name === 'photo' ? event.target.files[0] : event.target.value
-    setValues({ ...values, [name]: value })
-  }
+    const value = name === "photo" ? event.target.files[0] : event.target.value;
+    setValues({ ...values, [name]: value });
+  };
 
   const clickSubmit = (event) => {
-    event.preventDefault()
-    setValues({ ...values, error: '', loading: true })
-    console.log('mediaIds', mediaIds)
-    console.log('videoMediaId', videoMediaId)
-    const mIds = []
+    event.preventDefault();
+    setValues({ ...values, error: "", loading: true });
+    console.log("mediaIds", mediaIds);
+    console.log("videoMediaId", videoMediaId);
+    const mIds = [];
     for (let i = 0; i < mediaIds.length; i++) {
-      mIds.push(mediaIds[i])
+      mIds.push(mediaIds[i]);
     }
-    if (videoMediaId != '') {
+    if (videoMediaId != "") {
       for (let i = 0; i < videoMediaId.length; i++) {
-        mIds.push(videoMediaId[i])
+        mIds.push(videoMediaId[i]);
       }
     }
-    console.log('values', values)
-    console.log('mIds', mIds)
-    postAd(
-      { productname, description, bidPrice, subcategory, quantity, id },
-      mIds
-    )
-  }
+    console.log("values", values);
+    console.log("mIds", mIds);
+    postAd({ productname, description, bidPrice, subcategory, id }, mIds);
+  };
   const postAd = (props, mediaIds) => {
-    productService
-      .postAd(
+    biddingService
+      .postBiddingItem(
         props.productname,
         props.description,
-        props.bidPrice,
-
-        props.subcategory,
-        props.quantity,
         props.id,
-        mediaIds
+        props.bidPrice,
+        props.subcategory,
+        mediaIds,
+        "pending"
       )
       .then((data) => {
-        console.log('congratulations your post is added ', data)
+        console.log("congratulations your post is added ", data);
         setValues({
           ...values,
-          productname: '',
-          description: '',
-          photo: '',
-          video: '',
-          bidPrice: '',
-          category: '',
-          subcategory: '',
+          productname: "",
+          description: "",
+          photo: "",
+          video: "",
+          bidPrice: "",
+          category: "",
+          subcategory: "",
 
-          quantity: '',
+          quantity: "",
           error: false,
           loading: false,
           createdProduct: data.data.attributes.product_name,
-        })
-        setMediaIds('')
-        setVideoMediaId('')
+        });
+        setMediaIds("");
+        setVideoMediaId("");
       })
       .catch((err) => {
-        let err_msg = err.response.data.error.message
+        let err_msg = err.response.data.error.message;
         if (!err.response) {
-          err_msg = 'Error occured please try later'
+          err_msg = "Error occured please try later";
         }
-        setValues({ ...values, error: err_msg })
-      })
-  }
+        setValues({ ...values, error: err_msg });
+      });
+  };
   const newPostForm = () => (
-    <form className='mb-3' onSubmit={clickSubmit}>
+    <form className="mb-3" onSubmit={clickSubmit}>
       <h4>Post Photo</h4>
 
-      <div className='form-group mb-4'>
-        <div className='form-group multi-preview '>
+      <div className="form-group mb-4">
+        <div className="form-group multi-preview ">
           {(fileArray || []).map((url, i) => (
-            <img className='img' src={url} alt='...' key={i} />
+            <img className="img" src={url} alt="..." key={i} />
           ))}
         </div>
 
-        <div className='form-group'>
+        <div className="form-group">
           <input
-            type='file'
-            className='form-control'
+            type="file"
+            className="form-control"
             onChange={uploadMultipleFiles}
             multiple
-            accept='image/*'
+            accept="image/*"
             required
           />
         </div>
       </div>
       <h4>Post Video</h4>
 
-      <div className='form-group mb-4'>
-        <div className='form-group multi-preview '>
+      <div className="form-group mb-4">
+        <div className="form-group multi-preview ">
           {(videofileArray || []).map((url) => (
             <ReactPlayer
               url={url}
               controls
-              onReady={() => console.log('onReady callback')}
-              onStart={() => console.log('onStart callback')}
-              onPause={() => console.log('onPause callback')}
-              onEnded={() => console.log('onEnded callback')}
-              onError={() => console.log('onError callback')}
+              onReady={() => console.log("onReady callback")}
+              onStart={() => console.log("onStart callback")}
+              onPause={() => console.log("onPause callback")}
+              onEnded={() => console.log("onEnded callback")}
+              onError={() => console.log("onError callback")}
             />
           ))}
         </div>
 
-        <div className='form-group'>
+        <div className="form-group">
           <input
-            type='file'
-            className='form-control'
+            type="file"
+            className="form-control"
             onChange={uploadVideoMultipleFiles}
             multiple
-            accept='.mov,.mp4'
+            accept=".mov,.mp4"
             required
           />
         </div>
       </div>
-      <div className='form-group'>
-        <label className='text-muted'>Product Name</label>
+      <div className="form-group">
+        <label className="text-muted">Product Name</label>
         <input
-          onChange={handleChange('productname')}
-          type='text'
+          onChange={handleChange("productname")}
+          type="text"
           value={productname}
-          className='form-control'
+          className="form-control"
         />
       </div>
-      <div className='form-group'>
-        <label className='text-muted'>Description</label>
+      <div className="form-group">
+        <label className="text-muted">Description</label>
         <textarea
-          onChange={handleChange('description')}
+          onChange={handleChange("description")}
           value={description}
-          className='form-control'
+          className="form-control"
         />
       </div>
-      <div className='form-group'>
-        <label className='text-muted'>Bidding starting price</label>
+      <div className="form-group">
+        <label className="text-muted">Bidding starting price</label>
         <input
-          onChange={handleChange('bidPrice')}
+          onChange={handleChange("bidPrice")}
           value={bidPrice}
-          type='number'
-          min='0'
-          className='form-control'
+          type="number"
+          min="0"
+          className="form-control"
         />
       </div>
 
-      <div className='form-group'>
-        <label className='text-muted'>Category</label>
+      <div className="form-group">
+        <label className="text-muted">Category</label>
         <select
-          onChange={handleChange('category')}
+          onChange={handleChange("category")}
           value={category}
-          className='form-control'
+          className="form-control"
         >
           <option>Please Select</option>
           {categories &&
@@ -274,12 +268,12 @@ function AddBidItem() {
             ))}
         </select>
       </div>
-      <div className='form-group'>
-        <label className='text-muted'>Sub Category</label>
+      <div className="form-group">
+        <label className="text-muted">Sub Category</label>
         <select
           onChange={subCategoryHandleChange}
           value={subcategory}
-          className='form-control'
+          className="form-control"
         >
           <option>Please Select</option>
           {subCategories &&
@@ -290,143 +284,133 @@ function AddBidItem() {
             ))}
         </select>
       </div>
-      <div className='form-group'>
-        <label className='text-muted'>Quantity of product</label>
-        <input
-          onChange={handleChange('quantity')}
-          value={quantity}
-          type='number'
-          min='0'
-          className='form-control'
-        />
-      </div>
-      <button className='btn btn-outline-primary'>Create Product</button>
+      <button className="btn btn-outline-primary">Create Product</button>
     </form>
-  )
+  );
   const showError = () => (
     <div
-      className='alert alert-danger'
-      style={{ display: error ? '' : 'none' }}
+      className="alert alert-danger"
+      style={{ display: error ? "" : "none" }}
     >
       {error}
     </div>
-  )
+  );
   const showSuccess = () => (
     <div
-      className='alert alert-info'
-      style={{ display: createdProduct ? '' : 'none' }}
+      className="alert alert-info"
+      style={{ display: createdProduct ? "" : "none" }}
     >
       <h2>{`${createdProduct}`} ad is created</h2>
     </div>
-  )
+  );
   const showLoading = () =>
     loading && (
-      <div className='alert alert-success'>
+      <div className="alert alert-success">
         <h2>Loading...</h2>
       </div>
-    )
+    );
   const userLinks = () => {
     return (
-      <div className='card'>
-        <h4 className='card-header'>User Links</h4>
-        <ul class='list-group list-group-flush'>
-          <li class='list-group-item'>
+      <div className="card">
+        <h4 className="card-header">User Links</h4>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
             <Link
-              class='list-group-item list-group-item-action '
-              id='list-home-list'
-              data-toggle='list'
-              to='/myAds'
-              role='tab'
-              aria-controls='home'
+              class="list-group-item list-group-item-action "
+              id="list-home-list"
+              data-toggle="list"
+              to="/myAds"
+              role="tab"
+              aria-controls="home"
             >
               My Ads
             </Link>
           </li>
-          <li class='list-group-item'>
+          <li class="list-group-item">
             <Link
-              class='list-group-item list-group-item-action '
-              id='list-home-list'
-              data-toggle='list'
+              class="list-group-item list-group-item-action "
+              id="list-home-list"
+              data-toggle="list"
               to={`/profile/${id}`}
-              role='tab'
-              aria-controls='home'
+              role="tab"
+              aria-controls="home"
             >
               Update Profile
             </Link>
           </li>
 
-          <li class='list-group-item'>
+          <li class="list-group-item">
             <Link
-              class='list-group-item list-group-item-action'
-              id='list-home-list'
-              data-toggle='list'
-              to='/create/product'
-              role='tab'
-              aria-controls='home'
+              class="list-group-item list-group-item-action"
+              id="list-home-list"
+              data-toggle="list"
+              to="/create/product"
+              role="tab"
+              aria-controls="home"
             >
               Post an ad
             </Link>
           </li>
-          <li class='list-group-item'>
+          <li class="list-group-item">
             <Link
-              class='list-group-item list-group-item-action active '
-              id='list-home-list'
-              data-toggle='list'
-              to='/create/bidItem'
-              role='tab'
-              aria-controls='home'
+              class="list-group-item list-group-item-action active "
+              id="list-home-list"
+              data-toggle="list"
+              to="/create/bidItem"
+              role="tab"
+              aria-controls="home"
             >
               Post an bidding item
             </Link>
           </li>
 
-          <li class='list-group-item'>
+          <li class="list-group-item">
             <Link
-              class='list-group-item list-group-item-action '
-              id='list-home-list'
-              data-toggle='list'
-              to='/pending/requests'
-              role='tab'
-              aria-controls='home'
+              class="list-group-item list-group-item-action "
+              id="list-home-list"
+              data-toggle="list"
+              to="/pending/requests"
+              role="tab"
+              aria-controls="home"
             >
               Recieved Requests
             </Link>
           </li>
 
-          <li class='list-group-item'>
+          <li class="list-group-item">
             <Link
-              class='list-group-item list-group-item-action '
-              id='list-home-list'
-              data-toggle='list'
-              to='/acceptedRequests'
-              role='tab'
-              aria-controls='home'
+              class="list-group-item list-group-item-action "
+              id="list-home-list"
+              data-toggle="list"
+              to="/acceptedRequests"
+              role="tab"
+              aria-controls="home"
             >
               Recieved Responses
             </Link>
           </li>
-          <li class='list-group-item'>
+          <li class="list-group-item">
             <Link
-              class='list-group-item list-group-item-action '
-              id='list-home-list'
-              data-toggle='list'
-              to='/orderHistory'
-              role='tab'
-              aria-controls='home'
+              class="list-group-item list-group-item-action "
+              id="list-home-list"
+              data-toggle="list"
+              to="/orderHistory"
+              role="tab"
+              aria-controls="home"
             >
               Order History
             </Link>
           </li>
         </ul>
       </div>
-    )
-  }
+    );
+  };
   return (
-    <div className='container-fluid mt-4'>
-      <div className='row'>
-        <div className='col-3'>{userLinks()}</div>
-        <div className='col-9'>
-          <h3 className='card-header mb-3'>Post an bidding item</h3>
+    <div className="container-fluid mt-4">
+      <div className="row">
+        <div className="col-3">{userLinks()}</div>
+        <div className="col-9">
+          <h3 className="card-header mb-3">Post an bidding item</h3>
           {showLoading()}
           {showSuccess()}
           {showError()}
@@ -446,7 +430,7 @@ function AddBidItem() {
     //     </div>
     //   </div>
     // </div>
-  )
+  );
 }
 
-export default AddBidItem
+export default AddBidItem;

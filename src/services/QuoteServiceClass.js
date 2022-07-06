@@ -124,6 +124,11 @@ class QuoteService extends GenericService {
               $eq: currentUserId,
             },
           },
+          order: {
+            status: {
+              $eq: "unpaid",
+            },
+          },
           status: {
             $eq: status,
           },

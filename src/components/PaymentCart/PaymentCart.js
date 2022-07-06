@@ -24,6 +24,7 @@ function PaymentCart() {
   cart.securityFee = twoDecimalsNumber(
     cart.itemsPrice > 200 ? 0 : (25 / 100) * cart.itemsPrice
   );
+  console.log("security fee", cart.securityFee);
   cart.shippingPrice = twoDecimalsNumber(cart.itemsPrice > 200 ? 0 : 500);
   cart.taxPrice = twoDecimalsNumber(cart.itemsPrice * 0.05);
   cart.totalPrice = twoDecimalsNumber(
@@ -100,9 +101,6 @@ function PaymentCart() {
         stripe.redirectToCheckout({
           sessionId: data.id,
         });
-
-        // setclientSecretKey(data.paymentIntent.client_secret);
-        // console.log("client secret id: ", clientSecretKey);
       }).catch = (err) => {
       console.log(err);
     };
@@ -219,7 +217,7 @@ function PaymentCart() {
                   <b>Items price:</b> ${cart.itemsPrice}
                 </div>
                 <div className="">
-                  <b>Shipping Price:</b>${cart.securityFee}
+                  <b>Security Fee:</b>${cart.securityFee}
                 </div>
                 <div className="">
                   <b>Shipping Price:</b>${cart.shippingPrice}

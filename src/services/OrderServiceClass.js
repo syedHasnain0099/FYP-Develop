@@ -61,13 +61,26 @@ class OrderService extends GenericService {
       },
     });
   };
-  postOrder = (request_quote, total, user, shipping_detail) => {
+  postOrder = (
+    request_quote,
+    itemPrice,
+    user,
+    shipping_detail,
+    shippingPrice,
+    taxFee,
+    securityFee,
+    total
+  ) => {
     return this.post(`orders`, {
       data: {
         request_quote,
-        total,
+        itemPrice,
         user,
         shipping_detail,
+        shippingPrice,
+        taxFee,
+        securityFee,
+        total,
       },
     });
   };
@@ -149,7 +162,6 @@ class OrderService extends GenericService {
       recieved_back,
       delivered_at,
     } = attributes;
-    console.log("total am: ", total_amount);
     var order = {
       id: "",
       status: "",

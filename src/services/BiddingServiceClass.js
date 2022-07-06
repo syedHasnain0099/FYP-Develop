@@ -1,7 +1,7 @@
 import qs from "qs";
 import GenericService from "./GenericService";
 import productService from "./ProductService";
-// import productService from './ProductService'
+import shippingService from "./ShippingService";
 import axios from "axios";
 class BiddingService extends GenericService {
   constructor() {
@@ -17,8 +17,8 @@ class BiddingService extends GenericService {
   postBiddingItem = (
     name,
     description,
-    quantity,
     users_permissions_user,
+    bidPrice,
     category_list,
     image,
     status
@@ -27,11 +27,39 @@ class BiddingService extends GenericService {
       data: {
         name,
         description,
-        quantity,
+        bidPrice,
         users_permissions_user,
         category_list,
         image,
         status,
+      },
+    });
+  };
+  confirmOrder = (checkout_session) => {
+    return this.post(`bidding-orders/confirm`, {
+      data: {
+        checkout_session,
+      },
+    });
+  };
+  postOrder = (
+    bidding_item,
+    biddingPrice,
+    user,
+    shipping_detail,
+    shippingPrice,
+    taxFee,
+    total
+  ) => {
+    return this.post(`bidding-orders`, {
+      data: {
+        bidding_item,
+        biddingPrice,
+        user,
+        shipping_detail,
+        shippingPrice,
+        taxFee,
+        total,
       },
     });
   };
@@ -106,6 +134,38 @@ class BiddingService extends GenericService {
         });
     });
   };
+  getUserWonItems = (userId) => {
+    const allItems = [];
+    return new Promise((resolve, reject) => {
+      const query = qs.stringify({
+        populate: this.populate,
+        filters: {
+          highest_bidder: {
+            id: {
+              $eq: userId,
+            },
+          },
+          status: "approved",
+          bidding_order: {
+            status: {
+              $eq: "unpaid",
+            },
+          },
+        },
+      });
+      this.get(`bidding-items?${query}`, {})
+        .then((response) => {
+          const { data } = response;
+          for (let ad of data) {
+            allItems.push(this.extractBiddingProducts(ad));
+          }
+          resolve(allItems);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  };
   getRelatedProducts = (subCategory, existingProductName) => {
     const filteredProducts = [];
     let query;
@@ -134,6 +194,7 @@ class BiddingService extends GenericService {
         .catch((err) => reject(err));
     });
   };
+
   extractBiddingProducts = (item) => {
     const { id, attributes } = item;
     const {
@@ -146,6 +207,7 @@ class BiddingService extends GenericService {
       category_list,
       createdAt,
       highest_bidder,
+      shipping_detail,
     } = attributes;
     // const { price, duration } = estimated_price
     var biddingItem = {
@@ -162,6 +224,7 @@ class BiddingService extends GenericService {
       subCategory: "",
       subCategoryId: "",
       createdAt: "",
+      shippingId: "",
     };
     biddingItem.id = id;
     biddingItem.name = name;
@@ -196,8 +259,16 @@ class BiddingService extends GenericService {
         biddingItem.highestBidder = productService.extractUser(data);
       }
     }
+    if (shipping_detail) {
+      const { data } = shipping_detail;
+      if (data) {
+        const shippingDetail = shippingService.extractShippingDetail(data);
+        biddingItem.shippingId = shippingDetail.id;
+      }
+    }
     return biddingItem;
   };
+
   updateBid = (bid, bidId, bidder) => {
     return this.put(`bidding-items/${bidId}`, {
       data: {

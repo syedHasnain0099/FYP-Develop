@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import orderService from "../../services/OrderService";
 import { useDispatch, useSelector } from "react-redux";
 import { orderCreate } from "../../action/orderAction";
-import productService from "../../services/ProductService";
+import biddingService from "../../services/BiddingService";
 function PaymentSuccess() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
@@ -15,41 +15,25 @@ function PaymentSuccess() {
   const [checkoutSession, setCheckoutSession] = useState("");
   const resetCode = window.location.href;
   const myArray = resetCode.split(
-    "http://localhost:3000/payment/success?session_id="
+    "http://localhost:3000/biddingpayment/success?session_id="
   );
   console.log(myArray[1]);
   const confirmPayment = async () => {
     //setCheckoutSession(myArray[1]);
     console.log(myArray[1]);
-    orderService
+    biddingService
       .confirmOrder(myArray[1])
       .then((res) => {
         console.log("inside response", res);
         if (res.data.attributes.status === "paid") {
           dispatch(orderCreate({ ...cart, orderItems: cart.cartItems }));
           console.log("inside if");
-          orderService
-            .getOneOrder(res.data.id)
+          biddingService
+            .getOneBiddingItem(res.data.id)
             .then((orderData) => {
               console.log(orderData);
-              setProdId(orderData.requestQuote.product.id);
+              setProdId(orderData.id);
               console.log("product id: ", prodId);
-              setQuantity(orderData.requestQuote.quantity);
-              setProdQuantity(orderData.requestQuote.product.quantity);
-            })
-            .catch((err) => console.log(err));
-          // productService
-          //   .findOneProduct(prodId)
-          //   .then((prod) => {
-          //     setProdQuantity(prod.quantity);
-          //   })
-          //   .catch((err) => console.log(err));
-          console.log("prodQuantity: ", prodQuantity);
-          console.log("quoteQuantity: ", Quantity);
-          orderService
-            .subtractQuantity(prodId, Quantity, prodQuantity)
-            .then((data) => {
-              console.log("quantity of product deducted!", data.quantity);
             })
             .catch((err) => console.log(err));
         }
