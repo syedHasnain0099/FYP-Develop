@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
-import productService from '../../services/ProductService'
+import biddingService from '../../services/BiddingService'
 function MyBiddingAds() {
   const [approvedData, setApprovedData] = useState([])
   const [disapprovedData, setDisApprovedData] = useState([])
@@ -10,8 +10,8 @@ function MyBiddingAds() {
   const [createdProduct, setCreatedProduct] = useState('')
   const { id, username, email } = userData()
   const showUserApprovedAds = () => {
-    productService
-      .getUserAds(id)
+    biddingService
+      .getUserUploadedItems(id)
       .then((data) => {
         console.log('user accepted ads: ', data)
         setApprovedData(data)
@@ -24,8 +24,8 @@ function MyBiddingAds() {
     showUserApprovedAds()
   }, [])
   const showUserDisApprovedAds = () => {
-    productService
-      .getRejectedAds(id)
+    biddingService
+      .getUserDisapprovedItems(id)
       .then((data) => {
         console.log('user rejected ads: ', data)
         setDisApprovedData(data)
@@ -179,8 +179,8 @@ function MyBiddingAds() {
     const { id } = disapprovedData[index]
     console.log(id, 'product id that user clicked to delete')
     //delete rejected ad
-    productService
-      .deleteRejectedAd(id)
+    biddingService
+      .deleteItem(id)
       .then((data) => {
         console.log('deleted ad: ', data)
         setCreatedProduct(data.data.attributes.product_name)
