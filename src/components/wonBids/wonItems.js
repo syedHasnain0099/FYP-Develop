@@ -50,17 +50,24 @@ function MyAds() {
     setLoading(true);
     var biddingDays = generateBiddingDays();
     console.log("bidding days upto next 3 months: ", biddingDays);
-
-    // let today = new Date().toLocaleDateString();
     let today = moment().format("DD-MM-YYYY");
     console.log("today: ", today);
     console.log("bday: ", biddingDays[0]);
-    // if (today.getTime() === biddingDays[0].getTime())
+    var nextdate = moment(today, "DD-MM-YYYY").add(24, "h");
+    console.log("next date: ", nextdate.format("DD-MM-YYYY"));
     if (moment(today).isSame(biddingDays[0])) {
       console.log(
         "Bidding is in process now. Wait till midnight 12:00 a.m tonight."
       );
-    } else {
+    }
+    // else if (moment(today).isSame(nextdate)) {
+    //   biddingService.sendMail(email).then((msg) => {
+    //     console.log("msg:", msg);
+    //   }).catch = (err) => {
+    //     console.log(err);
+    //   };
+    // }
+    else {
       biddingService
         .getUserWonItems(id)
         .then((data) => {

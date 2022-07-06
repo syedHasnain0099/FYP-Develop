@@ -63,6 +63,13 @@ class BiddingService extends GenericService {
       },
     });
   };
+  sendMail = (userEmail) => {
+    return this.post(`bidding-items/sendMail`, {
+      data: {
+        to: userEmail,
+      },
+    });
+  };
   getOneBiddingItem = (biddingId) => {
     const filteredItem = [];
     const query = qs.stringify({
