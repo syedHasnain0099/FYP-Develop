@@ -320,7 +320,7 @@ function PendingRequest() {
                     <p class='card-text'>End Date:{item.endDate}</p>
                     <p class='lead mt-2 text-danger'>
                       Status:
-                      {item.order.status < '' ? (
+                      {Object.keys(item.order).length === 0 ? (
                         <span className='text-danger'>UnPaid</span>
                       ) : (
                         <span className='text-success'>
