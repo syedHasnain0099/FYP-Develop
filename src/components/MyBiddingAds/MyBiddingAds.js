@@ -3,7 +3,7 @@ import { userData } from '../../auth'
 import { Link } from 'react-router-dom'
 import { Skeleton } from '@mui/material'
 import productService from '../../services/ProductService'
-function MyAds() {
+function MyBiddingAds() {
   const [approvedData, setApprovedData] = useState([])
   const [disapprovedData, setDisApprovedData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -233,6 +233,9 @@ function MyAds() {
                       Rs {product.rent} / day
                     </h3>
                     <br />
+                    <Link to={`/bidProduct/${product.id}`}>
+                      <h6>Details</h6>
+                    </Link>
 
                     <button
                       className='btn btn-outline-danger mt-2 mb-2 mr-2'
@@ -275,7 +278,7 @@ function MyAds() {
                     <div className='mb-2'>
                       <h5 className='font-weight-bold mb-2'>
                         <Link
-                          to={`/products/${product.id}`}
+                          to={`/bidProduct/${product.id}`}
                           className='text-default mb-2'
                           data-abc='true'
                         >
@@ -290,10 +293,8 @@ function MyAds() {
                       Rs {product.rent} / day
                     </h3>
                     <br />
-                    <Link to={`/productEdit/${product.id}`}>
-                      <button className='btn btn-outline-warning mt-2 mb-2 mr-2'>
-                        Edit Product
-                      </button>
+                    <Link to={`/bidProduct/${product.id}`}>
+                      <h6>Details</h6>
                     </Link>
                   </div>
                 </div>
@@ -328,4 +329,4 @@ function MyAds() {
   )
 }
 
-export default MyAds
+export default MyBiddingAds
