@@ -313,7 +313,15 @@ class BiddingService extends GenericService {
       },
     });
   };
-
+  deleteItem = (id) => {
+    return new Promise((resolve, reject) => {
+      this.delete(`bidding-items/${id}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    });
+  };
   //on admin side
   getRequestedBiddingItems = () => {
     const allads = [];
