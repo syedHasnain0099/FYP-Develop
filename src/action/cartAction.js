@@ -3,6 +3,7 @@ import {
   REMOVE_TO_CART,
   SAVE_SHIPPING_ADDRESS,
   CLEAR_SHIPPING_ADDRESS,
+  CART_EMPTY,
 } from '../constants/cartConstants'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
@@ -40,7 +41,7 @@ export const addItemToCart = (id, quantity) => async (dispatch, getState) => {
 
 //remove item in the cart
 export const removeToCart = (id) => async (dispatch, getState) => {
-  //console.log("datacarAction", data)
+  //console.log('happened removetocart', data)
   dispatch({
     type: REMOVE_TO_CART,
     payload: id,
@@ -68,4 +69,12 @@ export const clearShippingAddress = (data) => async (dispatch) => {
   })
 
   localStorage.removeItem('shippingAddress')
+}
+export const clearCart = (data) => async (dispatch) => {
+  dispatch({
+    type: CART_EMPTY,
+    payload: {},
+  })
+
+  localStorage.removeItem('cartItems')
 }
