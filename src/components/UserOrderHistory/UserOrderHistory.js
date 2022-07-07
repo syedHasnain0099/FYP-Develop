@@ -180,8 +180,6 @@ const UserOrderHistory = ({ history }) => {
                       <th scope="col">Price</th>
                       <th scope="col">Paid</th>
                       <th scope="col">Delivered</th>
-                      <th scope="col">Delivered at</th>
-                      <th scope="col">Details</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -212,10 +210,10 @@ const UserOrderHistory = ({ history }) => {
                               <span style={{ color: "#ffc107" }}>No</span>
                             )}
                           </th>
-                          <th scope="col">
-                            {res.status && res.delivered ? res.deliveredAt : ""}
-                          </th>
-                          <th scope="col">
+                          {/* <th scope='col'>
+                            {res.status && res.delivered ? res.deliveredAt : ''}
+                          </th> */}
+                          {/* <th scope='col'>
                             <button
                               onClick={() => fetchSingleOrderDetails(res.id)}
                               type="button"
@@ -225,7 +223,7 @@ const UserOrderHistory = ({ history }) => {
                             >
                               details
                             </button>
-                          </th>
+                          </th> */}
                         </tr>
                       ))
                     }

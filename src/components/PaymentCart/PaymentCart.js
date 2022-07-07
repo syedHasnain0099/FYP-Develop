@@ -225,7 +225,7 @@ function PaymentCart() {
                   <b>Tax price:</b>Rs.{cart.taxPrice}
                 </div>
                 <div className=''>
-                  <b>Total: </b>${cart.totalPrice}
+                  <b>Total: </b>Rs.{cart.totalPrice}
                   {/* {(total = ('0' + total).slice(-2))} */}
                 </div>
                 <div className=''>

@@ -60,46 +60,8 @@ const AddToCart = ({ history }) => {
                   <div className='colcart'>
                     <h6>{item.name}</h6>
                   </div>
-
-                  {/* <div className='colcart'>
-                    <div className='qty_and_addtocart'>
-                      <div>
-                        <div
-                          onClick={() =>
-                            decreaseValue(item.product, item.quantity)
-                          }
-                          class='value-button'
-                          id='decrease'
-                          value='Decrease Value'
-                        >
-                          -
-                        </div>
-                        <input
-                          type='number'
-                          id='number'
-                          value={item.quantity}
-                          readOnly
-                        />
-                        <div
-                          onClick={() =>
-                            increaseValue(
-                              item.product,
-                              item.quantity,
-                              item.countStock
-                            )
-                          }
-                          class='value-button'
-                          id='increase'
-                          value='Increase Value'
-                        >
-                          +
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
-
                   <div className='colcart'>
-                    <h6>${item.price.toFixed(2)}</h6>
+                    <h6>Rs.{item.price.toFixed(2)}</h6>
                   </div>
 
                   <div className='colcart'>

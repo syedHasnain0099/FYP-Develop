@@ -242,7 +242,7 @@ function MyBiddingAds() {
                       </p>
                     </div>
                     <h3 className='mb-0 font-weight-semibold'>
-                      Rs {product.rent} / day
+                      Rs {product.bid} / day
                     </h3>
                     <br />
                     <Link to={`/bidProduct/${product.id}`}>
