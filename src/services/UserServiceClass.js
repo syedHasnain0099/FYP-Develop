@@ -74,6 +74,7 @@ class UserService extends GenericService {
 
   resetPassword = (code, password) =>
     new Promise((resolve, reject) => {
+      console.log("code", code);
       this.tokenUpdate();
       this.post(`auth/reset-password`, {
         code,
