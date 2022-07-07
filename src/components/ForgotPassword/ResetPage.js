@@ -35,6 +35,7 @@ function ResetPage(callback) {
     setErrors(validateInfo(values))
     setIsSubmitting(true)
     error1 = validateInfo(values)
+    console.log('in function', myArray[1])
     if (Object.keys(error1).length === 0) {
       userService
         .resetPassword(myArray[1], values.password)

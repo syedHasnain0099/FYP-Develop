@@ -40,6 +40,7 @@ function BiddingAdDetails() {
     biddingService
       .rejectBiddingItem(productId)
       .then((data) => {
+        setCreatedProduct1(true)
         console.log(`the requested ad: ${data} has been deleted`)
         setRedirectToReferrer(true)
       })
@@ -65,11 +66,11 @@ function BiddingAdDetails() {
     <div
       className='alert alert-danger'
       style={
-        { height: '100px', display: createdProduct1 ? '' : 'none' }
+        { height: '100px', display: createdProduct1 ? true : 'none' }
         // { height: '100px' }
       }
     >
-      <h2>Request by user to post ad is Disapproved</h2>
+      <h2>Request by user to post bidding ad is Disapproved</h2>
     </div>
   )
   const Loading = () => {
@@ -172,15 +173,15 @@ function BiddingAdDetails() {
                             <h6>Product # {product.id}</h6>
                           </span>
                           <hr />
-                          <h1>Rs {product.rent} / day</h1>
+                          <h1>Rs {product.bid}</h1>
                         </div>
 
-                        <p>
+                        {/* <p>
                           Availability of Product for rent: {product.duration}{' '}
                           days
-                        </p>
-                        <p>Product Category: {product.categoryType}</p>
-                        <p>Added on {moment(product.createdAt).fromNow()}</p>
+                        </p> */}
+                        <p>Product Category: {product.subCategory}</p>
+                        {/* <p>Added on {moment(product.createdAt).fromNow()}</p> */}
 
                         <hr />
                         <div className='desc'>

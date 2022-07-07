@@ -12,12 +12,14 @@ function PaymentSuccess() {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
   const dispatch = useDispatch()
-
+  let prodId
+  let Quantity
+  let prodQuantity
   //dispatch(orderCreate({ ...cart, orderItems: cart.cartItems }))
   // const [checkoutSession, setCheckoutSession] = useState("");
-  const [prodId, setProdId] = useState('')
-  const [Quantity, setQuantity] = useState('')
-  const [prodQuantity, setProdQuantity] = useState('')
+  // const [prodId, setProdId] = useState('')
+  // const [Quantity, setQuantity] = useState('')
+  // const [prodQuantity, setProdQuantity] = useState('')
   const [checkoutSession, setCheckoutSession] = useState('')
   const resetCode = window.location.href
   const myArray = resetCode.split(
@@ -38,11 +40,21 @@ function PaymentSuccess() {
           orderService
             .getOneOrder(res.data.id)
             .then((orderData) => {
-              console.log(orderData)
-              setProdId(orderData.requestQuote.product.id)
-              console.log('product id: ', prodId)
-              setQuantity(orderData.requestQuote.quantity)
-              setProdQuantity(orderData.requestQuote.product.quantity)
+              orderService
+                .subtractQuantity(
+                  orderData.requestQuote.product.id,
+                  orderData.requestQuote.quantity,
+                  orderData.requestQuote.product.quantity
+                )
+                .then((data) => {
+                  console.log('quantity of product deducted!', data.quantity)
+                })
+                .catch((err) => console.log(err))
+              // console.log(orderData)
+              // prodId = orderData.requestQuote.product.id
+              // console.log('product id: ', prodId)
+              // Quantity = orderData.requestQuote.quantity
+              // prodQuantity = orderData.requestQuote.product.quantity
             })
             .catch((err) => console.log(err))
           // productService
@@ -51,14 +63,14 @@ function PaymentSuccess() {
           //     setProdQuantity(prod.quantity);
           //   })
           //   .catch((err) => console.log(err));
-          console.log('prodQuantity: ', prodQuantity)
-          console.log('quoteQuantity: ', Quantity)
-          orderService
-            .subtractQuantity(prodId, Quantity, prodQuantity)
-            .then((data) => {
-              console.log('quantity of product deducted!', data.quantity)
-            })
-            .catch((err) => console.log(err))
+          // console.log('prodQuantity: ', prodQuantity)
+          // console.log('quoteQuantity: ', Quantity)
+          // orderService
+          //   .subtractQuantity(prodId, Quantity, prodQuantity)
+          //   .then((data) => {
+          //     console.log('quantity of product deducted!', data.quantity)
+          //   })
+          //   .catch((err) => console.log(err))
         }
       })
       .catch((err) => console.log(err))
