@@ -12,6 +12,7 @@ class OrderService extends GenericService {
     ];
   }
   updateDeliveryStatus = (status, orderId) => {
+    console.log("order id: ", orderId);
     return this.put(`orders/${orderId}`, {
       data: {
         delivered: status,
@@ -28,6 +29,8 @@ class OrderService extends GenericService {
     supplier,
     totalAmount
   ) => {
+    console.log("data: ", status, orderId, renter, supplier, totalAmount);
+    console.log("other data: ", renter, supplier, totalAmount);
     if (status === "yes") {
       this.sendAmountBack(renter, supplier, totalAmount);
     }
